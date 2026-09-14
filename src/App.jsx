@@ -212,26 +212,26 @@ const RARITY = {
 };
 
 const CARDS = [
-  { id: "c1", name: "Cristo Redentor", place: "Rio de Janeiro", emoji: "🙌", r: "comum", grad: "from-sky-400 to-blue-600", pt: "Que vista linda!", fr: "Quelle belle vue !", note: "38 m de haut, les bras ouverts sur la baie depuis 1931." },
-  { id: "c2", name: "Pão de Açúcar", place: "Rio de Janeiro", emoji: "🚡", r: "comum", grad: "from-amber-400 to-orange-600", pt: "Vamos de bondinho", fr: "On y va en téléphérique", note: "Le téléphérique grimpe en deux tronçons, le second au coucher du soleil." },
-  { id: "c3", name: "Copacabana", place: "Rio de Janeiro", emoji: "🏖️", r: "comum", grad: "from-cyan-400 to-teal-500", pt: "Uma água de coco", fr: "Une eau de coco", note: "4 km de plage et un trottoir en vagues noires et blanches." },
-  { id: "c4", name: "Cataratas do Iguaçu", place: "Paraná", emoji: "💦", r: "rara", grad: "from-emerald-400 to-green-700", pt: "Que barulho!", fr: "Quel vacarme !", note: "275 chutes ; le côté brésilien offre la vue d'ensemble." },
-  { id: "c5", name: "Amazônia", place: "Manaus", emoji: "🌳", r: "rara", grad: "from-green-500 to-emerald-800", pt: "A floresta é imensa", fr: "La forêt est immense", note: "Un tiers des arbres tropicaux de la planète." },
-  { id: "c6", name: "Encontro das Águas", place: "Manaus", emoji: "🌊", r: "rara", grad: "from-amber-700 to-slate-800", pt: "Dois rios, uma cor", fr: "Deux fleuves, deux couleurs", note: "Le Rio Negro et le Solimões coulent côte à côte sur 6 km sans se mélanger." },
-  { id: "c7", name: "Pelourinho", place: "Salvador", emoji: "🥁", r: "comum", grad: "from-yellow-400 to-rose-500", pt: "Ouve o tambor", fr: "Écoute le tambour", note: "Le centre colonial de Salvador, pavé et repeint de toutes les couleurs." },
-  { id: "c8", name: "Chapada Diamantina", place: "Bahia", emoji: "⛰️", r: "rara", grad: "from-orange-400 to-red-700", pt: "Vamos caminhar", fr: "Allons marcher", note: "Cascades, grottes et plateaux ; on y cherchait des diamants." },
-  { id: "c9", name: "Lençóis Maranhenses", place: "Maranhão", emoji: "🏜️", r: "lendaria", grad: "from-sky-300 to-amber-300", pt: "Areia e lagoas", fr: "Du sable et des lagunes", note: "Des dunes qui se remplissent d'eau de pluie turquoise entre juin et septembre." },
-  { id: "c10", name: "Fernando de Noronha", place: "Pernambuco", emoji: "🐬", r: "lendaria", grad: "from-teal-300 to-blue-600", pt: "Olha os golfinhos!", fr: "Regarde les dauphins !", note: "21 îles, un quota strict de visiteurs, une eau transparente." },
-  { id: "c11", name: "Ouro Preto", place: "Minas Gerais", emoji: "⛪", r: "comum", grad: "from-amber-500 to-yellow-700", pt: "Ruas de pedra", fr: "Des rues pavées", note: "Ville baroque bâtie sur l'or du XVIIIe siècle." },
-  { id: "c12", name: "Brasília", place: "Distrito Federal", emoji: "🏛️", r: "comum", grad: "from-slate-400 to-slate-700", pt: "Tudo é curvo", fr: "Tout est courbe", note: "Dessinée par Niemeyer et Costa, sortie de terre en 41 mois." },
-  { id: "c13", name: "Avenida Paulista", place: "São Paulo", emoji: "🏙️", r: "comum", grad: "from-zinc-500 to-zinc-800", pt: "A cidade não para", fr: "La ville ne s'arrête jamais", note: "2,8 km d'avenue, fermée aux voitures le dimanche." },
-  { id: "c14", name: "Pantanal", place: "Mato Grosso", emoji: "🐆", r: "rara", grad: "from-lime-500 to-emerald-700", pt: "Vi uma onça!", fr: "J'ai vu un jaguar !", note: "La plus grande zone humide du monde, meilleure que l'Amazonie pour voir des animaux." },
-  { id: "c15", name: "Jericoacoara", place: "Ceará", emoji: "🪁", r: "rara", grad: "from-orange-300 to-rose-500", pt: "O vento é bom", fr: "Le vent est bon", note: "Village de sable sans routes goudronnées, paradis du kitesurf." },
-  { id: "c16", name: "Olinda", place: "Pernambuco", emoji: "🎭", r: "comum", grad: "from-fuchsia-400 to-purple-600", pt: "O carnaval é na rua", fr: "Le carnaval est dans la rue", note: "Des géants en papier mâché défilent dans les ruelles en pente." },
-  { id: "c17", name: "Paraty", place: "Rio de Janeiro", emoji: "⛵", r: "comum", grad: "from-blue-300 to-indigo-500", pt: "A maré subiu", fr: "La marée est montée", note: "Le centre historique est inondé par les grandes marées, exprès." },
-  { id: "c18", name: "Bonito", place: "Mato Grosso do Sul", emoji: "🐠", r: "rara", grad: "from-cyan-300 to-emerald-500", pt: "A água é cristalina", fr: "L'eau est cristalline", note: "On flotte au fil de rivières limpides au milieu des poissons." },
-  { id: "c19", name: "Porto de Galinhas", place: "Pernambuco", emoji: "🐟", r: "comum", grad: "from-teal-300 to-cyan-600", pt: "Piscinas naturais", fr: "Des piscines naturelles", note: "À marée basse, les récifs forment des bassins tièdes." },
-  { id: "c20", name: "Gramado", place: "Rio Grande do Sul", emoji: "🍫", r: "lendaria", grad: "from-rose-300 to-emerald-600", pt: "Faz frio aqui", fr: "Il fait froid ici", note: "Chalets, chocolatiers et hiver austral : le Brésil auquel personne ne pense." },
+  { id: "c1", name: "Cristo Redentor", place: "Rio de Janeiro", emoji: "🙌", scene: "mountain", r: "comum", grad: "from-sky-400 to-blue-600", pt: "Que vista linda!", fr: "Quelle belle vue !", note: "38 m de haut, les bras ouverts sur la baie depuis 1931." },
+  { id: "c2", name: "Pão de Açúcar", place: "Rio de Janeiro", emoji: "🚡", scene: "cablecar", r: "comum", grad: "from-amber-400 to-orange-600", pt: "Vamos de bondinho", fr: "On y va en téléphérique", note: "Le téléphérique grimpe en deux tronçons, le second au coucher du soleil." },
+  { id: "c3", name: "Copacabana", place: "Rio de Janeiro", emoji: "🏖️", scene: "beach", r: "comum", grad: "from-cyan-400 to-teal-500", pt: "Uma água de coco", fr: "Une eau de coco", note: "4 km de plage et un trottoir en vagues noires et blanches." },
+  { id: "c4", name: "Cataratas do Iguaçu", place: "Paraná", emoji: "💦", scene: "waterfall", r: "rara", grad: "from-emerald-400 to-green-700", pt: "Que barulho!", fr: "Quel vacarme !", note: "275 chutes ; le côté brésilien offre la vue d'ensemble." },
+  { id: "c5", name: "Amazônia", place: "Manaus", emoji: "🌳", scene: "jungle", r: "rara", grad: "from-green-500 to-emerald-800", pt: "A floresta é imensa", fr: "La forêt est immense", note: "Un tiers des arbres tropicaux de la planète." },
+  { id: "c6", name: "Encontro das Águas", place: "Manaus", emoji: "🌊", scene: "rivers", r: "rara", grad: "from-amber-700 to-slate-800", pt: "Dois rios, uma cor", fr: "Deux fleuves, deux couleurs", note: "Le Rio Negro et le Solimões coulent côte à côte sur 6 km sans se mélanger." },
+  { id: "c7", name: "Pelourinho", place: "Salvador", emoji: "🥁", scene: "colonial", r: "comum", grad: "from-yellow-400 to-rose-500", pt: "Ouve o tambor", fr: "Écoute le tambour", note: "Le centre colonial de Salvador, pavé et repeint de toutes les couleurs." },
+  { id: "c8", name: "Chapada Diamantina", place: "Bahia", emoji: "⛰️", scene: "canyon", r: "rara", grad: "from-orange-400 to-red-700", pt: "Vamos caminhar", fr: "Allons marcher", note: "Cascades, grottes et plateaux ; on y cherchait des diamants." },
+  { id: "c9", name: "Lençóis Maranhenses", place: "Maranhão", emoji: "🏜️", scene: "dunes", r: "lendaria", grad: "from-sky-300 to-amber-300", pt: "Areia e lagoas", fr: "Du sable et des lagunes", note: "Des dunes qui se remplissent d'eau de pluie turquoise entre juin et septembre." },
+  { id: "c10", name: "Fernando de Noronha", place: "Pernambuco", emoji: "🐬", scene: "dolphins", r: "lendaria", grad: "from-teal-300 to-blue-600", pt: "Olha os golfinhos!", fr: "Regarde les dauphins !", note: "21 îles, un quota strict de visiteurs, une eau transparente." },
+  { id: "c11", name: "Ouro Preto", place: "Minas Gerais", emoji: "⛪", scene: "church", r: "comum", grad: "from-amber-500 to-yellow-700", pt: "Ruas de pedra", fr: "Des rues pavées", note: "Ville baroque bâtie sur l'or du XVIIIe siècle." },
+  { id: "c12", name: "Brasília", place: "Distrito Federal", emoji: "🏛️", scene: "modernist", r: "comum", grad: "from-slate-400 to-slate-700", pt: "Tudo é curvo", fr: "Tout est courbe", note: "Dessinée par Niemeyer et Costa, sortie de terre en 41 mois." },
+  { id: "c13", name: "Avenida Paulista", place: "São Paulo", emoji: "🏙️", scene: "skyline", r: "comum", grad: "from-zinc-500 to-zinc-800", pt: "A cidade não para", fr: "La ville ne s'arrête jamais", note: "2,8 km d'avenue, fermée aux voitures le dimanche." },
+  { id: "c14", name: "Pantanal", place: "Mato Grosso", emoji: "🐆", scene: "wildlife", r: "rara", grad: "from-lime-500 to-emerald-700", pt: "Vi uma onça!", fr: "J'ai vu un jaguar !", note: "La plus grande zone humide du monde, meilleure que l'Amazonie pour voir des animaux." },
+  { id: "c15", name: "Jericoacoara", place: "Ceará", emoji: "🪁", scene: "kite", r: "rara", grad: "from-orange-300 to-rose-500", pt: "O vento é bom", fr: "Le vent est bon", note: "Village de sable sans routes goudronnées, paradis du kitesurf." },
+  { id: "c16", name: "Olinda", place: "Pernambuco", emoji: "🎭", scene: "carnival", r: "comum", grad: "from-fuchsia-400 to-purple-600", pt: "O carnaval é na rua", fr: "Le carnaval est dans la rue", note: "Des géants en papier mâché défilent dans les ruelles en pente." },
+  { id: "c17", name: "Paraty", place: "Rio de Janeiro", emoji: "⛵", scene: "sailboat", r: "comum", grad: "from-blue-300 to-indigo-500", pt: "A maré subiu", fr: "La marée est montée", note: "Le centre historique est inondé par les grandes marées, exprès." },
+  { id: "c18", name: "Bonito", place: "Mato Grosso do Sul", emoji: "🐠", scene: "reef", r: "rara", grad: "from-cyan-300 to-emerald-500", pt: "A água é cristalina", fr: "L'eau est cristalline", note: "On flotte au fil de rivières limpides au milieu des poissons." },
+  { id: "c19", name: "Porto de Galinhas", place: "Pernambuco", emoji: "🐟", scene: "fishpools", r: "comum", grad: "from-teal-300 to-cyan-600", pt: "Piscinas naturais", fr: "Des piscines naturelles", note: "À marée basse, les récifs forment des bassins tièdes." },
+  { id: "c20", name: "Gramado", place: "Rio Grande do Sul", emoji: "🍫", scene: "snowvillage", r: "lendaria", grad: "from-rose-300 to-emerald-600", pt: "Faz frio aqui", fr: "Il fait froid ici", note: "Chalets, chocolatiers et hiver austral : le Brésil auquel personne ne pense." },
 ];
 
 const CARD_PRICE = 100;
@@ -510,25 +510,272 @@ function SpeakButton({ text, big }) {
   );
 }
 
-function Postcard({ card, owned = true, small = false }) {
+/* ------------------------------------------------------------------ */
+/*  Illustrations vectorielles des cartes postales (une scène par lieu) */
+/* ------------------------------------------------------------------ */
+
+function SceneArt({ scene, className = "" }) {
+  const W = 200, H = 100;
+  let content = null;
+
+  switch (scene) {
+    case "mountain": // Cristo Redentor
+      content = (<>
+        <polygon points="0,100 45,38 95,100" fill="#fff" opacity=".3" />
+        <polygon points="55,100 125,22 195,100" fill="#fff" opacity=".55" />
+        <ellipse cx="125" cy="26" rx="9" ry="2.5" fill="#fff" opacity=".8" />
+        <line x1="107" y1="14" x2="143" y2="14" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" opacity=".95" />
+        <rect x="121.5" y="8" width="7" height="18" rx="3" fill="#fff" opacity=".95" />
+        <circle cx="125" cy="5" r="4.2" fill="#fff" opacity=".95" />
+      </>);
+      break;
+    case "cablecar": // Pão de Açúcar
+      content = (<>
+        <circle cx="168" cy="16" r="9" fill="#fff" opacity=".45" />
+        <ellipse cx="45" cy="82" rx="55" ry="30" fill="#fff" opacity=".3" />
+        <ellipse cx="135" cy="60" rx="48" ry="42" fill="#fff" opacity=".55" />
+        <line x1="15" y1="34" x2="150" y2="18" stroke="#fff" strokeWidth="1.5" opacity=".7" />
+        <line x1="78" y1="26" x2="78" y2="33" stroke="#fff" strokeWidth="1.5" opacity=".9" />
+        <rect x="72" y="33" width="12" height="8" rx="1.5" fill="#fff" opacity=".95" />
+      </>);
+      break;
+    case "beach": // Copacabana
+      content = (<>
+        <circle cx="100" cy="22" r="13" fill="#fff" opacity=".5" />
+        <path d="M0,50 Q15,42 30,50 T60,50 T90,50 T120,50 T150,50 T180,50 T200,50" stroke="#fff" strokeWidth="2" fill="none" opacity=".55" />
+        <path d="M0,64 Q15,56 30,64 T60,64 T90,64 T120,64 T150,64 T180,64 T200,64" stroke="#fff" strokeWidth="2" fill="none" opacity=".4" />
+        <rect x="0" y="70" width="200" height="30" fill="#fff" opacity=".18" />
+        <path d="M0,88 Q12,78 24,88 T48,88 T72,88 T96,88 T120,88 T144,88 T168,88 T192,88" stroke="#fff" strokeWidth="3" fill="none" opacity=".85" />
+        <line x1="18" y1="90" x2="18" y2="70" stroke="#fff" strokeWidth="2.5" opacity=".8" />
+        <path d="M18,70 Q6,64 4,72 M18,70 Q30,64 32,72 M18,70 Q10,60 18,58 M18,70 Q26,60 18,58" stroke="#fff" strokeWidth="2" fill="none" opacity=".8" />
+      </>);
+      break;
+    case "waterfall": // Cataratas do Iguaçu
+      content = (<>
+        <polygon points="0,32 200,26 200,40 0,46" fill="#fff" opacity=".45" />
+        {[22, 45, 68, 92, 116, 140, 164, 182].map((x, i) => (
+          <line key={i} x1={x} y1="30" x2={x + (i % 2 ? 4 : -4)} y2="86" stroke="#fff" strokeWidth="4" opacity={i % 2 ? ".55" : ".8"} strokeLinecap="round" />
+        ))}
+        <ellipse cx="100" cy="90" rx="95" ry="9" fill="#fff" opacity=".3" />
+        <polygon points="10,28 22,10 34,28" fill="#fff" opacity=".55" />
+        <polygon points="150,24 164,8 178,24" fill="#fff" opacity=".55" />
+      </>);
+      break;
+    case "jungle": // Amazônia
+      content = (<>
+        {[[20, 34, 20], [55, 28, 26], [92, 32, 24], [130, 26, 28], [168, 34, 20]].map(([x, y, r], i) => (
+          <circle key={i} cx={x} cy={y} r={r} fill="#fff" opacity={i % 2 ? ".35" : ".5"} />
+        ))}
+        <rect x="97" y="40" width="6" height="30" fill="#fff" opacity=".7" />
+        <circle cx="100" cy="30" r="22" fill="#fff" opacity=".8" />
+        <rect x="0" y="82" width="200" height="18" fill="#fff" opacity=".2" />
+      </>);
+      break;
+    case "rivers": // Encontro das Águas
+      content = (<>
+        <path d="M0,20 L200,20 L200,100 L0,100 Z" fill="#fff" opacity=".18" />
+        <path d="M0,30 Q50,20 100,32 T200,28 L200,100 L0,100 Z" fill="#fff" opacity=".25" />
+        <path d="M0,55 Q50,42 100,56 T200,50" stroke="#fff" strokeWidth="2.5" fill="none" opacity=".65" />
+        <path d="M0,72 Q50,60 100,74 T200,68" stroke="#fff" strokeWidth="2.5" fill="none" opacity=".45" />
+        <path d="M0,88 Q50,78 100,90 T200,84" stroke="#fff" strokeWidth="2.5" fill="none" opacity=".3" />
+      </>);
+      break;
+    case "colonial": // Pelourinho
+      content = (<>
+        {[[0, 56, 30], [26, 44, 34], [56, 60, 28], [82, 40, 38], [116, 58, 26], [140, 46, 32], [170, 60, 30]].map(([x, y, w], i) => (
+          <g key={i} opacity={0.55 + (i % 3) * 0.15}>
+            <rect x={x} y={y + 20} width={w} height={100 - y - 20} fill="#fff" />
+            <polygon points={`${x - 2},${y + 20} ${x + w / 2},${y} ${x + w + 2},${y + 20}`} fill="#fff" />
+          </g>
+        ))}
+        <rect x="86" y="14" width="10" height="24" fill="#fff" opacity=".9" />
+        <polygon points="84,14 91,4 98,14" fill="#fff" opacity=".9" />
+        <line x1="91" y1="4" x2="91" y2="-2" stroke="#fff" strokeWidth="1.5" opacity=".9" />
+      </>);
+      break;
+    case "canyon": // Chapada Diamantina
+      content = (<>
+        <polygon points="0,90 20,55 60,55 75,90" fill="#fff" opacity=".3" />
+        <polygon points="55,95 90,40 145,40 170,95" fill="#fff" opacity=".5" />
+        <polygon points="130,98 160,60 200,60 200,98" fill="#fff" opacity=".35" />
+        <line x1="112" y1="42" x2="106" y2="90" stroke="#fff" strokeWidth="2.5" opacity=".7" strokeLinecap="round" />
+        <ellipse cx="106" cy="92" rx="10" ry="3" fill="#fff" opacity=".3" />
+      </>);
+      break;
+    case "dunes": // Lençóis Maranhenses
+      content = (<>
+        <path d="M0,60 Q30,42 60,58 T120,56 T200,50 L200,100 L0,100 Z" fill="#fff" opacity=".3" />
+        <path d="M0,78 Q35,60 70,76 T140,72 T200,68 L200,100 L0,100 Z" fill="#fff" opacity=".5" />
+        <ellipse cx="70" cy="82" rx="16" ry="6" fill="none" stroke="#fff" strokeWidth="1.5" opacity=".55" />
+        <ellipse cx="140" cy="88" rx="12" ry="4.5" fill="none" stroke="#fff" strokeWidth="1.5" opacity=".45" />
+      </>);
+      break;
+    case "dolphins": // Fernando de Noronha
+      content = (<>
+        <path d="M0,70 Q20,62 40,70 T80,70 T120,70 T160,70 T200,70" stroke="#fff" strokeWidth="2.5" fill="none" opacity=".5" />
+        <path d="M0,84 Q20,76 40,84 T80,84 T120,84 T160,84 T200,84" stroke="#fff" strokeWidth="2.5" fill="none" opacity=".35" />
+        <path d="M60,68 Q80,30 105,50 Q112,42 118,46 Q108,58 96,58 Q86,72 68,76 Z" fill="#fff" opacity=".9" />
+        <polygon points="150,80 170,64 180,80" fill="#fff" opacity=".4" />
+      </>);
+      break;
+    case "church": // Ouro Preto
+      content = (<>
+        <polygon points="0,90 30,68 60,90" fill="#fff" opacity=".3" />
+        <polygon points="140,90 170,68 200,90" fill="#fff" opacity=".3" />
+        <rect x="60" y="46" width="14" height="44" fill="#fff" opacity=".85" />
+        <rect x="126" y="46" width="14" height="44" fill="#fff" opacity=".85" />
+        <ellipse cx="67" cy="42" rx="8" ry="9" fill="#fff" opacity=".85" />
+        <ellipse cx="133" cy="42" rx="8" ry="9" fill="#fff" opacity=".85" />
+        <polygon points="80,52 100,26 120,52" fill="#fff" opacity=".9" />
+        <rect x="97" y="12" width="6" height="16" fill="#fff" opacity=".9" />
+        <line x1="93" y1="16" x2="107" y2="16" stroke="#fff" strokeWidth="2.5" opacity=".9" />
+        <rect x="80" y="52" width="40" height="38" fill="#fff" opacity=".7" />
+      </>);
+      break;
+    case "modernist": // Brasília
+      content = (<>
+        <ellipse cx="100" cy="88" rx="90" ry="6" fill="#fff" opacity=".25" />
+        <path d="M55,80 Q55,30 100,26 Q100,55 100,80 Z" fill="#fff" opacity=".55" />
+        <path d="M145,80 Q145,30 100,26 Q100,55 100,80 Z" fill="#fff" opacity=".8" />
+        {[70, 82, 94, 106, 118, 130].map((x, i) => (
+          <line key={i} x1={x} y1="80" x2={x} y2="90" stroke="#fff" strokeWidth="2" opacity=".7" />
+        ))}
+      </>);
+      break;
+    case "skyline": // Avenida Paulista
+      content = (<>
+        {[[0, 46, 22], [24, 30, 26], [52, 52, 20], [74, 20, 24], [100, 40, 30], [132, 28, 22], [156, 46, 24], [182, 34, 18]].map(([x, y, w], i) => (
+          <rect key={i} x={x} y={y} width={w} height={100 - y} fill="#fff" opacity={0.35 + (i % 4) * 0.15} />
+        ))}
+      </>);
+      break;
+    case "wildlife": // Pantanal
+      content = (<>
+        {[10, 30, 50, 150, 170, 190].map((x, i) => (
+          <path key={i} d={`M${x},100 Q${x + 3},80 ${x - 2},60`} stroke="#fff" strokeWidth="2" fill="none" opacity=".45" />
+        ))}
+        <path d="M40,20 q6,-6 12,0 M150,14 q6,-6 12,0" stroke="#fff" strokeWidth="2" fill="none" opacity=".6" />
+        <g opacity=".9">
+          <ellipse cx="105" cy="76" rx="30" ry="16" fill="#fff" />
+          <circle cx="140" cy="62" r="12" fill="#fff" />
+          <polygon points="132,52 136,42 140,52" fill="#fff" />
+          <polygon points="142,52 146,42 150,52" fill="#fff" />
+          <path d="M78,80 Q64,70 70,58" stroke="#fff" strokeWidth="6" fill="none" strokeLinecap="round" />
+        </g>
+      </>);
+      break;
+    case "kite": // Jericoacoara
+      content = (<>
+        <circle cx="170" cy="18" r="9" fill="#fff" opacity=".5" />
+        <path d="M0,80 Q40,64 80,80 T160,78 T200,74 L200,100 L0,100 Z" fill="#fff" opacity=".4" />
+        <polygon points="60,22 72,34 60,46 48,34" fill="#fff" opacity=".9" />
+        <line x1="60" y1="46" x2="45" y2="76" stroke="#fff" strokeWidth="1.5" opacity=".8" />
+        <path d="M45,76 l-4,4 l6,2 l-4,4 l6,2" stroke="#fff" strokeWidth="1.5" fill="none" opacity=".8" />
+      </>);
+      break;
+    case "carnival": // Olinda
+      content = (<>
+        {[[-10, 20, 20], [70, 8, 22], [150, 18, 22], [210, 24, 20]].map(([a, b, c], i) => (
+          <path key={i} d={`M100,40 Q${100 + a},${20 - b} ${100 + a * 1.4},${c}`} stroke="#fff" strokeWidth="4" fill="none" opacity=".55" strokeLinecap="round" />
+        ))}
+        <circle cx="100" cy="55" r="24" fill="#fff" opacity=".9" />
+        <circle cx="91" cy="50" r="3" fill="#059669" />
+        <circle cx="109" cy="50" r="3" fill="#059669" />
+        <path d="M88,64 Q100,72 112,64" stroke="#059669" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        {[[30, 20], [170, 30], [50, 75], [150, 80], [20, 55]].map(([x, y], i) => (
+          <circle key={i} cx={x} cy={y} r="3" fill="#fff" opacity=".6" />
+        ))}
+      </>);
+      break;
+    case "sailboat": // Paraty
+      content = (<>
+        <path d="M0,66 Q20,58 40,66 T80,66 T120,66 T160,66 T200,66" stroke="#fff" strokeWidth="2.5" fill="none" opacity=".55" />
+        {[[10, 44, 16], [140, 40, 34], [172, 46, 20]].map(([x, y, w], i) => (
+          <rect key={i} x={x} y={y} width={w} height={100 - y - 30} fill="#fff" opacity=".3" />
+        ))}
+        <path d="M70,70 Q100,80 130,70 L122,80 L78,80 Z" fill="#fff" opacity=".9" />
+        <line x1="100" y1="70" x2="100" y2="34" stroke="#fff" strokeWidth="2" opacity=".9" />
+        <polygon points="100,36 100,68 80,68" fill="#fff" opacity=".85" />
+      </>);
+      break;
+    case "reef": // Bonito
+      content = (<>
+        <path d="M0,26 Q20,18 40,26 T80,26 T120,26 T160,26 T200,26" stroke="#fff" strokeWidth="2" fill="none" opacity=".5" />
+        {[[40, 50], [160, 40], [95, 70], [140, 78]].map(([x, y], i) => (
+          <circle key={i} cx={x} cy={y} r="3" fill="#fff" opacity=".4" />
+        ))}
+        {[[45, 55, 1], [110, 40, -1], [155, 68, 1], [75, 82, -1]].map(([x, y, dir], i) => (
+          <g key={i} opacity=".85">
+            <ellipse cx={x} cy={y} rx="14" ry="7" fill="#fff" />
+            <polygon points={`${x - 14 * dir},${y} ${x - 22 * dir},${y - 5} ${x - 22 * dir},${y + 5}`} fill="#fff" />
+          </g>
+        ))}
+      </>);
+      break;
+    case "fishpools": // Porto de Galinhas
+      content = (<>
+        <line x1="0" y1="24" x2="200" y2="24" stroke="#fff" strokeWidth="1.5" opacity=".4" />
+        <circle cx="170" cy="16" r="8" fill="#fff" opacity=".5" />
+        <ellipse cx="55" cy="66" rx="45" ry="24" fill="none" stroke="#fff" strokeWidth="2" opacity=".5" />
+        <ellipse cx="140" cy="72" rx="40" ry="22" fill="none" stroke="#fff" strokeWidth="2" opacity=".4" />
+        <g opacity=".85">
+          <ellipse cx="50" cy="64" rx="9" ry="4.5" fill="#fff" />
+          <polygon points="41,64 34,60 34,68" fill="#fff" />
+        </g>
+        <g opacity=".7">
+          <ellipse cx="135" cy="74" rx="7" ry="3.5" fill="#fff" />
+          <polygon points="142,74 148,71 148,77" fill="#fff" />
+        </g>
+      </>);
+      break;
+    case "snowvillage": // Gramado
+      content = (<>
+        {[[130, 20, 14], [155, 30, 10]].map(([x, y, s], i) => (
+          <polygon key={i} points={`${x},${y} ${x - s},${y + s * 1.6} ${x + s},${y + s * 1.6}`} fill="#fff" opacity=".55" />
+        ))}
+        <g opacity=".9">
+          <polygon points="30,50 55,28 80,50" fill="#fff" />
+          <rect x="35" y="50" width="40" height="34" fill="#fff" />
+        </g>
+        <g opacity=".7">
+          <polygon points="95,58 115,40 135,58" fill="#fff" />
+          <rect x="99" y="58" width="32" height="26" fill="#fff" />
+        </g>
+        {[[15, 20], [70, 10], [110, 24], [150, 60], [175, 15], [40, 70]].map(([x, y], i) => (
+          <circle key={i} cx={x} cy={y} r="2" fill="#fff" opacity=".6" />
+        ))}
+      </>);
+      break;
+    default:
+      content = <circle cx="100" cy="50" r="30" fill="#fff" opacity=".4" />;
+  }
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMax slice" className={className}>
+      {content}
+    </svg>
+  );
+}
+
+function Postcard({ card, owned = true, small = false, big = false }) {
   if (!owned) {
     return (
-      <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 aspect-[4/3] grid place-items-center">
-        <Lock className="w-6 h-6 text-slate-300" />
+      <div className={`rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 ${small ? "aspect-[4/3]" : "aspect-[3/4]"} grid place-items-center`}>
+        <Lock className={small ? "w-5 h-5 text-slate-300" : "w-8 h-8 text-slate-300"} />
       </div>
     );
   }
   const rar = RARITY[card.r];
   return (
-    <div className={`rounded-2xl overflow-hidden border-2 ${rar.ring} bg-gradient-to-br ${card.grad} text-white relative ${small ? "" : "shadow-lg"}`}>
-      <div className="absolute top-1.5 right-1.5 bg-white/85 rounded-md px-1 py-0.5 text-[8px] font-bold text-slate-700 border border-white">BRASIL</div>
-      <div className={`${small ? "p-2" : "p-4"} flex flex-col items-center justify-center text-center`}>
-        <div className={small ? "text-2xl" : "text-5xl"}>{card.emoji}</div>
-        <div className={`font-extrabold leading-tight ${small ? "text-[10px] mt-1" : "text-lg mt-2"}`}>{card.name}</div>
+    <div className={`rounded-2xl overflow-hidden border-2 ${rar.ring} bg-gradient-to-br ${card.grad} text-white relative flex flex-col ${small ? "" : "shadow-lg"}`}>
+      <div className="absolute top-1.5 right-1.5 bg-white/85 rounded-md px-1 py-0.5 text-[8px] font-bold text-slate-700 border border-white z-10">BRASIL</div>
+      <SceneArt scene={card.scene} className={small ? "h-16 w-full shrink-0" : big ? "h-44 w-full shrink-0" : "h-28 w-full shrink-0"} />
+      <div className={`${small ? "px-1.5 py-1.5" : "px-3 py-2"} text-center`}>
+        <div className={`font-extrabold leading-tight ${small ? "text-[10px]" : "text-lg"}`}>{card.name}</div>
         <div className={`opacity-90 ${small ? "text-[8px]" : "text-xs"}`}>{card.place}</div>
       </div>
       {!small && (
-        <div className="bg-white/15 px-4 py-2 text-center">
+        <div className="bg-white/15 px-4 py-2 text-center mt-auto">
           <div className="font-bold text-sm">{card.pt}</div>
           <div className="text-xs opacity-90">{card.fr}</div>
         </div>
@@ -717,7 +964,7 @@ function PathScreen({ progress, onStart, onSettings, storageWarning }) {
 /*  ÉCRAN : BOUTIQUE                                                   */
 /* ================================================================== */
 
-function ShopScreen({ progress, onBuy }) {
+function ShopScreen({ progress, onBuy, onOpenCard }) {
   const owned = progress.cards || [];
   const remaining = CARDS.length - owned.length;
   const canBuy = progress.gems >= CARD_PRICE && remaining > 0;
@@ -757,50 +1004,74 @@ function ShopScreen({ progress, onBuy }) {
           <span className="text-sm font-bold text-slate-400 tabular-nums">{owned.length}/{CARDS.length}</span>
         </div>
         <div className="grid grid-cols-3 gap-2">
-          {CARDS.map((c) => (
-            <div key={c.id}><Postcard card={c} owned={owned.includes(c.id)} small /></div>
-          ))}
+          {CARDS.map((c, i) => {
+            const isOwned = owned.includes(c.id);
+            return (
+              <button key={c.id} type="button" disabled={!isOwned}
+                onClick={() => { sndTap(); onOpenCard(c, i); }}
+                className={`text-left rounded-2xl ${isOwned ? "active:scale-95 transition-transform" : "cursor-default"}`}>
+                <Postcard card={c} owned={isOwned} small />
+              </button>
+            );
+          })}
         </div>
-
         {owned.length > 0 && (
-          <>
-            <h3 className="font-extrabold text-slate-800 mt-7 mb-3">Le dos des cartes</h3>
-            <div className="space-y-2">
-              {CARDS.filter((c) => owned.includes(c.id)).map((c) => (
-                <div key={c.id} className="rounded-2xl border-2 border-slate-100 p-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xl">{c.emoji}</span>
-                    <span className="font-extrabold text-slate-800">{c.name}</span>
-                    <span className={`text-[10px] font-bold rounded-full px-2 py-0.5 ${RARITY[c.r].chip}`}>{RARITY[c.r].label}</span>
-                  </div>
-                  <p className="text-xs text-slate-500 mt-1">{c.note}</p>
-                  <button onClick={() => speak(c.pt)} className="mt-2 flex items-center gap-2 text-sm">
-                    <span className="w-7 h-7 rounded-lg bg-sky-50 text-sky-600 grid place-items-center shrink-0"><Volume2 className="w-4 h-4" /></span>
-                    <span className="font-bold text-slate-700">{c.pt}</span>
-                    <span className="text-slate-400">· {c.fr}</span>
-                  </button>
-                </div>
-              ))}
-            </div>
-          </>
+          <p className="text-xs text-slate-400 text-center mt-4">Touche une carte pour la voir en grand et la retourner.</p>
         )}
       </div>
     </div>
   );
 }
 
-function CardReveal({ card, onClose }) {
+function CardBack({ card, index }) {
   const rar = RARITY[card.r];
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/70 grid place-items-center px-6">
-      <Confetti />
-      <div className="w-full max-w-xs" style={{ animation: "fb-pop .5s ease-out" }}>
-        <div className={`text-center text-xs font-bold rounded-full px-3 py-1 w-fit mx-auto mb-3 ${rar.chip}`}>{rar.label}</div>
-        <Postcard card={card} />
-        <p className="text-white/90 text-sm text-center mt-3">{card.note}</p>
+    <div className={`rounded-2xl overflow-hidden border-2 ${rar.ring} bg-white aspect-[3/4] flex flex-col p-4 shadow-lg`}>
+      <div className="flex items-center justify-between">
+        <span className={`text-[10px] font-bold rounded-full px-2 py-0.5 ${rar.chip}`}>{rar.label}</span>
+        {index != null && <span className="text-[10px] font-bold text-slate-400 tabular-nums">Nº {index + 1}/{CARDS.length}</span>}
+      </div>
+      <div className="mt-2">
+        <div className="font-extrabold text-lg text-slate-800 leading-tight">{card.name}</div>
+        <div className="text-xs text-slate-500">{card.place}, Brasil</div>
+      </div>
+      <p className="text-sm text-slate-600 mt-3 flex-1">{card.note}</p>
+      <button onClick={(e) => { e.stopPropagation(); speak(card.pt); }}
+        className="mt-3 flex items-center gap-2 rounded-2xl bg-sky-50 px-3 py-2 text-left">
+        <span className="w-8 h-8 rounded-xl bg-sky-500 text-white grid place-items-center shrink-0"><Volume2 className="w-4 h-4" /></span>
+        <span className="min-w-0">
+          <span className="block font-bold text-slate-800 text-sm truncate">{card.pt}</span>
+          <span className="block text-xs text-slate-400 truncate">{card.fr}</span>
+        </span>
+      </button>
+    </div>
+  );
+}
+
+function CardModal({ card, index, owned = true, revealMode = false, onClose }) {
+  const [flipped, setFlipped] = useState(false);
+  if (!card) return null;
+  const rar = RARITY[card.r];
+  return (
+    <div className="fixed inset-0 z-50 bg-slate-900/70 grid place-items-center px-6" onClick={onClose}>
+      {revealMode && <Confetti />}
+      <div className="w-full max-w-xs" onClick={(e) => e.stopPropagation()}
+        style={revealMode ? { animation: "fb-pop .5s ease-out" } : undefined}>
+        {revealMode && (
+          <div className={`text-center text-xs font-bold rounded-full px-3 py-1 w-fit mx-auto mb-3 ${rar.chip}`}>{rar.label}</div>
+        )}
+        <div className="fb-flip-outer" onClick={() => { sndTap(); setFlipped((f) => !f); }}>
+          <div className={`fb-flip-inner ${flipped ? "flipped" : ""}`}>
+            <div className="fb-flip-face"><Postcard card={card} owned={owned} big /></div>
+            <div className="fb-flip-face fb-flip-back"><CardBack card={card} index={index} /></div>
+          </div>
+        </div>
+        <p className="text-white/70 text-xs text-center mt-3">
+          {flipped ? "Touche la carte pour revenir au recto" : "Touche la carte pour la retourner"}
+        </p>
         <button onClick={onClose}
-          className="w-full mt-4 rounded-2xl bg-white text-slate-800 font-extrabold py-4 border-b-4 border-slate-300 active:border-b-0 active:translate-y-1">
-          Ajouter à l'album
+          className="w-full mt-3 rounded-2xl bg-white text-slate-800 font-extrabold py-4 border-b-4 border-slate-300 active:border-b-0 active:translate-y-1">
+          {revealMode ? "Ajouter à l'album" : "Fermer"}
         </button>
       </div>
     </div>
@@ -1221,6 +1492,7 @@ export default function App() {
   const [result, setResult] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
   const [revealed, setRevealed] = useState(null);
+  const [openedCard, setOpenedCard] = useState(null);
 
   const setPrefs = useCallback((p) => { PREFS = p; setPrefsState(p); }, []);
 
@@ -1345,13 +1617,21 @@ export default function App() {
         @keyframes fb-pop { 0% { transform: scale(.4); opacity: 0; } 60% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes fb-up { from { transform: translateY(40px); opacity: .6; } to { transform: translateY(0); opacity: 1; } }
         @media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+        .fb-flip-outer { perspective: 1600px; cursor: pointer; }
+        .fb-flip-inner { position: relative; transition: transform .6s cubic-bezier(.4,.15,.2,1); transform-style: preserve-3d; }
+        .fb-flip-inner.flipped { transform: rotateY(180deg); }
+        .fb-flip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        .fb-flip-back { position: absolute; inset: 0; transform: rotateY(180deg); }
       `}</style>
 
       <div className="mx-auto max-w-md bg-white min-h-screen shadow-xl relative">
         {view === "path" && (
           <PathScreen progress={progress} onStart={startLesson} onSettings={() => setShowSettings(true)} storageWarning={storageWarning} />
         )}
-        {view === "shop" && <ShopScreen progress={progress} onBuy={buyCard} />}
+        {view === "shop" && (
+          <ShopScreen progress={progress} onBuy={buyCard}
+            onOpenCard={(c, i) => setOpenedCard({ card: c, index: i })} />
+        )}
         {view === "profile" && (
           <ProfileScreen progress={progress} prefs={prefs} storageWarning={storageWarning}
             onReset={() => { setProgress(defaultProgress()); setView("path"); }}
@@ -1368,7 +1648,14 @@ export default function App() {
 
         {!inLesson && <TabBar view={view} setView={setView} cardCount={(progress.cards || []).length} />}
         {showSettings && <VoiceSettings prefs={prefs} setPrefs={setPrefs} onClose={() => setShowSettings(false)} />}
-        {revealed && <CardReveal card={revealed} onClose={() => { sndTap(); setRevealed(null); }} />}
+        {revealed && (
+          <CardModal card={revealed} index={CARDS.findIndex((c) => c.id === revealed.id)} revealMode
+            onClose={() => { sndTap(); setRevealed(null); }} />
+        )}
+        {openedCard && (
+          <CardModal card={openedCard.card} index={openedCard.index}
+            onClose={() => { sndTap(); setOpenedCard(null); }} />
+        )}
       </div>
     </div>
   );
