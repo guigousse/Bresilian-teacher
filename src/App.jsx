@@ -202,6 +202,211 @@ const PRON_KEYS = [
 ];
 
 /* ================================================================== */
+/*  HISTÓRIAS — un livre par palier, suite d'une même histoire          */
+/*  Syntaxe : {{texte affiché|clé pt exacte}} marque un mot testable    */
+/*  (la clé doit correspondre à l'entrée « pt » d'un item de UNITS)     */
+/* ================================================================== */
+
+const STORY_TOKEN_RE = /\{\{([^}|]+)(?:\|([^}]+))?\}\}/g;
+
+function parseStoryParagraph(text) {
+  const tokens = [];
+  let last = 0, m;
+  STORY_TOKEN_RE.lastIndex = 0;
+  while ((m = STORY_TOKEN_RE.exec(text))) {
+    if (m.index > last) tokens.push({ type: "text", value: text.slice(last, m.index) });
+    const display = m[1];
+    const key = (m[2] || m[1]).toLowerCase();
+    const item = ALL_ITEMS.find((it) => it.pt.toLowerCase() === key);
+    tokens.push({ type: "word", display, key, item });
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) tokens.push({ type: "text", value: text.slice(last) });
+  return tokens;
+}
+
+const STORIES = [
+  {
+    id: "u1", title: "Capítulo 1 — Chegada no Rio",
+    paragraphs: [
+      "Léa desce do avião no Rio de Janeiro. Uma mulher sorri para ela na fila.",
+      "— {{Oi|oi}}! {{Tudo bem?|tudo bem?}} — pergunta a mulher.",
+      "— {{Tudo bem|tudo bem}}, obrigada! — responde Léa, um pouco cansada da viagem.",
+      "A mulher continua, curiosa: — {{Como você se chama?|como você se chama?}}",
+      "— Meu nome é Léa. {{Eu sou francês|eu sou francês}}... quer dizer, francesa! — ela ri da própria confusão.",
+      "— {{Prazer|prazer}}, Léa! Bem-vinda ao Brasil.",
+      "No dia seguinte, Léa acorda cedo. {{Bom dia|bom dia}}, Rio de Janeiro! Ela pega a mochila e sai para explorar a cidade.",
+      "— {{Até logo|até logo}}! — diz ela ao recepcionista do hostel, animada.",
+    ],
+  },
+  {
+    id: "u2", title: "Capítulo 2 — Pão de queijo",
+    paragraphs: [
+      "Léa entra em uma padaria pequena perto da praia.",
+      "— Bom dia! Um pão de queijo, {{por favor|por favor}} — ela pede ao vendedor.",
+      "O vendedor responde muito rápido, e Léa não entende nada.",
+      "— {{Desculpa|desculpa}}... {{você fala francês?|você fala francês?}} — ela pergunta, um pouco nervosa.",
+      "— Não, mas calma! — ele sorri e repete mais devagar.",
+      "— {{Eu não falo português|eu não falo português}} muito bem ainda. Pode {{fala mais devagar|fala mais devagar}}?",
+      "— {{Sim|sim}}, claro! — ele repete cada palavra, com paciência.",
+      "Léa entende tudo agora e paga o pão de queijo. — {{Obrigada|obrigada}}! — ela diz, feliz.",
+    ],
+  },
+  {
+    id: "u3", title: "Capítulo 3 — O mercado de rua",
+    paragraphs: [
+      "No mercado de rua, Léa vê frutas coloridas em uma banca.",
+      "— {{Quanto custa?|quanto custa?}} — ela pergunta, apontando para as mangas.",
+      "— {{Um|um}} real cada! — diz a vendedora, sorrindo.",
+      "Léa pensa um instante e pede: — {{Dois, por favor|dois, por favor}}.",
+      "— Só {{dois|dois}}? Leve {{três|três}}, fica mais barato! — insiste a vendedora.",
+      "Léa concorda e paga com uma nota de {{dez|dez}} reais, feliz com o negócio.",
+    ],
+  },
+  {
+    id: "u4", title: "Capítulo 4 — Jantar brasileiro",
+    paragraphs: [
+      "À noite, Léa janta em um restaurante simples perto da pousada.",
+      "O garçom traz o cardápio. — {{Eu queria um café|eu queria um café}} e {{o pão|o pão}} de alho, por favor — ela pede.",
+      "— E para beber? {{A água|a água}} está incluída — explica o garçom.",
+      "Ela avisa também: — {{Eu sou vegetariano|eu sou vegetariano}}, não como carne.",
+      "O prato chega e ela prova. — Nossa, {{está delicioso|está delicioso}}! — ela diz, surpresa.",
+      "No fim da refeição, ela chama o garçom: — {{A conta, por favor|a conta, por favor}}.",
+    ],
+  },
+  {
+    id: "u5", title: "Capítulo 5 — Rumo à praia",
+    paragraphs: [
+      "Depois do almoço, Léa quer visitar a praia, mas se perde nas ruas estreitas.",
+      "— Com licença, {{onde fica a praia?|onde fica a praia?}} — ela pergunta a um senhor.",
+      "— Vire {{à direita|à direita}} na próxima esquina, depois {{à esquerda|à esquerda}}. É {{perto|perto}} daqui — ele explica.",
+      "Léa segue as instruções, mas se confunde de novo entre as vielas.",
+      "— Acho que {{estou perdido|estou perdido}}... — ela murmura, procurando uma referência.",
+      "Ela para outra pessoa: — {{Onde fica o banheiro?|onde fica o banheiro?}} Preciso de um antes da praia!",
+      "Alguns minutos depois, Léa chega enfim {{a praia|a praia}} e respira o ar do mar.",
+    ],
+  },
+  {
+    id: "u6", title: "Capítulo 6 — Táxi até o centro",
+    paragraphs: [
+      "No dia seguinte, Léa pensa em pegar {{o ônibus|o ônibus}}, mas as linhas são complicadas.",
+      "Ela decide parar {{o táxi|o táxi}} amarelo na esquina.",
+      "— {{Eu vou para o centro|eu vou para o centro}} — ela diz ao motorista, entrando no carro.",
+      "— {{Quanto tempo?|quanto tempo?}} — ela pergunta, curiosa com o trânsito.",
+      "— Uns vinte minutos — responde ele, sorrindo pelo retrovisor.",
+      "Perto do destino, Léa pede: — {{Pode me levar?|pode me levar?}} Até a praça principal, {{para aqui, por favor|para aqui, por favor}}!",
+    ],
+  },
+  {
+    id: "u7", title: "Capítulo 7 — A pousada",
+    paragraphs: [
+      "No fim da tarde, Léa encontra {{a pousada|a pousada}} onde vai dormir.",
+      "— Boa noite! Eu fiz uma reserva para {{duas noites|duas noites}} — ela explica na recepção.",
+      "O recepcionista confirma e entrega {{a chave|a chave}} do quarto número doze.",
+      "— {{O quarto|o quarto}} é simples, mas confortável — ele diz, sorrindo.",
+      "Léa pergunta ainda: — {{Tem wi-fi?|tem wi-fi?}}",
+      "— Sim, a senha está na parede. E {{o café da manhã|o café da manhã}} é servido às sete horas.",
+    ],
+  },
+  {
+    id: "u8", title: "Capítulo 8 — Artesanato e negociação",
+    paragraphs: [
+      "No mercado de artesanato, Léa vê uma linda rede colorida.",
+      "— Quanto custa? — pergunta ela ao vendedor.",
+      "— Cento e vinte reais — ele responde.",
+      "— {{Muito caro!|muito caro!}} — exclama Léa, surpresa com o preço.",
+      "— É {{caro|caro}} mesmo, mas é feita à mão. {{Tem desconto?|tem desconto?}} — ela pergunta, tentando negociar.",
+      "— Para você, cem reais — ele sorri.",
+      "Léa verifica {{o dinheiro|o dinheiro}} na carteira, mas não tem o suficiente em espécie.",
+      "— {{Aceita cartão?|aceita cartão?}} — ela pergunta.",
+      "— Aceito sim!",
+      "— Então {{eu vou levar|eu vou levar}}! — ela decide, feliz com a compra.",
+    ],
+  },
+  {
+    id: "u9", title: "Capítulo 9 — Um susto",
+    paragraphs: [
+      "Uma manhã, Léa não se sente bem.",
+      "Ela acorda com dor de cabeça e febre. — Acho que {{estou doente|estou doente}} — ela pensa, preocupada.",
+      "Ela procura o passaporte para ir à farmácia, mas não encontra. — {{Perdi meu passaporte|perdi meu passaporte}}! — ela exclama, em pânico.",
+      "Ela corre até a recepção. — {{Me ajuda, por favor|me ajuda, por favor}}! {{Não estou bem|não estou bem}} e perdi meus documentos!",
+      "O recepcionista tenta acalmá-la: — {{Cuidado!|cuidado!}}, respira fundo. Vamos resolver isso juntos.",
+      "Momentos depois, alguém grita na rua: — {{Socorro!|socorro!}} — mas era só um susto, um cachorro fugiu de uma loja.",
+      "No fim, o passaporte estava dentro da mochila o tempo todo. Léa respira aliviada.",
+    ],
+  },
+  {
+    id: "u10", title: "Capítulo 10 — Até a próxima, Brasil",
+    paragraphs: [
+      "No último dia, Léa senta na areia e observa o pôr do sol.",
+      "— {{A praia é linda|a praia é linda}} — ela pensa, sorrindo sozinha.",
+      "Ela conhece Marcos, um brasileiro simpático que trabalha na pousada ao lado.",
+      "— {{Você é muito gentil|você é muito gentil}} — ela diz, agradecendo por toda a ajuda durante a viagem.",
+      "— {{Beleza|beleza}}! Foi um prazer te ajudar — ele responde.",
+      "Léa conta sobre sua viagem: as praias, as pessoas, a comida. — {{Eu gosto|eu gosto}} muito daqui, sabe?",
+      "— {{Que legal!|que legal!}} Volta {{amanhã|amanhã}}? Quer dizer... outro dia! — ele brinca.",
+      "Léa ri e responde, com o coração cheio: — {{Eu amo o Brasil|eu amo o brasil}}!",
+    ],
+  },
+];
+
+STORIES.forEach((s) => {
+  s.tokens = s.paragraphs.map(parseStoryParagraph);
+  s.targetKeys = [];
+  s.tokens.forEach((tokens) => tokens.forEach((t) => {
+    if (t.type === "word" && t.item && !s.targetKeys.includes(t.key)) s.targetKeys.push(t.key);
+  }));
+});
+
+const STORY_BONUS_XP = 40;
+const STORY_BONUS_GEMS = 30;
+
+/* --- Comparaison souple pour la traduction écrite par l'élève --- */
+
+function canonicalAnswer(fr) {
+  return fr.replace(/\s*\([^)]*\)\s*/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function normalizeAnswer(s) {
+  return s
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s']/gu, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  if (!m) return n;
+  if (!n) return m;
+  const d = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) d[i][0] = i;
+  for (let j = 0; j <= n; j++) d[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      d[i][j] = a[i - 1] === b[j - 1] ? d[i - 1][j - 1]
+        : 1 + Math.min(d[i - 1][j], d[i][j - 1], d[i - 1][j - 1]);
+    }
+  }
+  return d[m][n];
+}
+
+function isCloseEnough(input, expected) {
+  const a = normalizeAnswer(input), b = normalizeAnswer(expected);
+  if (!a || !b) return false;
+  if (a === b) return true;
+  const tolerance = Math.max(1, Math.floor(b.length / 4));
+  return levenshtein(a, b) <= tolerance;
+}
+
+function checkAnswer(input, item) {
+  if (!item) return false;
+  const candidates = [canonicalAnswer(item.fr), item.fr, ...(item.accept || [])];
+  return candidates.some((c) => isCloseEnough(input, c));
+}
+
+/* ================================================================== */
 /*  CARTES POSTALES — 20 à collectionner                               */
 /* ================================================================== */
 
@@ -279,6 +484,8 @@ const BADGES = [
   { id: "card10", label: "Colecionador", desc: "10 cartes postales", emoji: "🗂️", test: (p) => (p.cards || []).length >= 10 },
   { id: "cardAll", label: "Álbum completo", desc: "Les 20 cartes", emoji: "🏆", test: (p) => (p.cards || []).length >= CARDS.length },
   { id: "allLessons", label: "Brasileiro", desc: "Toutes les leçons", emoji: "🇧🇷", test: (p) => doneCount(p) >= UNITS.length },
+  { id: "book1", label: "Primeiro livro", desc: "Terminer un livre", emoji: "📖", test: (p) => booksDone(p) >= 1 },
+  { id: "allBooks", label: "Bibliotecário", desc: "Tous les livres terminés", emoji: "🎓", test: (p) => booksDone(p) >= STORIES.length },
 ];
 
 /* ================================================================== */
@@ -291,9 +498,11 @@ const XP_PER_CORRECT = 10;
 const DAILY_GOAL = 60;
 
 function doneCount(p) { return Object.values(p.lessons).filter((l) => l.done).length; }
+function booksDone(p) { return Object.values(p.story || {}).filter((s) => s.done).length; }
+function storyProgress(p, unitId) { return (p.story && p.story[unitId]) || { found: [], done: false }; }
 
 function defaultProgress() {
-  return { xp: 0, gems: 50, streak: 0, lastDay: null, today: null, xpToday: 0, lessons: {}, learned: {}, badges: [], cards: [] };
+  return { xp: 0, gems: 50, streak: 0, lastDay: null, today: null, xpToday: 0, lessons: {}, learned: {}, badges: [], cards: [], story: {} };
 }
 function defaultPrefs() { return { voiceURI: null, rate: 0.88, pitch: 1.05, showPhonetics: true }; }
 
@@ -911,7 +1120,7 @@ function PathScreen({ progress, onStart, onSettings, storageWarning }) {
           <h1 className="text-2xl font-extrabold leading-tight">Le portugais du Brésil,<br />une bouchée à la fois</h1>
           <p className="text-emerald-50 text-sm mt-2">
             {done === 0 ? "Commence par les salutations : dix minutes et tu sais dire bonjour à Rio."
-              : `${done} leçon${done > 1 ? "s" : ""} terminée${done > 1 ? "s" : ""} · ${Object.keys(progress.learned).length} mots · ${(progress.cards || []).length}/${CARDS.length} cartes`}
+              : `${done} leçon${done > 1 ? "s" : ""} terminée${done > 1 ? "s" : ""} · ${Object.keys(progress.learned).length} mots · ${(progress.cards || []).length}/${CARDS.length} cartes · ${booksDone(progress)}/${STORIES.length} livres`}
           </p>
         </div>
       </div>
@@ -919,7 +1128,9 @@ function PathScreen({ progress, onStart, onSettings, storageWarning }) {
       <div className="px-4 pt-6 space-y-3">
         {UNITS.map((u, i) => {
           const st = progress.lessons[u.id] || {};
-          const unlocked = i === 0 || (progress.lessons[UNITS[i - 1].id] || {}).done;
+          const prevLessonDone = i === 0 || (progress.lessons[UNITS[i - 1].id] || {}).done;
+          const prevStoryDone = i === 0 || storyProgress(progress, UNITS[i - 1].id).done;
+          const unlocked = prevLessonDone && prevStoryDone;
           const stars = st.stars || 0;
           return (
             <button key={u.id} disabled={!unlocked} onClick={() => { sndTap(); onStart(u.id); }}
@@ -931,7 +1142,11 @@ function PathScreen({ progress, onStart, onSettings, storageWarning }) {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="font-extrabold text-lg truncate">{u.title}</div>
-                <div className={`text-sm truncate ${unlocked ? "text-white/85" : ""}`}>{u.subtitle}</div>
+                {unlocked ? (
+                  <div className="text-sm truncate text-white/85">{u.subtitle}</div>
+                ) : (
+                  <div className="text-sm truncate">{prevLessonDone ? "Termine le livre précédent" : "Termine la leçon précédente"}</div>
+                )}
                 {unlocked && (
                   <div className="flex gap-0.5 mt-1">
                     {[1, 2, 3].map((s) => <Star key={s} className={`w-4 h-4 ${s <= stars ? "fill-yellow-300 text-yellow-300" : "text-white/40"}`} />)}
@@ -954,6 +1169,155 @@ function PathScreen({ progress, onStart, onSettings, storageWarning }) {
             <div className="font-extrabold text-lg">Révision mélangée</div>
             <div className="text-sm opacity-70">{reviewUnlocked ? "Tout ce que tu as vu, en désordre" : "Se débloque après 3 leçons"}</div>
           </div>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ================================================================== */
+/*  ÉCRAN : BIBLIOTECA (livres à débloquer)                            */
+/* ================================================================== */
+
+function LibraryScreen({ progress, onOpenBook }) {
+  return (
+    <div className="pb-28">
+      <div className="px-4 py-4 border-b border-slate-100 sticky top-0 bg-white z-20">
+        <h2 className="font-extrabold text-lg text-slate-800">Biblioteca</h2>
+        <p className="text-xs text-slate-400 mt-0.5">Un livre par palier : termine ses mots en surbrillance pour débloquer la suite.</p>
+      </div>
+
+      <div className="px-4 pt-5 grid grid-cols-2 gap-3">
+        {STORIES.map((s, i) => {
+          const unit = UNITS.find((u) => u.id === s.id);
+          const lessonsDone = !!(progress.lessons[s.id] || {}).done;
+          const st = storyProgress(progress, s.id);
+          const total = s.targetKeys.length;
+          return (
+            <button key={s.id} type="button" disabled={!lessonsDone} onClick={() => { sndTap(); onOpenBook(s.id); }}
+              className={`text-left rounded-3xl p-4 aspect-[3/4] flex flex-col justify-between transition-all
+                ${lessonsDone ? `bg-gradient-to-br ${unit.color} text-white shadow-lg active:scale-95`
+                  : "bg-slate-100 text-slate-400"}`}>
+              <div className="text-3xl">{lessonsDone ? unit.emoji : <Lock className="w-6 h-6" />}</div>
+              <div>
+                <div className="font-extrabold leading-tight text-sm">{unit.title}</div>
+                {lessonsDone ? (
+                  st.done ? (
+                    <div className="flex items-center gap-1 text-[11px] mt-1 opacity-90"><Check className="w-3.5 h-3.5" /> Terminé</div>
+                  ) : (
+                    <div className="text-[11px] mt-1 opacity-80">{st.found.length}/{total} mots</div>
+                  )
+                ) : (
+                  <div className="text-[11px] mt-1">Palier {i + 1} verrouillé</div>
+                )}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ================================================================== */
+/*  ÉCRAN : LIVRE (histoire à lire et compléter)                       */
+/* ================================================================== */
+
+function StoryScreen({ story, found, onWordFound, onClose }) {
+  const [active, setActive] = useState(null);
+  const [input, setInput] = useState("");
+  const [wrong, setWrong] = useState(false);
+  const total = story.targetKeys.length;
+  const foundCount = found.length;
+
+  function openWord(t) {
+    if (!t.item) return;
+    if (found.includes(t.key)) { speak(t.item.pt); return; }
+    sndTap();
+    setActive(t); setInput(""); setWrong(false);
+  }
+
+  function submit() {
+    if (!active || !input.trim()) return;
+    if (checkAnswer(input, active.item)) {
+      sndGood();
+      onWordFound(active.key);
+      setActive(null);
+    } else {
+      sndBad();
+      setWrong(true);
+    }
+  }
+
+  return (
+    <div className="pb-28">
+      <div className="px-4 py-4 flex items-center gap-3 border-b border-slate-100 sticky top-0 bg-white z-20">
+        <button onClick={onClose} className="w-9 h-9 grid place-items-center rounded-xl text-slate-500 shrink-0"><ArrowLeft className="w-5 h-5" /></button>
+        <div className="flex-1 min-w-0">
+          <div className="font-extrabold text-slate-800 truncate">{story.title}</div>
+          <div className="text-xs text-slate-400">{foundCount}/{total} mots trouvés</div>
+        </div>
+      </div>
+      <div className="h-1.5 bg-slate-100">
+        <div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: `${total ? (foundCount / total) * 100 : 100}%` }} />
+      </div>
+
+      <div className="px-5 py-6 space-y-4 text-[17px] leading-relaxed text-slate-700">
+        {story.tokens.map((tokens, pi) => (
+          <p key={pi}>
+            {tokens.map((t, ti) => {
+              if (t.type === "text") return <span key={ti}>{t.value}</span>;
+              if (!t.item) return <span key={ti}>{t.display}</span>;
+              const isFound = found.includes(t.key);
+              return (
+                <button key={ti} type="button" onClick={() => openWord(t)}
+                  className={`font-bold rounded-md px-1 mx-0.5 transition-colors ${isFound ? "bg-emerald-100 text-emerald-700" : "bg-orange-100 text-orange-700"}`}>
+                  {t.display}
+                </button>
+              );
+            })}
+          </p>
+        ))}
+      </div>
+
+      {active && (
+        <div className="fixed inset-0 z-50 bg-slate-900/40 flex items-end justify-center" onClick={() => setActive(null)}>
+          <div className="w-full max-w-md bg-white rounded-t-3xl p-5" onClick={(e) => e.stopPropagation()} style={{ animation: "fb-up .25s ease-out" }}>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="font-extrabold text-xl text-slate-800 truncate">{active.item.pt}</span>
+                <button onClick={() => speak(active.item.pt)} className="w-8 h-8 grid place-items-center rounded-lg bg-sky-50 text-sky-600 shrink-0"><Volume2 className="w-4 h-4" /></button>
+              </div>
+              <button onClick={() => setActive(null)} className="w-8 h-8 grid place-items-center rounded-xl text-slate-400 shrink-0"><X className="w-5 h-5" /></button>
+            </div>
+            <p className="text-sm text-slate-500 mb-2">Qu'est-ce que ça veut dire, en français ?</p>
+            <input autoFocus value={input}
+              onChange={(e) => { setInput(e.target.value); setWrong(false); }}
+              onKeyDown={(e) => e.key === "Enter" && submit()}
+              className={`w-full rounded-2xl border-2 px-4 py-3 font-semibold text-slate-700 ${wrong ? "border-red-300 bg-red-50" : "border-slate-200"}`}
+              placeholder="Écris la traduction..." />
+            {wrong && <p className="text-red-500 text-sm mt-2">Pas tout à fait — réessaie !</p>}
+            <button onClick={submit} className="w-full mt-4 rounded-2xl bg-emerald-500 text-white font-extrabold py-3 border-b-4 border-emerald-700 active:border-b-0 active:translate-y-1">
+              Valider
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BookCompleteModal({ story, onClose }) {
+  return (
+    <div className="fixed inset-0 z-50 bg-slate-900/70 grid place-items-center px-6">
+      <Confetti />
+      <div className="w-full max-w-xs text-center" style={{ animation: "fb-pop .5s ease-out" }}>
+        <div className="text-6xl mb-3">📖</div>
+        <h3 className="text-white text-2xl font-extrabold leading-tight">Livro terminado !</h3>
+        <p className="text-white/90 text-sm mt-2">Tu as retrouvé tous les mots de « {story.title.replace(/^Capítulo \d+ — /, "")} ». Le palier suivant est débloqué !</p>
+        <button onClick={onClose}
+          className="w-full mt-5 rounded-2xl bg-white text-slate-800 font-extrabold py-4 border-b-4 border-slate-300 active:border-b-0 active:translate-y-1">
+          Continuer
         </button>
       </div>
     </div>
@@ -1456,6 +1820,7 @@ function ProfileScreen({ progress, onReset, onImport, prefs, storageWarning }) {
 function TabBar({ view, setView, cardCount }) {
   const tabs = [
     { id: "path", label: "Parcours", icon: Map },
+    { id: "library", label: "Biblioteca", icon: BookOpen },
     { id: "shop", label: "Boutique", icon: ShoppingBag, badge: cardCount },
     { id: "profile", label: "Profil", icon: User },
   ];
@@ -1493,6 +1858,8 @@ export default function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [revealed, setRevealed] = useState(null);
   const [openedCard, setOpenedCard] = useState(null);
+  const [activeBook, setActiveBook] = useState(null);
+  const [bookDone, setBookDone] = useState(null);
 
   const setPrefs = useCallback((p) => { PREFS = p; setPrefsState(p); }, []);
 
@@ -1597,6 +1964,33 @@ export default function App() {
     setTimeout(() => speak(chosen.pt), 700);
   }
 
+  function markWordFound(unitId, key) {
+    const story = STORIES.find((s) => s.id === unitId);
+    if (!story) return;
+    const cur = storyProgress(progress, unitId);
+    if (cur.found.includes(key)) return;
+    const nextFound = [...cur.found, key];
+    const willBeDone = story.targetKeys.every((k) => nextFound.includes(k));
+
+    setProgress((prev) => {
+      const p = JSON.parse(JSON.stringify(prev));
+      p.story = p.story || {};
+      const c = p.story[unitId] || { found: [], done: false };
+      if (!c.found.includes(key)) c.found = [...c.found, key];
+      if (willBeDone && !c.done) {
+        c.done = true;
+        p.gems += STORY_BONUS_GEMS;
+        p.xp += STORY_BONUS_XP;
+      }
+      p.story[unitId] = c;
+      const fresh = BADGES.filter((b) => !p.badges.includes(b.id) && b.test(p));
+      p.badges = [...p.badges, ...fresh.map((b) => b.id)];
+      return p;
+    });
+
+    if (willBeDone) { sndLevel(); setBookDone(story); }
+  }
+
   if (!ready) {
     return (
       <div className="min-h-screen grid place-items-center bg-emerald-50">
@@ -1608,7 +2002,7 @@ export default function App() {
     );
   }
 
-  const inLesson = view === "lesson" || view === "result";
+  const inLesson = view === "lesson" || view === "result" || view === "story";
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 antialiased">
@@ -1627,6 +2021,15 @@ export default function App() {
       <div className="mx-auto max-w-md bg-white min-h-screen shadow-xl relative">
         {view === "path" && (
           <PathScreen progress={progress} onStart={startLesson} onSettings={() => setShowSettings(true)} storageWarning={storageWarning} />
+        )}
+        {view === "library" && (
+          <LibraryScreen progress={progress} onOpenBook={(id) => { setActiveBook(id); setView("story"); }} />
+        )}
+        {view === "story" && activeBook && (
+          <StoryScreen story={STORIES.find((s) => s.id === activeBook)}
+            found={storyProgress(progress, activeBook).found}
+            onWordFound={(key) => markWordFound(activeBook, key)}
+            onClose={() => { setActiveBook(null); setView("library"); }} />
         )}
         {view === "shop" && (
           <ShopScreen progress={progress} onBuy={buyCard}
@@ -1656,6 +2059,7 @@ export default function App() {
           <CardModal card={openedCard.card} index={openedCard.index}
             onClose={() => { sndTap(); setOpenedCard(null); }} />
         )}
+        {bookDone && <BookCompleteModal story={bookDone} onClose={() => { sndTap(); setBookDone(null); }} />}
       </div>
     </div>
   );
