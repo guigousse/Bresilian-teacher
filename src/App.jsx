@@ -417,26 +417,166 @@ const RARITY = {
 };
 
 const CARDS = [
-  { id: "c1", name: "Cristo Redentor", place: "Rio de Janeiro", emoji: "🙌", scene: "mountain", r: "comum", grad: "from-sky-400 to-blue-600", pt: "Que vista linda!", fr: "Quelle belle vue !", note: "38 m de haut, les bras ouverts sur la baie depuis 1931." },
-  { id: "c2", name: "Pão de Açúcar", place: "Rio de Janeiro", emoji: "🚡", scene: "cablecar", r: "comum", grad: "from-amber-400 to-orange-600", pt: "Vamos de bondinho", fr: "On y va en téléphérique", note: "Le téléphérique grimpe en deux tronçons, le second au coucher du soleil." },
-  { id: "c3", name: "Copacabana", place: "Rio de Janeiro", emoji: "🏖️", scene: "beach", r: "comum", grad: "from-cyan-400 to-teal-500", pt: "Uma água de coco", fr: "Une eau de coco", note: "4 km de plage et un trottoir en vagues noires et blanches." },
-  { id: "c4", name: "Cataratas do Iguaçu", place: "Paraná", emoji: "💦", scene: "waterfall", r: "rara", grad: "from-emerald-400 to-green-700", pt: "Que barulho!", fr: "Quel vacarme !", note: "275 chutes ; le côté brésilien offre la vue d'ensemble." },
-  { id: "c5", name: "Amazônia", place: "Manaus", emoji: "🌳", scene: "jungle", r: "rara", grad: "from-green-500 to-emerald-800", pt: "A floresta é imensa", fr: "La forêt est immense", note: "Un tiers des arbres tropicaux de la planète." },
-  { id: "c6", name: "Encontro das Águas", place: "Manaus", emoji: "🌊", scene: "rivers", r: "rara", grad: "from-amber-700 to-slate-800", pt: "Dois rios, uma cor", fr: "Deux fleuves, deux couleurs", note: "Le Rio Negro et le Solimões coulent côte à côte sur 6 km sans se mélanger." },
-  { id: "c7", name: "Pelourinho", place: "Salvador", emoji: "🥁", scene: "colonial", r: "comum", grad: "from-yellow-400 to-rose-500", pt: "Ouve o tambor", fr: "Écoute le tambour", note: "Le centre colonial de Salvador, pavé et repeint de toutes les couleurs." },
-  { id: "c8", name: "Chapada Diamantina", place: "Bahia", emoji: "⛰️", scene: "canyon", r: "rara", grad: "from-orange-400 to-red-700", pt: "Vamos caminhar", fr: "Allons marcher", note: "Cascades, grottes et plateaux ; on y cherchait des diamants." },
-  { id: "c9", name: "Lençóis Maranhenses", place: "Maranhão", emoji: "🏜️", scene: "dunes", r: "lendaria", grad: "from-sky-300 to-amber-300", pt: "Areia e lagoas", fr: "Du sable et des lagunes", note: "Des dunes qui se remplissent d'eau de pluie turquoise entre juin et septembre." },
-  { id: "c10", name: "Fernando de Noronha", place: "Pernambuco", emoji: "🐬", scene: "dolphins", r: "lendaria", grad: "from-teal-300 to-blue-600", pt: "Olha os golfinhos!", fr: "Regarde les dauphins !", note: "21 îles, un quota strict de visiteurs, une eau transparente." },
-  { id: "c11", name: "Ouro Preto", place: "Minas Gerais", emoji: "⛪", scene: "church", r: "comum", grad: "from-amber-500 to-yellow-700", pt: "Ruas de pedra", fr: "Des rues pavées", note: "Ville baroque bâtie sur l'or du XVIIIe siècle." },
-  { id: "c12", name: "Brasília", place: "Distrito Federal", emoji: "🏛️", scene: "modernist", r: "comum", grad: "from-slate-400 to-slate-700", pt: "Tudo é curvo", fr: "Tout est courbe", note: "Dessinée par Niemeyer et Costa, sortie de terre en 41 mois." },
-  { id: "c13", name: "Avenida Paulista", place: "São Paulo", emoji: "🏙️", scene: "skyline", r: "comum", grad: "from-zinc-500 to-zinc-800", pt: "A cidade não para", fr: "La ville ne s'arrête jamais", note: "2,8 km d'avenue, fermée aux voitures le dimanche." },
-  { id: "c14", name: "Pantanal", place: "Mato Grosso", emoji: "🐆", scene: "wildlife", r: "rara", grad: "from-lime-500 to-emerald-700", pt: "Vi uma onça!", fr: "J'ai vu un jaguar !", note: "La plus grande zone humide du monde, meilleure que l'Amazonie pour voir des animaux." },
-  { id: "c15", name: "Jericoacoara", place: "Ceará", emoji: "🪁", scene: "kite", r: "rara", grad: "from-orange-300 to-rose-500", pt: "O vento é bom", fr: "Le vent est bon", note: "Village de sable sans routes goudronnées, paradis du kitesurf." },
-  { id: "c16", name: "Olinda", place: "Pernambuco", emoji: "🎭", scene: "carnival", r: "comum", grad: "from-fuchsia-400 to-purple-600", pt: "O carnaval é na rua", fr: "Le carnaval est dans la rue", note: "Des géants en papier mâché défilent dans les ruelles en pente." },
-  { id: "c17", name: "Paraty", place: "Rio de Janeiro", emoji: "⛵", scene: "sailboat", r: "comum", grad: "from-blue-300 to-indigo-500", pt: "A maré subiu", fr: "La marée est montée", note: "Le centre historique est inondé par les grandes marées, exprès." },
-  { id: "c18", name: "Bonito", place: "Mato Grosso do Sul", emoji: "🐠", scene: "reef", r: "rara", grad: "from-cyan-300 to-emerald-500", pt: "A água é cristalina", fr: "L'eau est cristalline", note: "On flotte au fil de rivières limpides au milieu des poissons." },
-  { id: "c19", name: "Porto de Galinhas", place: "Pernambuco", emoji: "🐟", scene: "fishpools", r: "comum", grad: "from-teal-300 to-cyan-600", pt: "Piscinas naturais", fr: "Des piscines naturelles", note: "À marée basse, les récifs forment des bassins tièdes." },
-  { id: "c20", name: "Gramado", place: "Rio Grande do Sul", emoji: "🍫", scene: "snowvillage", r: "lendaria", grad: "from-rose-300 to-emerald-600", pt: "Faz frio aqui", fr: "Il fait froid ici", note: "Chalets, chocolatiers et hiver austral : le Brésil auquel personne ne pense." },
+  {
+    id: "c1", name: "Cristo Redentor", place: "Rio de Janeiro", emoji: "🙌", scene: "mountain", r: "comum",
+    grad: "from-sky-400 to-blue-600", pt: "Que vista linda!", fr: "Quelle belle vue !",
+    note: "38 m de haut, les bras ouverts sur la baie depuis 1931.",
+    history: "L'idée d'une statue sur le Corcovado circule dès 1850, mais le projet ne démarre qu'en 1922, financé par une souscription populaire. Conçu par Heitor da Silva Costa, le colosse est inauguré en 1931 ; son visage est l'œuvre du sculpteur roumain Gheorghe Leonida.",
+    culture: "Élu l'une des sept nouvelles merveilles du monde en 2007, il est devenu le symbole d'un Brésil qui accueille bras ouverts, bien au-delà de sa dimension religieuse. La foudre le frappe plusieurs fois par an : un stock de pierre d'origine est gardé pour les retouches.",
+    facts: ["30 m de statue sur un socle de 8 m, 28 m d'envergure, 635 tonnes.", "Recouvert de mosaïques de stéatite, la pierre à savon de Minas Gerais.", "Perché à 710 m ; le train à crémaillère du Corcovado existe depuis 1884."],
+  },
+  {
+    id: "c2", name: "Pão de Açúcar", place: "Rio de Janeiro", emoji: "🚡", scene: "cablecar", r: "comum",
+    grad: "from-amber-400 to-orange-600", pt: "Vamos de bondinho", fr: "On y va en téléphérique",
+    note: "Le téléphérique grimpe en deux tronçons, le second au coucher du soleil.",
+    history: "Le nom viendrait des moules coniques dans lesquels on raffinait le sucre — ou du tupi pau-nh-acuqua, « la colline haute et pointue ». Son téléphérique, imaginé par l'ingénieur Augusto Ferreira Ramos, fonctionne depuis 1912 : l'un des tout premiers au monde.",
+    culture: "C'est le décor du combat final de Moonraker (James Bond, 1979), câble tranché à pleines dents compris. Les Cariocas, eux, y viennent surtout pour l'escalade : des dizaines de voies grimpent directement dans le granit.",
+    facts: ["396 m d'un bloc de granit vieux d'environ 600 millions d'années.", "Deux tronçons : Praia Vermelha → Morro da Urca → Pão de Açúcar.", "Le second tronçon au coucher du soleil est le moment le plus couru."],
+  },
+  {
+    id: "c3", name: "Copacabana", place: "Rio de Janeiro", emoji: "🏖️", scene: "beach", r: "comum",
+    grad: "from-cyan-400 to-teal-500", pt: "Uma água de coco", fr: "Une eau de coco",
+    note: "4 km de plage et un trottoir en vagues noires et blanches.",
+    history: "Le quartier naît avec le percement du tunnel Velho en 1892 et explose dans les années 1920 avec le Copacabana Palace, inauguré en 1923. Son nom vient d'une chapelle dédiée à la Vierge de Copacabana, rapportée de Bolivie.",
+    culture: "Le trottoir en vagues noires et blanches a été dessiné par le paysagiste Roberto Burle Marx en 1970 : un motif portugais pivoté de 90°. Le 31 décembre, plus de deux millions de personnes s'y rassemblent en blanc et offrent des fleurs à Iemanjá, déesse de la mer.",
+    facts: ["4 km de sable découpés en « postos », repères sociaux autant que géographiques.", "Foot de plage et futevôlei s'y pratiquent toute l'année, pieds nus.", "L'eau de coco se boit directement dans la noix, à la paille."],
+  },
+  {
+    id: "c4", name: "Cataratas do Iguaçu", place: "Paraná", emoji: "💦", scene: "waterfall", r: "rara",
+    grad: "from-emerald-400 to-green-700", pt: "Que barulho!", fr: "Quel vacarme !",
+    note: "275 chutes ; le côté brésilien offre la vue d'ensemble.",
+    history: "« Y-guasu » signifie « grande eau » en guarani. Le conquistador Cabeza de Vaca est le premier Européen à les décrire, en 1542 ; le parc national brésilien date de 1939 et le classement à l'UNESCO de 1986.",
+    culture: "Une légende guarani raconte que le dieu-serpent M'Boi, furieux de voir la belle Naipí s'enfuir avec le guerrier Tarobá, fendit la rivière pour les séparer à jamais. En découvrant le site, Eleanor Roosevelt aurait lâché : « Poor Niagara ! ».",
+    facts: ["275 chutes réparties sur 2,7 km de largeur.", "La Garganta do Diabo tombe de 80 m dans un fracas permanent.", "80 % des chutes sont côté argentin, mais la vue d'ensemble est côté brésilien."],
+  },
+  {
+    id: "c5", name: "Amazônia", place: "Manaus", emoji: "🌳", scene: "jungle", r: "rara",
+    grad: "from-green-500 to-emerald-800", pt: "A floresta é imensa", fr: "La forêt est immense",
+    note: "Un tiers des arbres tropicaux de la planète.",
+    history: "Manaus s'est enrichie avec le boom du caoutchouc, entre 1880 et 1910 : le Teatro Amazonas, inauguré en 1896, arbore des tuiles venues d'Alsace et des lustres de Murano. Le boom s'effondre quand des graines d'hévéa sorties clandestinement font naître les plantations d'Asie.",
+    culture: "La forêt abrite des dizaines de peuples autochtones et nous a donné l'açaí, le guaraná, le tucupi et le jambu, cette feuille qui anesthésie la bouche. Chaque juin, le festival de Parintins oppose deux bœufs de légende : Garantido, le rouge, et Caprichoso, le bleu.",
+    facts: ["Environ 5,5 millions de km², dont 60 % en territoire brésilien.", "Près de 10 % des espèces connues sur Terre y vivent.", "L'Amazone déverse à lui seul près de 20 % de l'eau douce fluviale du globe."],
+  },
+  {
+    id: "c6", name: "Encontro das Águas", place: "Manaus", emoji: "🌊", scene: "rivers", r: "rara",
+    grad: "from-amber-700 to-slate-800", pt: "Dois rios, uma cor", fr: "Deux fleuves, deux couleurs",
+    note: "Le Rio Negro et le Solimões coulent côte à côte sur 6 km sans se mélanger.",
+    history: "C'est ici, face à Manaus, que le Rio Negro rejoint le Solimões pour former officiellement l'Amazone. Le premier est noir de tanins arrachés à la forêt, le second ocre des sédiments descendus des Andes.",
+    culture: "Les deux fleuves refusent de se mélanger pendant des kilomètres : 28 °C contre 22 °C, des densités et des vitesses différentes, 2 km/h contre 6 km/h. Les guides invitent les visiteurs à plonger la main d'un côté puis de l'autre pour sentir l'écart.",
+    facts: ["Environ 6 km côte à côte avant que les eaux ne se mêlent.", "L'acidité du Rio Negro éloigne les moustiques : Manaus est sur sa rive.", "Le phénomène se voit à l'œil nu depuis l'avion, à l'atterrissage."],
+  },
+  {
+    id: "c7", name: "Pelourinho", place: "Salvador", emoji: "🥁", scene: "colonial", r: "comum",
+    grad: "from-yellow-400 to-rose-500", pt: "Ouve o tambor", fr: "Écoute le tambour",
+    note: "Le centre colonial de Salvador, pavé et repeint de toutes les couleurs.",
+    history: "Cœur de Salvador, première capitale du Brésil de 1549 à 1763, le quartier tire son nom du pilori où l'on châtiait les esclaves. Laissé à l'abandon pendant des décennies, il a été restauré à partir de 1992 et classé à l'UNESCO en 1985.",
+    culture: "C'est le berceau de la culture afro-brésilienne : candomblé, capoeira, samba de roda et blocos afro comme Olodum, dont les percussions ont servi de décor à un clip de Michael Jackson en 1996. L'église São Francisco, elle, croule sous le bois doré.",
+    facts: ["Salvador est la ville à la plus forte population noire hors d'Afrique.", "Les rubans du Bonfim se nouent trois fois, pour trois vœux.", "L'acarajé, beignet de haricots frit à l'huile de palme, se vend à chaque coin de rue."],
+  },
+  {
+    id: "c8", name: "Chapada Diamantina", place: "Bahia", emoji: "⛰️", scene: "canyon", r: "rara",
+    grad: "from-orange-400 to-red-700", pt: "Vamos caminhar", fr: "Allons marcher",
+    note: "Cascades, grottes et plateaux ; on y cherchait des diamants.",
+    history: "La ruée vers les diamants commence en 1844 et fait naître des villes de garimpeiros comme Lençóis. L'extraction est interdite en 1996 ; le parc national, créé en 1985, protège désormais 1 520 km² de plateaux.",
+    culture: "Le forró pé de serra anime les soirées et les guides locaux sont souvent les descendants des chercheurs de pierres. Au Poço Encantado, entre avril et septembre, un rayon de soleil transforme le lac souterrain en bleu électrique.",
+    facts: ["La Cachoeira da Fumaça tombe de 340 m : l'eau devient brume avant d'arriver en bas.", "Le Morro do Pai Inácio offre le panorama le plus photographié de Bahia.", "Grottes, rivières souterraines et piscines naturelles se visitent toute l'année."],
+  },
+  {
+    id: "c9", name: "Lençóis Maranhenses", place: "Maranhão", emoji: "🏜️", scene: "dunes", r: "lendaria",
+    grad: "from-sky-300 to-amber-300", pt: "Areia e lagoas", fr: "Du sable et des lagunes",
+    note: "Des dunes qui se remplissent d'eau de pluie turquoise entre juin et septembre.",
+    history: "Les dunes sont faites du sable charrié par les fleuves Parnaíba et Preguiças, puis repoussé vers l'intérieur des terres par les alizés. Le parc national protège l'ensemble depuis 1981.",
+    culture: "« Lençóis » veut dire « draps » : vues d'en haut, les dunes ressemblent à du linge étendu. Quelques familles de vaqueiros vivent dans des oasis au milieu du sable, comme Queimada dos Britos, à plusieurs heures de marche de tout.",
+    facts: ["1 550 km² de dunes blanches et de lagunes turquoise.", "Ce n'est pas un désert : il y tombe environ 1 600 mm de pluie par an.", "Les lagunes se remplissent de juin à septembre, puis s'évaporent."],
+  },
+  {
+    id: "c10", name: "Fernando de Noronha", place: "Pernambuco", emoji: "🐬", scene: "dolphins", r: "lendaria",
+    grad: "from-teal-300 to-blue-600", pt: "Olha os golfinhos!", fr: "Regarde les dauphins !",
+    note: "21 îles, un quota strict de visiteurs, une eau transparente.",
+    history: "L'archipel volcanique est repéré en 1503 lors d'une expédition à laquelle participe Amerigo Vespucci, puis concédé au marchand Fernão de Loronha. Il a servi de prison politique, puis de base militaire américaine pendant la Seconde Guerre mondiale.",
+    culture: "L'accès est strictement encadré : nombre de visiteurs plafonné et écotaxe payée pour chaque jour de séjour. Chaque matin, des centaines de dauphins à long bec entrent dans la Baía dos Golfinhos pour s'y reposer.",
+    facts: ["21 îles pour seulement 26 km² de terres émergées.", "Classé au patrimoine mondial de l'UNESCO en 2001.", "La praia do Sancho a été élue plusieurs fois plus belle plage du monde."],
+  },
+  {
+    id: "c11", name: "Ouro Preto", place: "Minas Gerais", emoji: "⛪", scene: "church", r: "comum",
+    grad: "from-amber-500 to-yellow-700", pt: "Ruas de pedra", fr: "Des rues pavées",
+    note: "Ville baroque bâtie sur l'or du XVIIIe siècle.",
+    history: "Fondée en 1711, la ville a vu passer une part considérable de l'or extrait au XVIIIe siècle. C'est là qu'éclate en 1789 l'Inconfidência Mineira, complot indépendantiste dont le martyr, Tiradentes, finit pendu et écartelé.",
+    culture: "Ouro Preto est le sommet du baroque brésilien grâce à Aleijadinho, sculpteur métis rongé par une maladie dégénérative, qui travaillait les outils attachés aux mains. Pendant la Semaine sainte, les rues se couvrent de tapis de sciure colorée.",
+    facts: ["Premier site brésilien inscrit à l'UNESCO, en 1980.", "Treize églises baroques dans un rayon de quelques rues.", "Les pavés « pé de moleque » grimpent à des pentes vertigineuses."],
+  },
+  {
+    id: "c12", name: "Brasília", place: "Distrito Federal", emoji: "🏛️", scene: "modernist", r: "comum",
+    grad: "from-slate-400 to-slate-700", pt: "Tudo é curvo", fr: "Tout est courbe",
+    note: "Dessinée par Niemeyer et Costa, sortie de terre en 41 mois.",
+    history: "L'idée d'une capitale au centre du pays figure déjà dans la constitution de 1891, mais c'est Juscelino Kubitschek qui la réalise : chantier lancé en 1956, inauguration le 21 avril 1960, après 41 mois de travaux.",
+    culture: "Lucio Costa dessine un plan en forme d'avion, Oscar Niemeyer les bâtiments, Burle Marx les jardins. Les candangos, ouvriers venus du Nordeste, ont bâti la ville puis se sont installés dans les villes satellites, aujourd'hui bien plus peuplées que le plan pilote.",
+    facts: ["Classée au patrimoine mondial dès 1987, à seulement 27 ans.", "La cathédrale dresse seize colonnes de béton comme deux mains jointes.", "Les adresses sont codées : SQN 214, bloco C — presque pas de noms de rue."],
+  },
+  {
+    id: "c13", name: "Avenida Paulista", place: "São Paulo", emoji: "🏙️", scene: "skyline", r: "comum",
+    grad: "from-zinc-500 to-zinc-800", pt: "A cidade não para", fr: "La ville ne s'arrête jamais",
+    note: "2,8 km d'avenue, fermée aux voitures le dimanche.",
+    history: "Ouverte en 1891 sur une ligne de crête, l'avenue s'est d'abord bordée des palais des barons du café. Ceux-ci ont été rasés à partir des années 1950 pour laisser place aux tours des banques.",
+    culture: "Le MASP de Lina Bo Bardi, suspendu à quatre piliers rouges depuis 1968, expose ses tableaux sur des chevalets de verre. L'avenue est le lieu de tous les rassemblements : manifestations, réveillon et l'une des plus grandes marches LGBT+ du monde.",
+    facts: ["2,8 km de long, fermée aux voitures tous les dimanches depuis 2015.", "Environ 1,5 million de personnes y passent chaque jour.", "São Paulo compte plus d'habitants que le Portugal tout entier."],
+  },
+  {
+    id: "c14", name: "Pantanal", place: "Mato Grosso", emoji: "🐆", scene: "wildlife", r: "rara",
+    grad: "from-lime-500 to-emerald-700", pt: "Vi uma onça!", fr: "J'ai vu un jaguar !",
+    note: "La plus grande zone humide du monde, meilleure que l'Amazonie pour voir des animaux.",
+    history: "La plaine est exploitée depuis le XVIIIe siècle par un élevage extensif rythmé par les crues. Les pantaneiros, cow-boys locaux, déplacent les troupeaux au gré de la montée des eaux.",
+    culture: "Beaucoup de fazendas se sont converties à l'écotourisme : c'est ici qu'on a le plus de chances au monde d'apercevoir un jaguar. La Transpantaneira, piste de terre de 147 km ponctuée de plus de cent ponts de bois, s'enfonce jusqu'à Porto Jofre.",
+    facts: ["150 000 à 200 000 km² : la plus grande zone humide de la planète.", "Environ 650 espèces d'oiseaux, dont le jabiru, emblème de la région.", "De novembre à mars, l'essentiel de la plaine passe sous l'eau."],
+  },
+  {
+    id: "c15", name: "Jericoacoara", place: "Ceará", emoji: "🪁", scene: "kite", r: "rara",
+    grad: "from-orange-300 to-rose-500", pt: "O vento é bom", fr: "Le vent est bon",
+    note: "Village de sable sans routes goudronnées, paradis du kitesurf.",
+    history: "Village de pêcheurs isolé, « Jeri » n'a eu l'électricité qu'à la fin des années 1990. Protégée dès 1984, la zone est devenue parc national en 2002.",
+    culture: "Chaque soir, la foule monte sur la Duna do Pôr do Sol et applaudit le soleil quand il disparaît dans l'océan. Les rues sont en sable, sans bitume ni éclairage public : c'est voulu, pour préserver le ciel et les tortues.",
+    facts: ["La Pedra Furada, arche sculptée par la mer, est l'emblème du village.", "Vents constants de juillet à décembre : paradis du kitesurf.", "On y accède uniquement en 4x4, à travers les dunes."],
+  },
+  {
+    id: "c16", name: "Olinda", place: "Pernambuco", emoji: "🎭", scene: "carnival", r: "comum",
+    grad: "from-fuchsia-400 to-purple-600", pt: "O carnaval é na rua", fr: "Le carnaval est dans la rue",
+    note: "Des géants en papier mâché défilent dans les ruelles en pente.",
+    history: "Fondée en 1535, incendiée par les Hollandais en 1631 puis reconstruite au XVIIIe siècle, Olinda doit son nom à l'exclamation de son fondateur : « Ó, linda ! », « Oh, la belle ! ». Elle est classée à l'UNESCO depuis 1982.",
+    culture: "Son carnaval se fait sans sponsors ni cordes de sécurité : on y danse le frevo, ombrelle à la main, derrière des bonecos gigantes, géants de papier mâché de trois à quatre mètres qui caricaturent célébrités et figures du quartier.",
+    facts: ["Le carnaval s'ouvre avec la sortie du Homem da Meia-Noite, l'Homme de Minuit.", "Plus de cinq cents géants ont été recensés au fil des années.", "Depuis l'Alto da Sé, on voit les gratte-ciel de Recife à l'horizon."],
+  },
+  {
+    id: "c17", name: "Paraty", place: "Rio de Janeiro", emoji: "⛵", scene: "sailboat", r: "comum",
+    grad: "from-blue-300 to-indigo-500", pt: "A maré subiu", fr: "La marée est montée",
+    note: "Le centre historique est inondé par les grandes marées, exprès.",
+    history: "Par ce port transitait l'or du Minas Gerais avant de partir pour Lisbonne, au bout du Caminho do Ouro pavé par les esclaves. Contournée plus tard par une route plus directe, la ville s'est endormie — ce qui a sauvé son centre historique.",
+    culture: "Les rues en pierres irrégulières, les fameux « pés de moleque », sont conçues pour que les grandes marées les inondent et les nettoient. Chaque année, la FLIP, fête littéraire internationale, remplit la ville d'écrivains et de lecteurs.",
+    facts: ["Classée à l'UNESCO en 2019, pour sa culture et sa biodiversité à la fois.", "La région compte des centaines d'alambics de cachaça artisanale.", "Le centre historique est interdit aux voitures."],
+  },
+  {
+    id: "c18", name: "Bonito", place: "Mato Grosso do Sul", emoji: "🐠", scene: "reef", r: "rara",
+    grad: "from-cyan-300 to-emerald-500", pt: "A água é cristalina", fr: "L'eau est cristalline",
+    note: "On flotte au fil de rivières limpides au milieu des poissons.",
+    history: "Le calcaire de la région filtre l'eau des rivières et la rend transparente. Depuis les années 1990, un système de bons obligatoires limite strictement le nombre de visiteurs par site et par jour.",
+    culture: "Bonito est devenue la vitrine du tourisme durable brésilien : guide obligatoire, quotas, équipements contrôlés. En flottaison, on se laisse porter par le courant sans battre des pieds, pour ne pas soulever les sédiments.",
+    facts: ["Rio da Prata et Rio Sucuri : visibilité jusqu'à cinquante mètres.", "La Gruta do Lago Azul abrite un lac souterrain de 90 m de profondeur.", "L'Abismo Anhumas se descend en rappel sur 72 m."],
+  },
+  {
+    id: "c19", name: "Porto de Galinhas", place: "Pernambuco", emoji: "🐟", scene: "fishpools", r: "comum",
+    grad: "from-teal-300 to-cyan-600", pt: "Piscinas naturais", fr: "Des piscines naturelles",
+    note: "À marée basse, les récifs forment des bassins tièdes.",
+    history: "Le nom rappelle une histoire sombre : après l'interdiction de la traite en 1831, les navires annonçaient en code « tem galinha nova », « il y a des poules fraîches », pour signaler l'arrivée clandestine d'Africains.",
+    culture: "Les jangadas, radeaux à voile hérités des pêcheurs, emmènent les visiteurs jusqu'aux piscines naturelles. Le village, longtemps confidentiel, est aujourd'hui l'une des plages les plus primées du pays.",
+    facts: ["À marée basse, les récifs forment des bassins tièdes, proches de 30 °C.", "Poissons-clowns et sergents-majors s'observent à un mètre du bord.", "Il faut consulter le tableau des marées avant de partir."],
+  },
+  {
+    id: "c20", name: "Gramado", place: "Rio Grande do Sul", emoji: "🍫", scene: "snowvillage", r: "lendaria",
+    grad: "from-rose-300 to-emerald-600", pt: "Faz frio aqui", fr: "Il fait froid ici",
+    note: "Chalets, chocolatiers et hiver austral : le Brésil auquel personne ne pense.",
+    history: "Colonisée à partir de 1875 par des immigrants allemands puis italiens, la ville a construit son image bavaroise à partir des années 1950 — une mise en scène touristique parfaitement assumée.",
+    culture: "Le festival de cinéma brésilien s'y tient depuis 1973 et remet le Kikito d'or. De novembre à janvier, le Natal Luz illumine la ville et attire des millions de visiteurs, entre chocolateries artisanales et fondues héritées des colons.",
+    facts: ["850 m d'altitude : il gèle l'hiver, il neige très rarement.", "La Rua Coberta, rue couverte, sert de salon au centre-ville.", "Pulls et chocolat chaud : le Brésil auquel personne ne pense."],
+  },
 ];
 
 const CARD_PRICE = 100;
@@ -976,13 +1116,18 @@ function Postcard({ card, owned = true, small = false, big = false }) {
   }
   const rar = RARITY[card.r];
   return (
-    <div className={`rounded-2xl overflow-hidden border-2 ${rar.ring} bg-gradient-to-br ${card.grad} text-white relative flex flex-col ${small ? "" : "shadow-lg"}`}>
+    <div className={`rounded-2xl overflow-hidden border-2 ${rar.ring} bg-gradient-to-br ${card.grad} text-white relative flex flex-col ${small ? "" : "shadow-lg"} ${big ? "h-full" : ""}`}>
       <div className="absolute top-1.5 right-1.5 bg-white/85 rounded-md px-1 py-0.5 text-[8px] font-bold text-slate-700 border border-white z-10">BRASIL</div>
-      <SceneArt scene={card.scene} className={small ? "h-16 w-full shrink-0" : big ? "h-44 w-full shrink-0" : "h-28 w-full shrink-0"} />
+      <SceneArt scene={card.scene} className={small ? "h-16 w-full shrink-0" : big ? "h-52 w-full shrink-0" : "h-28 w-full shrink-0"} />
       <div className={`${small ? "px-1.5 py-1.5" : "px-3 py-2"} text-center`}>
         <div className={`font-extrabold leading-tight ${small ? "text-[10px]" : "text-lg"}`}>{card.name}</div>
         <div className={`opacity-90 ${small ? "text-[8px]" : "text-xs"}`}>{card.place}</div>
       </div>
+      {big && (
+        <div className="px-4 pb-2 flex-1 min-h-0 flex items-center justify-center text-center">
+          <p className="text-[13px] leading-relaxed text-white/90">{card.note}</p>
+        </div>
+      )}
       {!small && (
         <div className="bg-white/15 px-4 py-2 text-center mt-auto">
           <div className="font-bold text-sm">{card.pt}</div>
@@ -1179,41 +1324,112 @@ function PathScreen({ progress, onStart, onSettings, storageWarning }) {
 /*  ÉCRAN : BIBLIOTECA (livres à débloquer)                            */
 /* ================================================================== */
 
+function BookSpine({ unit, number, height = 96, width = 30, onClick }) {
+  const inner = (
+    <>
+      <span className="absolute inset-x-0 top-2 h-[3px] bg-white/45" />
+      <span className="absolute inset-x-0 top-[13px] h-[2px] bg-white/25" />
+      <span className="absolute inset-x-0 bottom-[22px] h-[3px] bg-white/45" />
+      <span className="absolute inset-y-0 left-0 w-[3px] bg-black/25" />
+      <span className="absolute inset-y-0 right-0 w-[2px] bg-white/20" />
+      <span className="absolute inset-0 flex items-center justify-center px-0.5 pb-3">
+        <span className="text-white text-[8px] font-extrabold tracking-tight whitespace-nowrap drop-shadow"
+          style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>{unit.title}</span>
+      </span>
+      <span className="absolute bottom-1 inset-x-0 text-center text-white/80 text-[7px] font-bold tabular-nums">{number}</span>
+    </>
+  );
+  const cls = `relative shrink-0 rounded-[2px] overflow-hidden bg-gradient-to-b ${unit.color} shadow-md`;
+  if (!onClick) return <div className={cls} style={{ height, width }}>{inner}</div>;
+  return (
+    <button type="button" onClick={onClick} style={{ height, width }}
+      className={`${cls} active:translate-y-0.5 transition-transform`}>{inner}</button>
+  );
+}
+
+function Bookshelf({ progress, onOpenBook }) {
+  const rows = [STORIES.slice(0, 5), STORIES.slice(5, 10)];
+  return (
+    <div className="rounded-2xl bg-gradient-to-b from-amber-800 to-amber-950 p-2.5 shadow-lg">
+      {rows.map((row, ri) => (
+        <div key={ri} className={ri === 0 ? "mb-2" : ""}>
+          <div className="flex items-end justify-center gap-2 h-[112px] px-1">
+            {row.map((s) => {
+              const unit = UNITS.find((u) => u.id === s.id);
+              const idx = STORIES.indexOf(s);
+              const st = storyProgress(progress, s.id);
+              if (!st.done) {
+                return <div key={s.id} className="w-[30px] h-[72px] rounded-[2px] border-2 border-dashed border-amber-600/50" />;
+              }
+              return (
+                <BookSpine key={s.id} unit={unit} number={idx + 1} height={92 + (idx % 3) * 9}
+                  onClick={() => { sndTap(); onOpenBook(s.id); }} />
+              );
+            })}
+          </div>
+          <div className="h-2.5 rounded-[2px] bg-gradient-to-b from-amber-500 to-amber-700 shadow-md" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function LibraryScreen({ progress, onOpenBook }) {
+  const shelved = STORIES.filter((s) => storyProgress(progress, s.id).done).length;
+  const toRead = STORIES.filter((s) => !storyProgress(progress, s.id).done);
+
   return (
     <div className="pb-28">
       <div className="px-4 py-4 border-b border-slate-100 sticky top-0 bg-white z-20">
         <h2 className="font-extrabold text-lg text-slate-800">Biblioteca</h2>
-        <p className="text-xs text-slate-400 mt-0.5">Un livre par palier : termine ses mots en surbrillance pour débloquer la suite.</p>
+        <p className="text-xs text-slate-400 mt-0.5">Une seule histoire, un livre par palier : termine ses mots en surbrillance pour ranger le livre.</p>
       </div>
 
-      <div className="px-4 pt-5 grid grid-cols-2 gap-3">
-        {STORIES.map((s, i) => {
-          const unit = UNITS.find((u) => u.id === s.id);
-          const lessonsDone = !!(progress.lessons[s.id] || {}).done;
-          const st = storyProgress(progress, s.id);
-          const total = s.targetKeys.length;
-          return (
-            <button key={s.id} type="button" disabled={!lessonsDone} onClick={() => { sndTap(); onOpenBook(s.id); }}
-              className={`text-left rounded-3xl p-4 aspect-[3/4] flex flex-col justify-between transition-all
-                ${lessonsDone ? `bg-gradient-to-br ${unit.color} text-white shadow-lg active:scale-95`
-                  : "bg-slate-100 text-slate-400"}`}>
-              <div className="text-3xl">{lessonsDone ? unit.emoji : <Lock className="w-6 h-6" />}</div>
-              <div>
-                <div className="font-extrabold leading-tight text-sm">{unit.title}</div>
-                {lessonsDone ? (
-                  st.done ? (
-                    <div className="flex items-center gap-1 text-[11px] mt-1 opacity-90"><Check className="w-3.5 h-3.5" /> Terminé</div>
-                  ) : (
-                    <div className="text-[11px] mt-1 opacity-80">{st.found.length}/{total} mots</div>
-                  )
-                ) : (
-                  <div className="text-[11px] mt-1">Palier {i + 1} verrouillé</div>
-                )}
-              </div>
-            </button>
-          );
-        })}
+      <div className="px-4 pt-5">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="font-extrabold text-slate-800 flex items-center gap-2"><BookOpen className="w-5 h-5 text-slate-400" /> Minha estante</h3>
+          <span className="text-sm font-bold text-slate-400 tabular-nums">{shelved}/{STORIES.length}</span>
+        </div>
+        <Bookshelf progress={progress} onOpenBook={onOpenBook} />
+        <p className="text-xs text-slate-400 text-center mt-2">
+          {shelved === 0 ? "Aucun livre rangé pour l'instant : termine-en un pour le voir ici." : "Touche une tranche pour relire un chapitre."}
+        </p>
+
+        {toRead.length > 0 ? (
+          <>
+            <h3 className="font-extrabold text-slate-800 mt-7 mb-3">À lire</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {toRead.map((s) => {
+                const unit = UNITS.find((u) => u.id === s.id);
+                const idx = STORIES.indexOf(s);
+                const lessonsDone = !!(progress.lessons[s.id] || {}).done;
+                const st = storyProgress(progress, s.id);
+                return (
+                  <button key={s.id} type="button" disabled={!lessonsDone} onClick={() => { sndTap(); onOpenBook(s.id); }}
+                    className={`text-left rounded-2xl p-4 aspect-[3/4] flex flex-col justify-between transition-all relative overflow-hidden
+                      ${lessonsDone ? `bg-gradient-to-br ${unit.color} text-white shadow-lg active:scale-95`
+                        : "bg-slate-100 text-slate-400"}`}>
+                    {lessonsDone && <span className="absolute inset-y-0 left-0 w-1.5 bg-black/25" />}
+                    <div className="text-3xl">{lessonsDone ? unit.emoji : <Lock className="w-6 h-6" />}</div>
+                    <div>
+                      <div className="text-[10px] font-bold opacity-80">Capítulo {idx + 1}</div>
+                      <div className="font-extrabold leading-tight text-sm">{unit.title}</div>
+                      <div className="text-[11px] mt-1 opacity-80">
+                        {lessonsDone ? `${st.found.length}/${s.targetKeys.length} mots` : `Termine la leçon ${idx + 1}`}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <div className="mt-7 rounded-2xl bg-emerald-50 border-2 border-emerald-100 p-4 text-center">
+            <div className="text-3xl">🎉</div>
+            <p className="text-sm font-bold text-emerald-800 mt-1">Toute l'histoire est lue et rangée !</p>
+            <p className="text-xs text-emerald-700 mt-1">Léa est rentrée de voyage — tu peux relire n'importe quel chapitre depuis l'étagère.</p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -1307,18 +1523,56 @@ function StoryScreen({ story, found, onWordFound, onClose }) {
   );
 }
 
-function BookCompleteModal({ story, onClose }) {
+function BookCompleteModal({ story, shelvedBefore = [], onClose }) {
+  const unit = UNITS.find((u) => u.id === story.id);
+  const number = STORIES.indexOf(story) + 1;
+
+  useEffect(() => {
+    const t = setTimeout(() => sndCard(), 1500);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/70 grid place-items-center px-6">
+    <div className="fixed inset-0 z-50 bg-slate-900/80 grid place-items-center px-6">
       <Confetti />
-      <div className="w-full max-w-xs text-center" style={{ animation: "fb-pop .5s ease-out" }}>
-        <div className="text-6xl mb-3">📖</div>
-        <h3 className="text-white text-2xl font-extrabold leading-tight">Livro terminado !</h3>
-        <p className="text-white/90 text-sm mt-2">Tu as retrouvé tous les mots de « {story.title.replace(/^Capítulo \d+ — /, "")} ». Le palier suivant est débloqué !</p>
-        <button onClick={onClose}
-          className="w-full mt-5 rounded-2xl bg-white text-slate-800 font-extrabold py-4 border-b-4 border-slate-300 active:border-b-0 active:translate-y-1">
-          Continuer
-        </button>
+      <div className="w-full max-w-xs flex flex-col items-center">
+        <div className="fb-shelve-stage">
+          <div className="fb-shelve-backpanel" />
+          <div className="fb-shelve-prior">
+            {shelvedBefore.slice(-6).map((b, i) => (
+              <BookSpine key={b.unit.id} unit={b.unit} number={b.number} width={20} height={84 + (i % 3) * 5} />
+            ))}
+          </div>
+          <div className="fb-shelve-travel">
+            <div className="fb-book3d">
+              <div className={`fb-b-back bg-gradient-to-br ${unit.color}`} />
+              <div className={`fb-b-spine bg-gradient-to-b ${unit.color}`}>
+                <span className="fb-b-spine-label">{unit.title}</span>
+              </div>
+              <div className="fb-b-edge" />
+              <div className="fb-b-pages" />
+              <div className="fb-b-flap">
+                <div className={`fb-b-flap-out bg-gradient-to-br ${unit.color}`}>
+                  <span className="fb-b-flap-emoji">{unit.emoji}</span>
+                  <span className="fb-b-flap-title">{unit.title}</span>
+                </div>
+                <div className="fb-b-flap-in" />
+              </div>
+            </div>
+          </div>
+          <div className="fb-shelve-plank" />
+        </div>
+
+        <div className="fb-shelve-text text-center">
+          <h3 className="text-white text-2xl font-extrabold leading-tight">Livro terminado !</h3>
+          <p className="text-white/90 text-sm mt-2">
+            Capítulo {number} rangé dans ta bibliothèque. Le palier suivant est débloqué !
+          </p>
+          <button onClick={onClose}
+            className="w-full mt-5 rounded-2xl bg-white text-slate-800 font-extrabold py-4 border-b-4 border-slate-300 active:border-b-0 active:translate-y-1">
+            Voir mon étagère
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -1387,21 +1641,55 @@ function ShopScreen({ progress, onBuy, onOpenCard }) {
   );
 }
 
-function CardBack({ card, index }) {
+function CardBack({ card, index, onFlipBack }) {
   const rar = RARITY[card.r];
   return (
-    <div className={`rounded-2xl overflow-hidden border-2 ${rar.ring} bg-white aspect-[3/4] flex flex-col p-4 shadow-lg`}>
-      <div className="flex items-center justify-between">
-        <span className={`text-[10px] font-bold rounded-full px-2 py-0.5 ${rar.chip}`}>{rar.label}</span>
-        {index != null && <span className="text-[10px] font-bold text-slate-400 tabular-nums">Nº {index + 1}/{CARDS.length}</span>}
-      </div>
-      <div className="mt-2">
-        <div className="font-extrabold text-lg text-slate-800 leading-tight">{card.name}</div>
+    <div className={`rounded-2xl overflow-hidden border-2 ${rar.ring} bg-white h-full flex flex-col shadow-lg`}>
+      <div className="px-4 pt-3 pb-2 border-b border-slate-100 shrink-0">
+        <div className="flex items-center justify-between">
+          <span className={`text-[10px] font-bold rounded-full px-2 py-0.5 ${rar.chip}`}>{rar.label}</span>
+          <div className="flex items-center gap-2">
+            {index != null && <span className="text-[10px] font-bold text-slate-400 tabular-nums">Nº {index + 1}/{CARDS.length}</span>}
+            {onFlipBack && (
+              <button onClick={(e) => { e.stopPropagation(); onFlipBack(); }} aria-label="Revenir au recto"
+                className="w-7 h-7 grid place-items-center rounded-lg bg-slate-100 text-slate-500"><RotateCcw className="w-3.5 h-3.5" /></button>
+            )}
+          </div>
+        </div>
+        <div className="mt-1.5 font-extrabold text-lg text-slate-800 leading-tight">{card.name}</div>
         <div className="text-xs text-slate-500">{card.place}, Brasil</div>
       </div>
-      <p className="text-sm text-slate-600 mt-3 flex-1">{card.note}</p>
+
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-3" onClick={(e) => e.stopPropagation()}>
+        <p className="text-[13px] text-slate-500 italic leading-relaxed">{card.note}</p>
+        {card.history && (
+          <section>
+            <h4 className="text-[10px] font-extrabold uppercase tracking-wider text-amber-600 mb-1">Histoire</h4>
+            <p className="text-[13px] text-slate-600 leading-relaxed">{card.history}</p>
+          </section>
+        )}
+        {card.culture && (
+          <section>
+            <h4 className="text-[10px] font-extrabold uppercase tracking-wider text-fuchsia-600 mb-1">Culture</h4>
+            <p className="text-[13px] text-slate-600 leading-relaxed">{card.culture}</p>
+          </section>
+        )}
+        {card.facts && card.facts.length > 0 && (
+          <section>
+            <h4 className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 mb-1">À savoir</h4>
+            <ul className="space-y-1">
+              {card.facts.map((f, i) => (
+                <li key={i} className="text-[13px] text-slate-600 leading-relaxed flex gap-2">
+                  <span className="text-emerald-400 shrink-0">•</span><span>{f}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
+
       <button onClick={(e) => { e.stopPropagation(); speak(card.pt); }}
-        className="mt-3 flex items-center gap-2 rounded-2xl bg-sky-50 px-3 py-2 text-left">
+        className="m-3 mt-0 flex items-center gap-2 rounded-2xl bg-sky-50 px-3 py-2 text-left shrink-0">
         <span className="w-8 h-8 rounded-xl bg-sky-500 text-white grid place-items-center shrink-0"><Volume2 className="w-4 h-4" /></span>
         <span className="min-w-0">
           <span className="block font-bold text-slate-800 text-sm truncate">{card.pt}</span>
@@ -1424,14 +1712,19 @@ function CardModal({ card, index, owned = true, revealMode = false, onClose }) {
         {revealMode && (
           <div className={`text-center text-xs font-bold rounded-full px-3 py-1 w-fit mx-auto mb-3 ${rar.chip}`}>{rar.label}</div>
         )}
-        <div className="fb-flip-outer" onClick={() => { sndTap(); setFlipped((f) => !f); }}>
-          <div className={`fb-flip-inner ${flipped ? "flipped" : ""}`}>
-            <div className="fb-flip-face"><Postcard card={card} owned={owned} big /></div>
-            <div className="fb-flip-face fb-flip-back"><CardBack card={card} index={index} /></div>
+        <div className="fb-flip-outer" style={{ height: "min(66vh, 480px)" }}>
+          <div className={`fb-flip-inner h-full ${flipped ? "flipped" : ""}`}>
+            <div className="fb-flip-face h-full" style={{ pointerEvents: flipped ? "none" : "auto" }}
+              onClick={() => { sndTap(); setFlipped(true); }}>
+              <Postcard card={card} owned={owned} big />
+            </div>
+            <div className="fb-flip-face fb-flip-back h-full" style={{ pointerEvents: flipped ? "auto" : "none" }}>
+              <CardBack card={card} index={index} onFlipBack={() => { sndTap(); setFlipped(false); }} />
+            </div>
           </div>
         </div>
         <p className="text-white/70 text-xs text-center mt-3">
-          {flipped ? "Touche la carte pour revenir au recto" : "Touche la carte pour la retourner"}
+          {flipped ? "Fais défiler pour tout lire · ↺ pour revenir au recto" : "Touche la carte pour la retourner"}
         </p>
         <button onClick={onClose}
           className="w-full mt-3 rounded-2xl bg-white text-slate-800 font-extrabold py-4 border-b-4 border-slate-300 active:border-b-0 active:translate-y-1">
@@ -1988,7 +2281,14 @@ export default function App() {
       return p;
     });
 
-    if (willBeDone) { sndLevel(); setBookDone(story); }
+    if (willBeDone) {
+      sndLevel();
+      const shelvedBefore = STORIES
+        .map((s, i) => ({ s, number: i + 1 }))
+        .filter(({ s }) => s.id !== unitId && storyProgress(progress, s.id).done)
+        .map(({ s, number }) => ({ unit: UNITS.find((u) => u.id === s.id), number }));
+      setBookDone({ story, shelvedBefore });
+    }
   }
 
   if (!ready) {
@@ -2016,6 +2316,60 @@ export default function App() {
         .fb-flip-inner.flipped { transform: rotateY(180deg); }
         .fb-flip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
         .fb-flip-back { position: absolute; inset: 0; transform: rotateY(180deg); }
+
+        /* --- Fermeture du livre et rangement sur l'étagère --- */
+        .fb-shelve-stage { position: relative; width: 260px; height: 280px; perspective: 1000px; }
+        .fb-shelve-backpanel { position: absolute; left: 6px; right: 6px; top: 110px; bottom: 34px;
+          background: linear-gradient(180deg, #78350f, #451a03); border-radius: 6px; box-shadow: inset 0 6px 14px rgba(0,0,0,.5); }
+        .fb-shelve-plank { position: absolute; left: 0; right: 0; top: 242px; height: 12px; border-radius: 3px;
+          background: linear-gradient(180deg, #d97706, #92400e); box-shadow: 0 4px 10px rgba(0,0,0,.45);
+          animation: fb-shelf-bump 2.3s ease-out forwards; }
+        .fb-shelve-prior { position: absolute; left: 14px; width: 150px; top: 150px; height: 92px;
+          display: flex; align-items: flex-end; justify-content: flex-end; gap: 4px; }
+        .fb-shelve-travel { position: absolute; left: 50%; top: 92px; width: 0; height: 0;
+          transform-style: preserve-3d; animation: fb-shelve 2.3s cubic-bezier(.5,.02,.3,1) forwards; }
+
+        .fb-book3d { position: absolute; transform-style: preserve-3d; }
+        .fb-book3d > div { position: absolute; }
+        .fb-b-back { width: 118px; height: 158px; margin: -79px 0 0 -59px; border-radius: 2px 5px 5px 2px;
+          transform: rotateY(180deg) translateZ(9px); }
+        .fb-b-spine { width: 18px; height: 158px; margin: -79px 0 0 -9px; transform: rotateY(-90deg) translateZ(59px);
+          display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 8px rgba(0,0,0,.35); }
+        .fb-b-spine-label { writing-mode: vertical-rl; transform: rotate(180deg); color: #fff; font-size: 8px;
+          font-weight: 800; white-space: nowrap; letter-spacing: .02em; }
+        .fb-b-edge { width: 18px; height: 158px; margin: -79px 0 0 -9px; transform: rotateY(90deg) translateZ(59px);
+          background: repeating-linear-gradient(90deg, #fff, #fff 2px, #e2e8f0 2px, #e2e8f0 3px); }
+        .fb-b-pages { width: 112px; height: 150px; margin: -75px 0 0 -54px; transform: translateZ(6px);
+          background: linear-gradient(180deg, #fffdf7, #f1f5f9); border-radius: 1px 4px 4px 1px;
+          box-shadow: inset 6px 0 10px rgba(0,0,0,.08); }
+        .fb-b-flap { width: 118px; height: 158px; margin: -79px 0 0 -59px; transform-style: preserve-3d;
+          transform-origin: left center; animation: fb-book-close 1.15s cubic-bezier(.4,.1,.25,1) forwards; }
+        .fb-b-flap-out, .fb-b-flap-in { position: absolute; inset: 0; border-radius: 2px 5px 5px 2px;
+          backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        .fb-b-flap-out { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+          box-shadow: inset 8px 0 12px rgba(0,0,0,.25); }
+        .fb-b-flap-emoji { font-size: 34px; line-height: 1; }
+        .fb-b-flap-title { color: #fff; font-size: 11px; font-weight: 800; text-align: center; padding: 0 10px; }
+        .fb-b-flap-in { transform: rotateY(180deg); background: linear-gradient(180deg, #fffdf7, #eef2f7); }
+
+        @keyframes fb-book-close {
+          0%   { transform: translateZ(9px) rotateY(-152deg); }
+          70%  { transform: translateZ(9px) rotateY(-8deg); }
+          85%  { transform: translateZ(9px) rotateY(-16deg); }
+          100% { transform: translateZ(9px) rotateY(0deg); }
+        }
+        @keyframes fb-shelve {
+          0%, 46%  { transform: translate3d(0, 0, 0) rotateY(10deg) scale(1); }
+          72%      { transform: translate3d(14px, 48px, 0) rotateY(52deg) scale(.82); }
+          100%     { transform: translate3d(42px, 104px, 0) rotateY(86deg) scale(.6); }
+        }
+        @keyframes fb-shelf-bump {
+          0%, 86%  { transform: translateY(0); }
+          92%      { transform: translateY(2px); }
+          100%     { transform: translateY(0); }
+        }
+        .fb-shelve-text { opacity: 0; animation: fb-shelve-text .45s ease-out 2.15s forwards; }
+        @keyframes fb-shelve-text { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
       `}</style>
 
       <div className="mx-auto max-w-md bg-white min-h-screen shadow-xl relative">
@@ -2059,7 +2413,10 @@ export default function App() {
           <CardModal card={openedCard.card} index={openedCard.index}
             onClose={() => { sndTap(); setOpenedCard(null); }} />
         )}
-        {bookDone && <BookCompleteModal story={bookDone} onClose={() => { sndTap(); setBookDone(null); }} />}
+        {bookDone && (
+          <BookCompleteModal story={bookDone.story} shelvedBefore={bookDone.shelvedBefore}
+            onClose={() => { sndTap(); setBookDone(null); setActiveBook(null); setView("library"); }} />
+        )}
       </div>
     </div>
   );
