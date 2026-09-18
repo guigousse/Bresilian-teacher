@@ -745,6 +745,7 @@ let PREFS = defaultPrefs();
 let speechPrimed = false;
 let speechStatus = "unknown"; /* unknown | ok | novoice | blocked | unsupported */
 const speechWatchers = new Set();
+const speechDebug = { attempts: 0, started: 0, errors: 0, lastError: "", lastLang: "", lastVoice: "", primed: false };
 const NICE_NAMES = ["luciana", "google português", "google portugues", "francisca", "brenda", "camila", "fernanda",
   "joana", "raquel", "maria", "ricardo", "felipe", "daniel", "antônio", "antonio"];
 const POOR_NAMES = /espeak|compact|eloquence|pico|festival|robot/i;
@@ -796,18 +797,17 @@ function currentVoice() {
   if (PREFS.voiceURI) { const f = list.find((v) => v.voiceURI === PREFS.voiceURI); if (f) return f; }
   return list[0];
 }
-/* Chrome Android avale la première synthèse tant que le moteur n'a pas parlé
-   pendant un geste utilisateur : on le réveille au premier contact. */
+/* Réveille le moteur pendant un geste utilisateur, sans rien faire prononcer :
+   un énoncé vide ou à volume nul bloque la file d'attente de certains moteurs Android. */
 function primeSpeech() {
   if (speechPrimed) return;
   speechPrimed = true;
+  speechDebug.primed = true;
   try {
     const s = window.speechSynthesis;
     if (!s) return;
-    const u = new SpeechSynthesisUtterance(" ");
-    u.volume = 0;
-    u.lang = "pt-BR";
-    s.speak(u);
+    s.cancel();
+    if (s.paused) s.resume();
     refreshVoices();
   } catch (e) { /* ok */ }
 }
@@ -826,7 +826,21 @@ function speak(text, opts = {}) {
       if (withVoice && v) u.voice = v;
       u.rate = opts.slow ? Math.max(0.5, PREFS.rate - 0.25) : PREFS.rate;
       u.pitch = PREFS.pitch;
-      u.onstart = () => { started = true; setSpeechStatus(ptVoices().length ? "ok" : "novoice"); };
+      speechDebug.attempts++;
+      speechDebug.lastLang = u.lang;
+      speechDebug.lastVoice = withVoice && v ? `${v.name} (${v.lang})` : "aucune (langue seule)";
+      u.onstart = () => {
+        started = true; speechDebug.started++;
+        setSpeechStatus(ptVoices().length ? "ok" : "novoice");
+      };
+      u.onerror = (e) => {
+        speechDebug.errors++;
+        speechDebug.lastError = (e && e.error) || "inconnue";
+        /* « language-unavailable » / « voice-unavailable » : les données vocales
+           portugaises ne sont pas installées sur l'appareil. */
+        if (/language|voice/.test(speechDebug.lastError)) setSpeechStatus("novoice");
+        else if (speechDebug.lastError === "not-allowed") setSpeechStatus("blocked");
+      };
       return u;
     };
     const fire = (u) => { try { if (s.paused) s.resume(); s.speak(u); } catch (e) { /* ok */ } };
@@ -844,11 +858,11 @@ function speak(text, opts = {}) {
     setTimeout(() => {
       if (started || s.speaking) return;
       s.cancel();
-      fire(utter(false));
+      setTimeout(() => { if (!started && !s.speaking) fire(utter(false)); }, 150);
       setTimeout(() => {
         if (started || s.speaking) return;
         setSpeechStatus(ptVoices().length ? "blocked" : "novoice");
-      }, 900);
+      }, 1100);
     }, 700);
   } catch (e) { /* pas de voix */ }
 }
@@ -2081,6 +2095,63 @@ function ResultScreen({ result, onHome }) {
 /*  ÉCRAN : PROFIL                                                     */
 /* ================================================================== */
 
+const BUILD_ID = typeof __BUILD_ID__ !== "undefined" ? __BUILD_ID__ : "dev";
+
+function SoundDiagnostic() {
+  const [, setTick] = useState(0);
+  const [copied, setCopied] = useState(false);
+  const refresh = () => setTick((t) => t + 1);
+
+  useEffect(() => {
+    const unwatch = watchSpeech(refresh);
+    const id = setInterval(refresh, 800);
+    return () => { unwatch(); clearInterval(id); };
+  }, []);
+
+  const hasSynth = typeof window !== "undefined" && !!window.speechSynthesis;
+  const pts = ptVoices();
+  const report = [
+    `Build       : ${BUILD_ID}`,
+    `Navigateur  : ${typeof navigator !== "undefined" ? navigator.userAgent : "?"}`,
+    `Synthèse    : ${hasSynth ? "disponible" : "ABSENTE"}`,
+    `Voix totales: ${VOICES.length}`,
+    `Voix pt     : ${pts.length}${pts.length ? " — " + pts.slice(0, 3).map((v) => `${v.name} [${v.lang}]`).join(", ") : ""}`,
+    `Statut      : ${getSpeechStatus()}`,
+    `Essais      : ${speechDebug.attempts} · démarrés ${speechDebug.started} · erreurs ${speechDebug.errors}`,
+    `Dern. erreur: ${speechDebug.lastError || "aucune"}`,
+    `Dern. voix  : ${speechDebug.lastVoice || "—"} · langue ${speechDebug.lastLang || "—"}`,
+    `Audio bips  : ${audioCtx ? audioCtx.state : "pas encore créé"}`,
+  ].join("\n");
+
+  return (
+    <div className="mt-8">
+      <h3 className="font-extrabold text-slate-800 mb-1">Diagnostic du son</h3>
+      <p className="text-xs text-slate-400 mb-3">Si le portugais reste muet, lance les deux tests puis envoie ce rapport.</p>
+
+      <div className="grid grid-cols-2 gap-2">
+        <button onClick={() => { sndGood(); refresh(); }}
+          className="rounded-2xl border-2 border-slate-200 font-bold py-3 text-slate-700 text-sm">
+          1. Tester un bip
+        </button>
+        <button onClick={() => { primeSpeech(); speak("Bom dia, tudo bem?"); refresh(); }}
+          className="rounded-2xl bg-sky-500 text-white font-bold py-3 text-sm border-b-4 border-sky-700 active:border-b-0 active:translate-y-1">
+          2. Tester la voix
+        </button>
+      </div>
+      <p className="text-[11px] text-slate-400 mt-2">
+        Le bip marche mais pas la voix → il manque la voix portugaise sur le téléphone. Rien ne marche → c'est le volume média ou le mode silencieux.
+      </p>
+
+      <pre className="mt-3 rounded-2xl bg-slate-900 text-slate-100 text-[10px] leading-relaxed p-3 overflow-x-auto whitespace-pre-wrap break-all">{report}</pre>
+      <button onClick={() => {
+        try { navigator.clipboard.writeText(report); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch (e) { /* ok */ }
+      }} className="w-full mt-2 rounded-2xl border-2 border-slate-200 font-bold py-3 text-slate-600 flex items-center justify-center gap-2">
+        <Copy className="w-4 h-4" /> {copied ? "Rapport copié" : "Copier le rapport"}
+      </button>
+    </div>
+  );
+}
+
 function ProfileScreen({ progress, onReset, onImport, prefs, storageWarning }) {
   const [confirm, setConfirm] = useState(false);
   const [showCode, setShowCode] = useState(false);
@@ -2193,6 +2264,8 @@ function ProfileScreen({ progress, onReset, onImport, prefs, storageWarning }) {
             </div>
           </div>
         )}
+
+        <SoundDiagnostic />
 
         {words.length > 0 && (
           <>
