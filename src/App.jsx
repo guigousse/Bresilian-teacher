@@ -742,13 +742,27 @@ const sndCard = () => blip([392, 523, 659, 880, 1046], "triangle", 0.12);
 /* --- voix --- */
 let VOICES = [];
 let PREFS = defaultPrefs();
+let speechPrimed = false;
+let speechStatus = "unknown"; /* unknown | ok | novoice | blocked | unsupported */
+const speechWatchers = new Set();
 const NICE_NAMES = ["luciana", "google português", "google portugues", "francisca", "brenda", "camila", "fernanda",
   "joana", "raquel", "maria", "ricardo", "felipe", "daniel", "antônio", "antonio"];
 const POOR_NAMES = /espeak|compact|eloquence|pico|festival|robot/i;
 
+/* Android renvoie « pt_BR » là où la norme veut « pt-BR » : Chrome rejette la forme à underscore. */
+function normLang(l) { return (l || "").replace(/_/g, "-"); }
+
+function setSpeechStatus(s) {
+  if (speechStatus === s) return;
+  speechStatus = s;
+  speechWatchers.forEach((fn) => { try { fn(s); } catch (e) { /* ok */ } });
+}
+function watchSpeech(fn) { speechWatchers.add(fn); return () => speechWatchers.delete(fn); }
+function getSpeechStatus() { return speechStatus; }
+
 function voiceScore(v) {
   const name = (v.name || "").toLowerCase();
-  const lang = (v.lang || "").toLowerCase().replace("_", "-");
+  const lang = normLang(v.lang).toLowerCase();
   let s = 0;
   if (lang.startsWith("pt-br")) s += 100; else if (lang.startsWith("pt")) s += 55;
   if (NICE_NAMES.some((n) => name.includes(n))) s += 30;
@@ -758,12 +772,23 @@ function voiceScore(v) {
   return s;
 }
 function ptVoices() {
-  return VOICES.filter((v) => (v.lang || "").toLowerCase().replace("_", "-").startsWith("pt"))
+  return VOICES.filter((v) => normLang(v.lang).toLowerCase().startsWith("pt"))
     .sort((a, b) => voiceScore(b) - voiceScore(a));
 }
 function refreshVoices() {
   try { VOICES = window.speechSynthesis.getVoices() || []; } catch (e) { VOICES = []; }
+  if (!VOICES.length || speechStatus === "unsupported") return VOICES; /* liste pas prête : on ne conclut rien */
+  /* Un moteur sans voix portugaise lit quand même, mais avec l'accent de la langue du téléphone :
+     on garde l'alerte tant que la voix pt n'est pas installée. */
+  if (!ptVoices().length) setSpeechStatus("novoice");
+  else if (speechStatus === "novoice") setSpeechStatus("unknown");
   return VOICES;
+}
+/* Sur Android, getVoices() est vide au chargement et « voiceschanged » n'est pas toujours émis. */
+function huntVoices(tries = 16) {
+  refreshVoices();
+  if (ptVoices().length || tries <= 0) return;
+  setTimeout(() => huntVoices(tries - 1), 250);
 }
 function currentVoice() {
   const list = ptVoices();
@@ -771,17 +796,60 @@ function currentVoice() {
   if (PREFS.voiceURI) { const f = list.find((v) => v.voiceURI === PREFS.voiceURI); if (f) return f; }
   return list[0];
 }
-function speak(text, opts = {}) {
+/* Chrome Android avale la première synthèse tant que le moteur n'a pas parlé
+   pendant un geste utilisateur : on le réveille au premier contact. */
+function primeSpeech() {
+  if (speechPrimed) return;
+  speechPrimed = true;
   try {
-    if (!window.speechSynthesis) return;
-    const u = new SpeechSynthesisUtterance(text);
+    const s = window.speechSynthesis;
+    if (!s) return;
+    const u = new SpeechSynthesisUtterance(" ");
+    u.volume = 0;
+    u.lang = "pt-BR";
+    s.speak(u);
+    refreshVoices();
+  } catch (e) { /* ok */ }
+}
+
+function speak(text, opts = {}) {
+  const s = typeof window !== "undefined" ? window.speechSynthesis : null;
+  if (!s) { setSpeechStatus("unsupported"); return; }
+  try {
+    if (!VOICES.length) refreshVoices();
     const v = currentVoice();
-    u.lang = v ? v.lang : "pt-BR";
-    if (v) u.voice = v;
-    u.rate = opts.slow ? Math.max(0.5, PREFS.rate - 0.25) : PREFS.rate;
-    u.pitch = PREFS.pitch;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
+    let started = false;
+
+    const utter = (withVoice) => {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = normLang(withVoice && v ? v.lang : "pt-BR") || "pt-BR";
+      if (withVoice && v) u.voice = v;
+      u.rate = opts.slow ? Math.max(0.5, PREFS.rate - 0.25) : PREFS.rate;
+      u.pitch = PREFS.pitch;
+      u.onstart = () => { started = true; setSpeechStatus(ptVoices().length ? "ok" : "novoice"); };
+      return u;
+    };
+    const fire = (u) => { try { if (s.paused) s.resume(); s.speak(u); } catch (e) { /* ok */ } };
+
+    if (s.speaking || s.pending) {
+      /* Android perd l'énoncé si speak() suit cancel() sans laisser respirer le moteur. */
+      s.cancel();
+      setTimeout(() => fire(utter(true)), 120);
+    } else {
+      fire(utter(true));
+    }
+
+    /* Repli : si rien n'a démarré, on retente avec la langue seule (objet voix périmé,
+       moteur endormi), puis on signale l'échec à l'interface. */
+    setTimeout(() => {
+      if (started || s.speaking) return;
+      s.cancel();
+      fire(utter(false));
+      setTimeout(() => {
+        if (started || s.speaking) return;
+        setSpeechStatus(ptVoices().length ? "blocked" : "novoice");
+      }, 900);
+    }, 700);
   } catch (e) { /* pas de voix */ }
 }
 
@@ -1144,11 +1212,19 @@ function Postcard({ card, owned = true, small = false, big = false }) {
 
 function VoiceSettings({ prefs, setPrefs, onClose }) {
   const [voices, setVoices] = useState(ptVoices());
+  const [status, setStatus] = useState(getSpeechStatus());
+  const isAndroid = typeof navigator !== "undefined" && /android/i.test(navigator.userAgent || "");
   useEffect(() => {
-    refreshVoices(); setVoices(ptVoices());
+    huntVoices(); setVoices(ptVoices());
     const h = () => { refreshVoices(); setVoices(ptVoices()); };
     try { window.speechSynthesis.addEventListener("voiceschanged", h); } catch (e) { /* ok */ }
-    return () => { try { window.speechSynthesis.removeEventListener("voiceschanged", h); } catch (e) { /* ok */ } };
+    const unwatch = watchSpeech(setStatus);
+    const poll = setInterval(() => setVoices(ptVoices()), 600);
+    setTimeout(() => clearInterval(poll), 5000);
+    return () => {
+      unwatch(); clearInterval(poll);
+      try { window.speechSynthesis.removeEventListener("voiceschanged", h); } catch (e) { /* ok */ }
+    };
   }, []);
 
   return (
@@ -1159,12 +1235,38 @@ function VoiceSettings({ prefs, setPrefs, onClose }) {
           <button onClick={onClose} className="w-9 h-9 grid place-items-center rounded-xl text-slate-400"><X className="w-6 h-6" /></button>
         </div>
 
+        <div className={`rounded-2xl px-3 py-2 mb-4 text-xs font-bold flex items-center gap-2
+          ${status === "ok" ? "bg-emerald-50 text-emerald-700"
+            : status === "unknown" ? "bg-slate-100 text-slate-500" : "bg-amber-50 text-amber-800"}`}>
+          {status === "ok" ? <Check className="w-4 h-4 shrink-0" /> : <Volume2 className="w-4 h-4 shrink-0" />}
+          <span>
+            {status === "ok" && `Le son fonctionne${voices[0] ? ` · ${voices[0].name}` : ""}`}
+            {status === "unknown" && `${voices.length} voix portugaise${voices.length > 1 ? "s" : ""} détectée${voices.length > 1 ? "s" : ""} — teste le son ci-dessous`}
+            {status === "novoice" && "Aucune voix portugaise installée sur cet appareil"}
+            {status === "blocked" && "Le son n'est pas parti : vérifie le volume média, puis retente"}
+            {status === "unsupported" && "Ce navigateur ne gère pas la synthèse vocale"}
+          </span>
+        </div>
+
         <label className="block text-sm font-bold text-slate-600 mb-1">Voix portugaise</label>
         {voices.length === 0 ? (
-          <p className="text-sm text-slate-600 bg-amber-50 border-2 border-amber-200 rounded-2xl p-3">
-            Aucune voix portugaise sur cet appareil. Android : Paramètres → Synthèse vocale → télécharger « português (Brasil) ».
-            iPhone : Réglages → Accessibilité → Contenu énoncé → Voix → Portugais (Brésil), version Améliorée ou Premium.
-          </p>
+          <div className="text-sm text-slate-600 bg-amber-50 border-2 border-amber-200 rounded-2xl p-3 space-y-2">
+            <p className="font-bold text-amber-900">Comment installer la voix portugaise</p>
+            {isAndroid ? (
+              <ol className="list-decimal ml-4 space-y-1">
+                <li>Paramètres → Gestion générale (ou Accessibilité) → Synthèse vocale.</li>
+                <li>Moteur préféré : Synthèse vocale de Google → icône ⚙.</li>
+                <li>Installer les données vocales → Português (Brasil) → télécharger.</li>
+                <li>Reviens dans l'app et rouvre cette fenêtre.</li>
+              </ol>
+            ) : (
+              <p>
+                Android : Paramètres → Synthèse vocale → moteur Google → installer « português (Brasil) ».
+                iPhone : Réglages → Accessibilité → Contenu énoncé → Voix → Portugais (Brésil), version Améliorée ou Premium.
+              </p>
+            )}
+            <p className="text-xs">En attendant, la phonétique française sous chaque mot te permet de continuer sans le son.</p>
+          </div>
         ) : (
           <select value={prefs.voiceURI || (voices[0] && voices[0].voiceURI) || ""}
             onChange={(e) => setPrefs({ ...prefs, voiceURI: e.target.value })}
@@ -1213,7 +1315,33 @@ function VoiceSettings({ prefs, setPrefs, onClose }) {
 /*  ÉCRAN : PARCOURS                                                   */
 /* ================================================================== */
 
-function PathScreen({ progress, onStart, onSettings, storageWarning }) {
+function SoundWarning({ status, onSettings, onHide }) {
+  if (status !== "novoice" && status !== "blocked" && status !== "unsupported") return null;
+  const isAndroid = typeof navigator !== "undefined" && /android/i.test(navigator.userAgent || "");
+  return (
+    <div className="mx-4 mt-4 rounded-2xl bg-sky-50 border-2 border-sky-200 p-3">
+      <div className="flex gap-2">
+        <Volume2 className="w-5 h-5 text-sky-500 shrink-0" />
+        <div className="text-xs text-sky-900 flex-1">
+          {status === "unsupported" && "Ce navigateur ne sait pas lire le portugais à voix haute. Essaie avec Chrome ou Safari à jour."}
+          {status === "blocked" && "Le son n'est pas parti. Vérifie le volume média du téléphone, puis retouche le bouton haut-parleur."}
+          {status === "novoice" && (isAndroid
+            ? "Aucune voix portugaise installée sur ce téléphone. Ouvre Paramètres → Gestion générale (ou Accessibilité) → Synthèse vocale → moteur Google → Installer les données vocales → Português (Brasil), puis reviens ici."
+            : "Aucune voix portugaise n'est installée sur cet appareil. Ajoute le portugais (Brésil) dans les réglages de synthèse vocale du système.")}
+        </div>
+        <button onClick={onHide} aria-label="Masquer" className="w-6 h-6 grid place-items-center rounded-lg text-sky-400 shrink-0 self-start">
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+      <button onClick={onSettings}
+        className="w-full mt-2 rounded-xl bg-sky-500 text-white font-bold text-xs py-2 active:translate-y-0.5">
+        Tester le son et choisir une voix
+      </button>
+    </div>
+  );
+}
+
+function PathScreen({ progress, onStart, onSettings, storageWarning, speechState, soundWarnHidden, onHideSoundWarn }) {
   const done = doneCount(progress);
   const goalPct = Math.min(100, Math.round((progress.xpToday / DAILY_GOAL) * 100));
   const reviewUnlocked = done >= 3;
@@ -1249,6 +1377,8 @@ function PathScreen({ progress, onStart, onSettings, storageWarning }) {
           </div>
         </div>
       </header>
+
+      {!soundWarnHidden && <SoundWarning status={speechState} onSettings={onSettings} onHide={onHideSoundWarn} />}
 
       {storageWarning && (
         <div className="mx-4 mt-4 rounded-2xl bg-amber-50 border-2 border-amber-200 p-3 flex gap-2">
@@ -2153,6 +2283,8 @@ export default function App() {
   const [openedCard, setOpenedCard] = useState(null);
   const [activeBook, setActiveBook] = useState(null);
   const [bookDone, setBookDone] = useState(null);
+  const [speechState, setSpeechState] = useState(getSpeechStatus());
+  const [soundWarnHidden, setSoundWarnHidden] = useState(false);
 
   const setPrefs = useCallback((p) => { PREFS = p; setPrefsState(p); }, []);
 
@@ -2178,11 +2310,18 @@ export default function App() {
       setReady(true);
     })();
 
-    refreshVoices();
+    huntVoices();
     const h = () => refreshVoices();
     try { window.speechSynthesis.addEventListener("voiceschanged", h); } catch (e) { /* ok */ }
-    return () => { alive = false; try { window.speechSynthesis.removeEventListener("voiceschanged", h); } catch (e) { /* ok */ } };
+    window.addEventListener("pointerdown", primeSpeech, { once: true });
+    return () => {
+      alive = false;
+      window.removeEventListener("pointerdown", primeSpeech);
+      try { window.speechSynthesis.removeEventListener("voiceschanged", h); } catch (e) { /* ok */ }
+    };
   }, []);
+
+  useEffect(() => watchSpeech(setSpeechState), []);
 
   useEffect(() => { if (ready && storage.ok) storage.write(SAVE_KEY, progress); }, [progress, ready]);
   useEffect(() => { if (ready && storage.ok) storage.write(PREFS_KEY, prefs); }, [prefs, ready]);
@@ -2374,7 +2513,9 @@ export default function App() {
 
       <div className="mx-auto max-w-md bg-white min-h-screen shadow-xl relative">
         {view === "path" && (
-          <PathScreen progress={progress} onStart={startLesson} onSettings={() => setShowSettings(true)} storageWarning={storageWarning} />
+          <PathScreen progress={progress} onStart={startLesson} onSettings={() => setShowSettings(true)}
+            storageWarning={storageWarning} speechState={speechState}
+            soundWarnHidden={soundWarnHidden} onHideSoundWarn={() => setSoundWarnHidden(true)} />
         )}
         {view === "library" && (
           <LibraryScreen progress={progress} onOpenBook={(id) => { setActiveBook(id); setView("story"); }} />
