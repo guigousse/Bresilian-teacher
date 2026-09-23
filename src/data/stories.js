@@ -149,6 +149,105 @@ export const STORIES = [
   },
 ];
 
+/* Traduction française, ligne par ligne. Les segments marqués reprennent
+   les mêmes clés que le texte portugais : tant que le mot n'a pas été
+   retrouvé, sa traduction reste masquée — sinon la traduction donnerait
+   la réponse et il n'y aurait plus rien à chercher. */
+const TRANSLATIONS = {
+  u1: [
+    "Léa descend de l'avion à Rio de Janeiro. Une femme lui sourit dans la file.",
+    "— {{Salut|oi}} ! {{Ça va ?|tudo bem?}} — demande la femme.",
+    "— {{Ça va bien|tudo bem}}, merci ! — répond Léa, un peu fatiguée du voyage.",
+    "La femme poursuit, curieuse : — {{Comment tu t'appelles ?|como você se chama?}}",
+    "— Je m'appelle Léa. {{Je suis français|eu sou francês}}… enfin, française ! — elle rit de sa propre confusion.",
+    "— {{Enchantée|prazer}}, Léa ! Bienvenue au Brésil.",
+    "Le lendemain, Léa se réveille tôt. {{Bonjour|bom dia}}, Rio de Janeiro ! Elle prend son sac à dos et sort explorer la ville.",
+    "— {{À bientôt|até logo}} ! — dit-elle au réceptionniste de l'auberge, tout enjouée.",
+  ],
+  u2: [
+    "Léa entre dans une petite boulangerie près de la plage.",
+    "— Bonjour ! Un pão de queijo, {{s'il vous plaît|por favor}} — demande-t-elle au vendeur.",
+    "Le vendeur répond très vite, et Léa ne comprend rien.",
+    "— {{Pardon|desculpa}}… {{vous parlez français ?|você fala francês?}} — demande-t-elle, un peu nerveuse.",
+    "— Non, mais pas de panique ! — il sourit et répète plus lentement.",
+    "— {{Je ne parle pas portugais|eu não falo português}} très bien pour l'instant. Vous pouvez {{parler plus lentement|fala mais devagar}} ?",
+    "— {{Oui|sim}}, bien sûr ! — il répète chaque mot, patiemment.",
+    "Léa comprend tout maintenant et paie son pão de queijo. — {{Merci|obrigada}} ! — dit-elle, ravie.",
+  ],
+  u3: [
+    "Au marché de rue, Léa voit des fruits colorés sur un étal.",
+    "— {{Combien ça coûte ?|quanto custa?}} — demande-t-elle en montrant les mangues.",
+    "— {{Un|um}} real pièce ! — dit la vendeuse en souriant.",
+    "Léa réfléchit un instant et demande : — {{Deux, s'il vous plaît|dois, por favor}}.",
+    "— Seulement {{deux|dois}} ? Prenez-en {{trois|três}}, ça revient moins cher ! — insiste la vendeuse.",
+    "Léa accepte et paie avec un billet de {{dix|dez}} reais, contente de son affaire.",
+  ],
+  u4: [
+    "Le soir, Léa dîne dans un restaurant simple près de l'auberge.",
+    "Le serveur apporte la carte. — {{Je voudrais un café|eu queria um café}} et {{le pain|o pão}} à l'ail, s'il vous plaît — demande-t-elle.",
+    "— Et à boire ? {{L'eau|a água}} est comprise — explique le serveur.",
+    "Elle prévient aussi : — {{Je suis végétarien|eu sou vegetariano}}, je ne mange pas de viande.",
+    "Le plat arrive et elle goûte. — Waouh, {{c'est délicieux|está delicioso}} ! — dit-elle, surprise.",
+    "À la fin du repas, elle appelle le serveur : — {{L'addition, s'il vous plaît|a conta, por favor}}.",
+  ],
+  u5: [
+    "Après le déjeuner, Léa veut aller à la plage, mais elle se perd dans les ruelles étroites.",
+    "— Excusez-moi, {{où est la plage ?|onde fica a praia?}} — demande-t-elle à un monsieur.",
+    "— Tournez {{à droite|à direita}} au prochain coin de rue, puis {{à gauche|à esquerda}}. C'est {{près|perto}} d'ici — explique-t-il.",
+    "Léa suit les indications, mais s'embrouille de nouveau entre les venelles.",
+    "— Je crois que {{je suis perdu|estou perdido}}… — murmure-t-elle en cherchant un repère.",
+    "Elle arrête quelqu'un d'autre : — {{Où sont les toilettes ?|onde fica o banheiro?}} Il m'en faut avant la plage !",
+    "Quelques minutes plus tard, Léa arrive enfin à {{la plage|a praia}} et respire l'air du large.",
+  ],
+  u6: [
+    "Le lendemain, Léa pense prendre {{le bus|o ônibus}}, mais les lignes sont compliquées.",
+    "Elle décide d'arrêter {{le taxi|o táxi}} jaune au coin de la rue.",
+    "— {{Je vais au centre-ville|eu vou para o centro}} — dit-elle au chauffeur en montant dans la voiture.",
+    "— {{Combien de temps ?|quanto tempo?}} — demande-t-elle, intriguée par la circulation.",
+    "— Une vingtaine de minutes — répond-il en souriant dans le rétroviseur.",
+    "Près de l'arrivée, Léa demande : — {{Pouvez-vous m'emmener ?|pode me levar?}} Jusqu'à la place principale, {{arrêtez ici, s'il vous plaît|para aqui, por favor}} !",
+  ],
+  u7: [
+    "En fin d'après-midi, Léa trouve {{l'auberge|a pousada}} où elle va dormir.",
+    "— Bonsoir ! J'ai réservé pour {{deux nuits|duas noites}} — explique-t-elle à la réception.",
+    "Le réceptionniste confirme et lui remet {{la clé|a chave}} de la chambre numéro douze.",
+    "— {{La chambre|o quarto}} est simple, mais confortable — dit-il en souriant.",
+    "Léa demande encore : — {{Il y a du wifi ?|tem wi-fi?}}",
+    "— Oui, le mot de passe est affiché au mur. Et {{le petit-déjeuner|o café da manhã}} est servi à sept heures.",
+  ],
+  u8: [
+    "Au marché d'artisanat, Léa voit un magnifique hamac coloré.",
+    "— Combien ça coûte ? — demande-t-elle au vendeur.",
+    "— Cent vingt reais — répond-il.",
+    "— {{Trop cher !|muito caro!}} — s'exclame Léa, surprise par le prix.",
+    "— C'est vrai que c'est {{cher|caro}}, mais c'est fait à la main. {{Il y a une réduction ?|tem desconto?}} — demande-t-elle en tentant de négocier.",
+    "— Pour vous, cent reais — sourit-il.",
+    "Léa vérifie {{l'argent|o dinheiro}} dans son portefeuille, mais elle n'a pas assez de liquide.",
+    "— {{Vous acceptez la carte ?|aceita cartão?}} — demande-t-elle.",
+    "— Oui, bien sûr !",
+    "— Alors {{je le prends|eu vou levar}} ! — décide-t-elle, contente de son achat.",
+  ],
+  u9: [
+    "Un matin, Léa ne se sent pas bien.",
+    "Elle se réveille avec mal à la tête et de la fièvre. — Je crois que {{je suis malade|estou doente}} — pense-t-elle, inquiète.",
+    "Elle cherche son passeport pour aller à la pharmacie, mais ne le trouve pas. — {{J'ai perdu mon passeport|perdi meu passaporte}} ! — s'exclame-t-elle, paniquée.",
+    "Elle court jusqu'à la réception. — {{Aidez-moi, s'il vous plaît|me ajuda, por favor}} ! {{Je ne vais pas bien|não estou bem}} et j'ai perdu mes papiers !",
+    "Le réceptionniste essaie de la calmer : — {{Attention !|cuidado!}}, respirez à fond. On va régler ça ensemble.",
+    "Quelques instants plus tard, quelqu'un crie dans la rue : — {{Au secours !|socorro!}} — mais ce n'était qu'une frayeur, un chien s'était échappé d'une boutique.",
+    "Finalement, le passeport était resté dans le sac à dos depuis le début. Léa souffle, soulagée.",
+  ],
+  u10: [
+    "Le dernier jour, Léa s'assoit sur le sable et regarde le coucher de soleil.",
+    "— {{La plage est belle|a praia é linda}} — pense-t-elle en souriant toute seule.",
+    "Elle rencontre Marcos, un Brésilien sympathique qui travaille à l'auberge d'à côté.",
+    "— {{Tu es très gentil|você é muito gentil}} — dit-elle, en le remerciant pour toute son aide pendant le voyage.",
+    "— {{Nickel|beleza}} ! Ça m'a fait plaisir de t'aider — répond-il.",
+    "Léa raconte son voyage : les plages, les gens, la cuisine. — {{J'aime|eu gosto}} beaucoup cet endroit, tu sais ?",
+    "— {{Trop bien !|que legal!}} Tu reviens {{demain|amanhã}} ? Enfin… un autre jour ! — plaisante-t-il.",
+    "Léa rit et répond, le cœur plein : — {{J'adore le Brésil|eu amo o brasil}} !",
+  ],
+};
+
 /* Questions de compréhension : on ne valide pas un chapitre seulement
    parce qu'on a traduit des mots isolés, mais parce qu'on a suivi
    l'histoire. Les réponses sont en français, la bonne est la première
@@ -217,6 +316,8 @@ STORIES.forEach((s) => {
   s.tokens.forEach((tokens) => tokens.forEach((t) => {
     if (t.type === "word" && t.item && !s.targetKeys.includes(t.key)) s.targetKeys.push(t.key);
   }));
+  s.fr = TRANSLATIONS[s.id] || [];
+  s.frTokens = s.fr.map(parseStoryParagraph);
   s.pages = paginate(s.paragraphs);
   s.quiz = QUIZZES[s.id] || [];
   /* Le texte nu de chaque page, pour la lecture à voix haute. */

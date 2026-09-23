@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, Gem, Lightbulb, Volume2, X } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Gem, Languages, Lightbulb, Volume2, X } from "lucide-react";
 import { HINT_PRICE } from "../data/stories.js";
 import { PH_OF } from "../data/units.js";
 import { checkAnswer, canonicalAnswer } from "../lib/answers.js";
@@ -36,6 +36,9 @@ export function BookReader({ story, number, unit, state, gems, onWordFound, onQu
   const [quizPick, setQuizPick] = useState(null);
   const [quizScore, setQuizScore] = useState(0);
   const [justFound, setJustFound] = useState(null);
+  const [showFr, setShowFr] = useState(() => {
+    try { return localStorage.getItem("fb_book_fr") !== "0"; } catch (e) { return true; }
+  });
   const inputRef = useRef(null);
 
   const found = state.found || [];
@@ -49,6 +52,14 @@ export function BookReader({ story, number, unit, state, gems, onWordFound, onQu
   const quiz = useRef(story.quiz.map((q) => ({ ...q, options: shuffle(q.a), answer: q.a[0] }))).current;
 
   useEffect(() => { if (active) setTimeout(() => inputRef.current && inputRef.current.focus(), 180); }, [active]);
+
+  function toggleFr() {
+    sndTap();
+    setShowFr((v) => {
+      try { localStorage.setItem("fb_book_fr", v ? "0" : "1"); } catch (e) { /* ok */ }
+      return !v;
+    });
+  }
 
   function turn(delta) {
     const next = pageIdx + delta;
@@ -131,6 +142,11 @@ export function BookReader({ story, number, unit, state, gems, onWordFound, onQu
             {state.done ? "Relecture libre" : `${found.length}/${total} mots · page ${pageIdx + 1}/${pages.length}`}
           </div>
         </div>
+        <button onClick={toggleFr} aria-label="Afficher la traduction" aria-pressed={showFr}
+          className={`w-10 h-10 grid place-items-center rounded-2xl border-b-4 shrink-0 active:border-b-0 active:translate-y-1
+            ${showFr ? "bg-amber-400 text-amber-950 border-amber-600" : "bg-white text-stone-400 border-stone-300"}`}>
+          <Languages className="w-5 h-5" />
+        </button>
         <button onClick={() => { sndTap(); speak(story.pageText[pageIdx]); }}
           aria-label="Écouter la page"
           className="w-10 h-10 grid place-items-center rounded-2xl bg-sky-500 text-white border-b-4 border-sky-700 active:border-b-0 active:translate-y-1 shrink-0">
@@ -142,12 +158,12 @@ export function BookReader({ story, number, unit, state, gems, onWordFound, onQu
       {phase === "read" ? (
         <>
           {/* La page */}
-          <div className="flex-1 px-3 py-4 flex min-h-0">
+          <div className="flex-1 min-h-0 overflow-y-auto px-3 py-4 flex flex-col">
             {/* Deux feuilles décalées derrière la page : le livre a une épaisseur. */}
-            <div className="relative mx-auto w-full max-w-md">
+            <div className="relative mx-auto w-full max-w-md flex flex-col flex-1">
               <div className="absolute inset-y-2 left-2 right-[-6px] rounded-r-xl bg-amber-100/80 shadow-sm" />
               <div className="absolute inset-y-1 left-1 right-[-3px] rounded-r-xl bg-amber-50 shadow-sm" />
-              <div className="fb-paper relative h-full rounded-r-xl rounded-l-sm p-5 pb-12">
+              <div className="fb-paper relative flex-1 rounded-r-xl rounded-l-sm p-5 pb-12">
               <div key={pageIdx} className={dir > 0 ? "fb-page-next" : "fb-page-prev"}>
                 <div className="flex items-baseline justify-between mb-3">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700/60">Capítulo {number}</span>
@@ -155,7 +171,8 @@ export function BookReader({ story, number, unit, state, gems, onWordFound, onQu
                 </div>
                 <div className="space-y-3 text-[17px] leading-[1.75] text-stone-800 fb-serif">
                   {pages[pageIdx].map((pi) => (
-                    <p key={pi}>
+                    <div key={pi}>
+                    <p>
                       {story.tokens[pi].map((t, ti) => {
                         if (t.type === "text") return <span key={ti}>{t.value}</span>;
                         if (!t.item) return <span key={ti}>{t.display}</span>;
@@ -178,6 +195,28 @@ export function BookReader({ story, number, unit, state, gems, onWordFound, onQu
                         );
                       })}
                     </p>
+                    {showFr && story.frTokens[pi] && (
+                      <p className="mt-1 border-l-2 border-amber-300/70 pl-2.5 text-[13.5px] leading-[1.6] italic text-stone-500">
+                        {story.frTokens[pi].map((t, ti) => {
+                          if (t.type === "text") return <span key={ti}>{t.value}</span>;
+                          if (!t.item) return <span key={ti}>{t.display}</span>;
+                          if (found.includes(t.key) || state.done) {
+                            return <span key={ti} className="not-italic font-bold text-emerald-700">{t.display}</span>;
+                          }
+                          /* Mot pas encore retrouvé : sa traduction reste cachée,
+                             mais le cache ouvre directement la fiche du mot. */
+                          const src = story.tokens[pi].find((x) => x.key === t.key);
+                          return (
+                            <button key={ti} type="button" onClick={() => tapWord(src)}
+                              aria-label="Traduction à retrouver"
+                              className="not-italic align-baseline rounded bg-stone-300/70 px-1.5 text-[11px] font-extrabold tracking-[.2em] text-stone-500">
+                              •••
+                            </button>
+                          );
+                        })}
+                      </p>
+                    )}
+                    </div>
                   ))}
                 </div>
               </div>
