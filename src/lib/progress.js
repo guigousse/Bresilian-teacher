@@ -252,7 +252,30 @@ export function activeDays(p, days = 56) {
 
 export function doneCount(p) { return Object.values(p.lessons).filter((l) => l.done).length; }
 export function booksDone(p) { return Object.values(p.story || {}).filter((s) => s.done).length; }
-export function storyProgress(p, unitId) { return (p.story && p.story[unitId]) || { found: [], done: false }; }
+export function storyProgress(p, unitId) {
+  const s = (p.story && p.story[unitId]) || {};
+  return { found: [], firstTry: [], hints: 0, quiz: null, done: false, ...s };
+}
+
+/* Un chapitre n'est terminé que si ses mots sont retrouvés ET si les
+   questions de compréhension sont justes : traduire des mots isolés ne
+   prouve pas qu'on a suivi l'histoire. */
+export function storyWordsDone(p, story) {
+  const st = storyProgress(p, story.id);
+  return story.targetKeys.every((k) => st.found.includes(k));
+}
+
+export function storyScore(p, story) {
+  const st = storyProgress(p, story.id);
+  const total = story.targetKeys.length;
+  return {
+    found: st.found.length, total,
+    firstTry: st.firstTry.length,
+    hints: st.hints || 0,
+    quiz: st.quiz,
+    perfect: st.done && st.firstTry.length >= total && !st.hints && st.quiz && st.quiz.score === st.quiz.total,
+  };
+}
 
 export const BADGES = [
   { id: "first", label: "Primeira aula", desc: "Terminer une leçon", emoji: "🌱", test: (p) => doneCount(p) >= 1 },
@@ -312,6 +335,13 @@ export function migrate(saved) {
   /* Une leçon terminée dans l'ancienne version vaut une première couronne. */
   Object.entries(p.lessons || {}).forEach(([id, l]) => {
     if (l.done && p.crowns[id] === undefined) p.crowns[id] = 1;
+  });
+  Object.values(p.story || {}).forEach((st) => {
+    if (!st) return;
+    if (!st.firstTry) st.firstTry = [];
+    if (typeof st.hints !== "number") st.hints = 0;
+    /* Les chapitres validés avant l'arrivée du quiz restent validés. */
+    if (st.done && !st.quiz) st.quiz = { score: 0, total: 0, passed: true, legacy: true };
   });
   if (!p.days) p.days = {};
   if (typeof p.freezes !== "number") p.freezes = 1;

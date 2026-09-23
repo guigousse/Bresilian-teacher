@@ -149,13 +149,82 @@ export const STORIES = [
   },
 ];
 
+/* Questions de compréhension : on ne valide pas un chapitre seulement
+   parce qu'on a traduit des mots isolés, mais parce qu'on a suivi
+   l'histoire. Les réponses sont en français, la bonne est la première
+   du tableau (elles sont mélangées à l'affichage). */
+const QUIZZES = {
+  u1: [
+    { q: "Que répond Léa quand on lui demande comment elle s'appelle ?", a: ["Elle donne son nom et dit qu'elle est française", "Elle répond qu'elle ne comprend pas", "Elle demande son chemin"] },
+    { q: "À qui dit-elle « até logo » ?", a: ["Au réceptionniste de l'auberge", "À la vendeuse du marché", "Au chauffeur de taxi"] },
+  ],
+  u2: [
+    { q: "Pourquoi Léa ne comprend pas le vendeur ?", a: ["Il répond trop vite", "Il parle anglais", "Il chuchote"] },
+    { q: "Que lui demande-t-elle alors ?", a: ["De parler plus lentement", "De baisser le prix", "De répéter en anglais"] },
+  ],
+  u3: [
+    { q: "Combien coûte une mangue ?", a: ["Un real", "Dix reais", "Trois reais"] },
+    { q: "Que conseille la vendeuse ?", a: ["D'en prendre trois, c'est moins cher", "De revenir demain", "De payer par carte"] },
+  ],
+  u4: [
+    { q: "Que commande Léa à boire ?", a: ["Un café", "Une bière", "Un jus de fruit"] },
+    { q: "Pourquoi précise-t-elle qu'elle est végétarienne ?", a: ["Pour ne pas avoir de viande", "Parce qu'elle est allergique", "Pour obtenir une réduction"] },
+  ],
+  u5: [
+    { q: "Quel chemin lui indique le monsieur ?", a: ["À droite, puis à gauche", "Tout droit, puis à droite", "À gauche, puis tout droit"] },
+    { q: "Que cherche Léa juste avant la plage ?", a: ["Les toilettes", "Une pharmacie", "Un restaurant"] },
+  ],
+  u6: [
+    { q: "Pourquoi renonce-t-elle au bus ?", a: ["Les lignes sont compliquées", "Il est trop cher", "Il n'y en a pas"] },
+    { q: "Combien de temps dure le trajet ?", a: ["Une vingtaine de minutes", "Une heure", "Cinq minutes"] },
+  ],
+  u7: [
+    { q: "Pour combien de nuits a-t-elle réservé ?", a: ["Deux nuits", "Une nuit", "Trois nuits"] },
+    { q: "À quelle heure est servi le petit-déjeuner ?", a: ["À sept heures", "À huit heures", "À six heures"] },
+  ],
+  u8: [
+    { q: "Quel prix annonce d'abord le vendeur ?", a: ["Cent vingt reais", "Cent reais", "Quatre-vingts reais"] },
+    { q: "Comment Léa paie-t-elle finalement ?", a: ["Par carte", "En espèces", "Elle renonce à l'acheter"] },
+  ],
+  u9: [
+    { q: "Pourquoi Léa panique-t-elle ?", a: ["Elle ne trouve plus son passeport", "Elle a perdu son argent", "Elle a raté son avion"] },
+    { q: "Où était le passeport, finalement ?", a: ["Dans son sac à dos", "À la réception", "Au commissariat"] },
+  ],
+  u10: [
+    { q: "Qui est Marcos ?", a: ["Un Brésilien qui travaille à la pousada d'à côté", "Le chauffeur de taxi", "Le vendeur du marché"] },
+    { q: "Que répond Léa pour finir ?", a: ["Qu'elle adore le Brésil", "Qu'elle ne reviendra pas", "Qu'elle a froid"] },
+  ],
+};
+
+/* Les paragraphes sont regroupés en pages courtes : une page de livre
+   se lit d'un coup d'œil, et le chapitre avance page après page. */
+function paginate(paragraphs, maxChars = 300) {
+  const pages = [];
+  let cur = [], len = 0;
+  paragraphs.forEach((p, i) => {
+    const clean = p.replace(/\{\{([^}|]+)(\|[^}]+)?\}\}/g, "$1");
+    if (cur.length && len + clean.length > maxChars) { pages.push(cur); cur = []; len = 0; }
+    cur.push(i);
+    len += clean.length;
+  });
+  if (cur.length) pages.push(cur);
+  return pages;
+}
+
 STORIES.forEach((s) => {
   s.tokens = s.paragraphs.map(parseStoryParagraph);
   s.targetKeys = [];
   s.tokens.forEach((tokens) => tokens.forEach((t) => {
     if (t.type === "word" && t.item && !s.targetKeys.includes(t.key)) s.targetKeys.push(t.key);
   }));
+  s.pages = paginate(s.paragraphs);
+  s.quiz = QUIZZES[s.id] || [];
+  /* Le texte nu de chaque page, pour la lecture à voix haute. */
+  s.pageText = s.pages.map((idxs) => idxs
+    .map((i) => s.paragraphs[i].replace(/\{\{([^}|]+)(\|[^}]+)?\}\}/g, "$1").replace(/^—\s*/, ""))
+    .join(" "));
 });
 
 export const STORY_BONUS_XP = 40;
 export const STORY_BONUS_GEMS = 30;
+export const HINT_PRICE = 10;

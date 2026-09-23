@@ -6,7 +6,7 @@ import { CARDS, CARD_PRICE, RARITY } from "./data/cards.js";
 
 import { levelInfo, LEVEL_GEMS } from "./lib/levels.js";
 import {
-  defaultProgress, defaultPrefs, migrate, storyProgress, freshBadges,
+  defaultProgress, defaultPrefs, migrate, storyProgress, storyWordsDone, freshBadges,
   rollOverDay, markActivity, recordAnswer, dueItems, weakItems, seenItems,
   crownOf, MAX_CROWN, bumpQuest, ensureQuests, goalOf, chestReward, MAX_FREEZES,
   XP_PER_CORRECT, STREAK_MILESTONES,
@@ -18,7 +18,8 @@ import { sndTap, sndLevel, sndCard, sndChest, setAudioPrefs } from "./lib/audio.
 
 import { VoiceSettings } from "./ui/VoiceSettings.jsx";
 import { HomeScreen } from "./ui/HomeScreen.jsx";
-import { LibraryScreen, StoryScreen, BookCompleteModal } from "./ui/Library.jsx";
+import { LibraryScreen, BookCompleteModal } from "./ui/Library.jsx";
+import { BookReader } from "./ui/BookReader.jsx";
 import { ShopScreen, CardModal } from "./ui/ShopScreen.jsx";
 import { LessonScreen } from "./ui/LessonScreen.jsx";
 import { ResultScreen } from "./ui/ResultScreen.jsx";
@@ -249,19 +250,51 @@ export default function App() {
     setTimeout(() => speak(chosen.pt), 700);
   }
 
-  function markWordFound(unitId, key) {
+  /* --- Les livres ---------------------------------------------------
+     Un mot retrouvé se note avec la manière dont il l'a été : du premier
+     coup, ou après des essais et des indices. Le chapitre ne se ferme
+     pas pour autant — il faut encore répondre aux questions. */
+
+  function markWordFound(unitId, key, { firstTry = false, hints = 0 } = {}) {
     const story = STORIES.find((s) => s.id === unitId);
     if (!story) return;
-    const cur = storyProgress(progress, unitId);
-    if (cur.found.includes(key)) return;
-    const nextFound = [...cur.found, key];
-    const willBeDone = story.targetKeys.every((k) => nextFound.includes(k));
+    if (storyProgress(progress, unitId).found.includes(key)) return;
 
     setProgress((prev) => {
       const p = JSON.parse(JSON.stringify(prev));
       p.story = p.story || {};
-      const c = p.story[unitId] || { found: [], done: false };
-      if (!c.found.includes(key)) c.found = [...c.found, key];
+      const c = { found: [], firstTry: [], hints: 0, quiz: null, done: false, ...(p.story[unitId] || {}) };
+      if (c.found.includes(key)) return prev;
+      c.found = [...c.found, key];
+      if (firstTry) c.firstTry = [...c.firstTry, key];
+      c.hints = (c.hints || 0) + hints;
+      p.story[unitId] = c;
+      recordAnswer(p, key, firstTry);
+      bumpQuest(p, "story", 1);
+      const fresh = freshBadges(p);
+      p.badges = [...p.badges, ...fresh.map((b) => b.id)];
+      return p;
+    });
+  }
+
+  function spendGems(n) {
+    setProgress((prev) => ({ ...prev, gems: Math.max(0, prev.gems - n) }));
+  }
+
+  /* Les questions justes ferment le chapitre : c'est là que tombent le
+     bonus, le rangement sur l'étagère et le palier suivant. */
+  function finishBookQuiz(unitId, score, total) {
+    const story = STORIES.find((s) => s.id === unitId);
+    if (!story) return;
+    const cur = storyProgress(progress, unitId);
+    if (cur.done) return;
+    const willBeDone = storyWordsDone(progress, story);
+
+    setProgress((prev) => {
+      const p = JSON.parse(JSON.stringify(prev));
+      p.story = p.story || {};
+      const c = { found: [], firstTry: [], hints: 0, quiz: null, done: false, ...(p.story[unitId] || {}) };
+      c.quiz = { score, total, passed: score === total };
       if (willBeDone && !c.done) {
         c.done = true;
         p.gems += STORY_BONUS_GEMS;
@@ -270,21 +303,25 @@ export default function App() {
         markActivity(p, { xp: STORY_BONUS_XP });
       }
       p.story[unitId] = c;
-      recordAnswer(p, key, true);
-      bumpQuest(p, "story", 1);
       const fresh = freshBadges(p);
       p.badges = [...p.badges, ...fresh.map((b) => b.id)];
       return p;
     });
 
-    if (willBeDone) {
-      sndLevel();
-      const shelvedBefore = STORIES
-        .map((s, i) => ({ s, number: i + 1 }))
-        .filter(({ s }) => s.id !== unitId && storyProgress(progress, s.id).done)
-        .map(({ s, number }) => ({ unit: UNITS.find((u) => u.id === s.id), number }));
-      setBookDone({ story, shelvedBefore });
-    }
+    if (!willBeDone) return;
+    sndLevel();
+    const shelvedBefore = STORIES
+      .map((s, i) => ({ s, number: i + 1 }))
+      .filter(({ s }) => s.id !== unitId && storyProgress(progress, s.id).done)
+      .map(({ s, number }) => ({ unit: UNITS.find((u) => u.id === s.id), number }));
+    const st = storyProgress(progress, unitId);
+    const score2 = {
+      found: st.found.length, total: story.targetKeys.length,
+      firstTry: st.firstTry.length, hints: st.hints || 0,
+      quiz: { score, total },
+      perfect: st.firstTry.length >= story.targetKeys.length && !st.hints && score === total,
+    };
+    setBookDone({ story, shelvedBefore, score: score2 });
   }
 
   if (!ready) {
@@ -316,9 +353,14 @@ export default function App() {
           <LibraryScreen progress={progress} onOpenBook={(id) => { setActiveBook(id); setView("story"); }} />
         )}
         {view === "story" && activeBook && (
-          <StoryScreen story={STORIES.find((s) => s.id === activeBook)}
-            found={storyProgress(progress, activeBook).found}
-            onWordFound={(key) => markWordFound(activeBook, key)}
+          <BookReader story={STORIES.find((s) => s.id === activeBook)}
+            number={STORIES.findIndex((s) => s.id === activeBook) + 1}
+            unit={UNITS.find((u) => u.id === activeBook)}
+            state={storyProgress(progress, activeBook)}
+            gems={progress.gems}
+            onWordFound={(key, meta) => markWordFound(activeBook, key, meta)}
+            onQuizDone={(score, total) => finishBookQuiz(activeBook, score, total)}
+            onSpendGems={spendGems}
             onClose={() => { setActiveBook(null); setView("library"); }} />
         )}
         {view === "shop" && (
@@ -350,7 +392,7 @@ export default function App() {
             onClose={() => { sndTap(); setOpenedCard(null); }} />
         )}
         {bookDone && (
-          <BookCompleteModal story={bookDone.story} shelvedBefore={bookDone.shelvedBefore}
+          <BookCompleteModal story={bookDone.story} shelvedBefore={bookDone.shelvedBefore} score={bookDone.score}
             onClose={() => { sndTap(); setBookDone(null); setActiveBook(null); setView("library"); }} />
         )}
         {chest && <ChestModal reward={chest} onClose={() => { sndTap(); setChest(null); }} />}

@@ -68,6 +68,53 @@ export function GlobalStyle() {
         .fb-shelve-text { opacity: 0; animation: fb-shelve-text .45s ease-out 2.15s forwards; }
         @keyframes fb-shelve-text { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
+        /* --- Le livre ouvert : papier, typo, tourne de page --- */
+        .fb-serif { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif; }
+        .fb-paper {
+          background-color: #fdf6e3;
+          background-image:
+            radial-gradient(circle at 18% 12%, rgba(180,130,60,.10), transparent 38%),
+            radial-gradient(circle at 82% 78%, rgba(160,110,50,.09), transparent 42%),
+            repeating-linear-gradient(0deg, rgba(120,80,30,.035) 0 1px, transparent 1px 4px);
+          box-shadow: inset 12px 0 18px -12px rgba(92,55,15,.55), inset -4px 0 10px -8px rgba(92,55,15,.3),
+                      0 10px 26px rgba(92,55,15,.18);
+          border-left: 6px solid rgba(146,64,14,.35);
+          overflow: hidden;
+        }
+        .fb-paper::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 26px; pointer-events: none;
+          background: linear-gradient(270deg, rgba(120,80,30,.14), transparent); }
+        .fb-page-next { animation: fb-page-next .42s cubic-bezier(.3,.7,.3,1) backwards; transform-origin: left center; }
+        .fb-page-prev { animation: fb-page-prev .42s cubic-bezier(.3,.7,.3,1) backwards; transform-origin: right center; }
+        @keyframes fb-page-next {
+          0%   { opacity: 0; transform: perspective(900px) rotateY(-42deg) translateX(18px); filter: brightness(.9); }
+          100% { opacity: 1; transform: none; filter: none; }
+        }
+        @keyframes fb-page-prev {
+          0%   { opacity: 0; transform: perspective(900px) rotateY(42deg) translateX(-18px); filter: brightness(.9); }
+          100% { opacity: 1; transform: none; filter: none; }
+        }
+        .fb-found { animation: fb-found 1.1s ease-out; }
+        @keyframes fb-found {
+          0%   { background-color: #fde68a; transform: scale(1); box-shadow: 0 0 0 0 rgba(16,185,129,.55); }
+          35%  { background-color: #6ee7b7; transform: scale(1.18); box-shadow: 0 0 0 10px rgba(16,185,129,0); }
+          100% { transform: scale(1); }
+        }
+
+        /* --- La bibliothèque : toile des tranches, arrivée des livres --- */
+        .fb-cloth {
+          background-image:
+            repeating-linear-gradient(0deg, rgba(0,0,0,.14) 0 1px, transparent 1px 3px),
+            repeating-linear-gradient(90deg, rgba(255,255,255,.10) 0 1px, transparent 1px 4px),
+            linear-gradient(90deg, rgba(0,0,0,.30), transparent 28%, rgba(255,255,255,.14) 62%, rgba(0,0,0,.22));
+          mix-blend-mode: multiply; opacity: .85;
+        }
+        .fb-spine-in { animation: fb-spine-in .5s cubic-bezier(.2,.9,.3,1) backwards; transform-origin: bottom center; }
+        @keyframes fb-spine-in { from { opacity: 0; transform: translateY(-18px) rotate(-10deg); } to { opacity: 1; transform: none; } }
+        .fb-wood {
+          background-image: repeating-linear-gradient(90deg, rgba(0,0,0,.12) 0 2px, transparent 2px 9px),
+                            repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 1px, transparent 1px 17px);
+        }
+
         /* --- Mascotte et retours visuels --- */
         .fb-bob { animation: fb-bob 2.6s ease-in-out infinite; }
         @keyframes fb-bob { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-5px) rotate(1deg); } }
