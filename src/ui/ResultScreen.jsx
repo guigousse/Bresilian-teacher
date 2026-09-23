@@ -25,6 +25,7 @@ export function ResultScreen({ result, onHome }) {
   const {
     xpGained, gemsGained, stars, mistakes, right, total,
     levelUps, levelGems, newLevel, newTitle, newBadges, crownUp, unit, goalReached,
+    streakMilestone = 0, streakGems = 0,
   } = result;
   const accuracy = total ? Math.round((right / total) * 100) : 0;
 
@@ -67,6 +68,14 @@ export function ResultScreen({ result, onHome }) {
           <div className="text-3xl">👑</div>
           <div className="font-extrabold">Nouvelle couronne</div>
           <div className="text-sm text-white/90">{unit.title} — les prochains exercices monteront d'un cran.</div>
+        </div>
+      )}
+
+      {streakMilestone > 0 && (
+        <div className="w-full max-w-xs mb-3 rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 text-white p-4 fb-burst">
+          <div className="text-3xl fb-flame">🔥</div>
+          <div className="font-extrabold">{streakMilestone} jours d'affilée !</div>
+          <div className="text-sm text-white/90">+{streakGems} gemmes — la régularité paie plus que les longues sessions.</div>
         </div>
       )}
 

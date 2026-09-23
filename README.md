@@ -1,8 +1,8 @@
 # Fala, Brasil!
 
 Apprendre les bases du portugais du Brésil depuis le français : leçons courtes,
-phonétique française sous chaque mot, prononciation audio, niveaux, gemmes et
-cartes postales à collectionner.
+phonétique française sous chaque mot, prononciation audio, mémoire espacée,
+histoire à débloquer et cartes postales à collectionner.
 
 Progression enregistrée dans le **localStorage** du navigateur : rien à installer,
 pas de compte, pas de serveur. Application installable et utilisable hors ligne (PWA).
@@ -14,56 +14,87 @@ npm install
 npm run dev
 ```
 
+## Comment l'app fait apprendre
+
+**La mémoire espacée d'abord.** Chaque mot vit dans une boîte de Leitner. Une
+réponse juste repousse sa prochaine révision (1, 2, 4, 9, 18 puis 35 jours), une
+erreur la rapproche. L'app sait donc en permanence ce qui est acquis, ce qui est
+fragile et ce qui doit être revu aujourd'hui — c'est ce qui remplace le « j'ai
+tout oublié depuis la semaine dernière ».
+
+**Cinq façons de rencontrer un mot.** Le reconnaître (QCM dans les deux sens),
+l'entendre sans le lire, l'écrire, l'écrire sous dictée, le reconstruire dans une
+phrase, choisir son article (o/a) et le prononcer au micro quand l'appareil le
+permet. Reconnaître n'est pas savoir : la difficulté monte vers la production.
+
+**Des paliers qui se rejouent.** Une unité ne se « termine » pas, elle se monte
+jusqu'à cinq couronnes, et le mélange d'exercices change à chaque couronne :
+découverte → reconnaissance → écoute → écriture → production → maîtrise.
+
+**Une histoire par palier.** Les mots appris se retrouvent en surbrillance dans un
+chapitre du voyage de Léa au Brésil. Les retranscrire débloque le palier suivant,
+et le livre terminé se range sur l'étagère de la bibliothèque.
+
+## Ce qui donne envie de revenir
+
+- Objectif quotidien réglable (de 20 à 120 XP), anneau de progression, coffre à
+  l'objectif atteint.
+- Série de jours, primes aux paliers (3, 7, 14, 30…) et **gel de série** achetable
+  pour ne pas tout perdre le jour où l'on ne peut pas jouer.
+- Trois quêtes par jour, tirées au sort mais stables sur la journée.
+- Zé, l'ara, qui réagit à ce qui se passe ; sons synthétisés à la volée, vibrations,
+  compteurs qui grimpent, confettis.
+- Cartes postales à collectionner (récompense purement cosmétique), chacune avec
+  l'histoire, la culture et les détails du lieu.
+
+## Suivre sa progression
+
+L'écran **Ma progression** (accessible depuis l'accueil ou le profil) montre ce que
+l'élève sait vraiment : répartition des mots par niveau de mémoire, prévisions de
+révision des sept prochains jours, régularité sur huit semaines, mots qui résistent,
+et couronnes par palier.
+
+## Structure
+
+```
+src/
+  App.jsx          assemblage : état, navigation, récompenses
+  data/units.js    le contenu pédagogique (UNITS)
+  data/stories.js  les dix chapitres de l'histoire
+  data/cards.js    les vingt cartes postales
+  lib/progress.js  mémoire espacée, couronnes, quêtes, séries, trophées
+  lib/exercises.js fabrique les sessions selon la couronne
+  lib/speech.js    synthèse vocale portugaise (et contournements Android)
+  lib/audio.js     sons et vibrations, synthétisés sans aucun fichier
+  lib/storage.js   sauvegarde et code de secours
+  ui/              un fichier par écran, plus la mascotte et les styles
+```
+
+Ajouter du vocabulaire se fait dans `data/units.js`, une carte dans `data/cards.js`,
+un chapitre dans `data/stories.js` : rien d'autre à toucher.
+
 ## Déployer sur Vercel
 
-**Option A — via GitHub (recommandé)**
-
-```bash
-git init && git add . && git commit -m "Fala Brasil"
-git remote add origin git@github.com:<toi>/fala-brasil.git
-git push -u origin main
-```
-
-Puis sur vercel.com : *Add New → Project → Import* le dépôt. Vercel détecte Vite
-tout seul (build `npm run build`, output `dist`). Rien à configurer.
-
-**Option B — en ligne de commande**
-
-```bash
-npm i -g vercel
-vercel        # préproduction
-vercel --prod # production
-```
-
-## Une fois en ligne
-
-Ouvre le site sur ton téléphone, puis « Ajouter à l'écran d'accueil »
-(Safari : Partager → Sur l'écran d'accueil ; Chrome : menu → Installer l'application).
-L'app s'ouvre alors en plein écran et fonctionne **sans connexion** — utile au Brésil.
+Importer le dépôt sur vercel.com : Vite est détecté tout seul (build `npm run build`,
+sortie `dist`). Rien à configurer.
 
 ## Sauvegarde
 
 - Enregistrement automatique après chaque leçon, dans le navigateur.
 - Effacer les données du site ou passer en navigation privée efface la progression.
 - Le profil contient un **code de secours** à copier pour transférer la progression
-  vers un autre appareil ou un autre navigateur.
+  vers un autre appareil. Les sauvegardes d'avant la refonte sont migrées
+  automatiquement : les mots déjà croisés entrent en mémoire espacée et les leçons
+  terminées valent une première couronne.
 
 ## Voix
 
 L'app utilise la synthèse vocale du système (`speechSynthesis`) en `pt-BR`.
 La qualité dépend des voix installées sur l'appareil ; les réglages permettent de
 choisir la voix, le débit et la hauteur.
-- iPhone : Réglages → Accessibilité → Contenu énoncé → Voix → Portugais (Brésil), version Améliorée ou Premium.
+
+- iPhone : Réglages → Accessibilité → Contenu énoncé → Voix → Portugais (Brésil).
 - Android : Paramètres → Synthèse vocale → moteur Google → installer les données pt-BR.
 
-## Structure
-
-```
-src/App.jsx   toute l'app : contenu des leçons, cartes, exercices, écrans
-src/main.jsx  point d'entrée React
-src/index.css Tailwind + quelques règles de base
-```
-
-Le contenu pédagogique est en haut de `App.jsx` (`UNITS`), les cartes postales
-juste en dessous (`CARDS`) : ajouter une unité ou une carte se fait en ajoutant
-un objet au tableau, rien d'autre à toucher.
+Si le portugais reste muet, **Profil → Diagnostic du son** teste séparément les bips
+et la voix, et donne le rapport à envoyer.

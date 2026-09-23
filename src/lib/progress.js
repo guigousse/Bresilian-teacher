@@ -12,7 +12,7 @@ import { UNITS, ALL_ITEMS } from "../data/units.js";
 import { STORIES } from "../data/stories.js";
 import { CARDS } from "../data/cards.js";
 import { levelInfo } from "./levels.js";
-import { todayKey, daysBetween, shuffle } from "./utils.js";
+import { todayKey, daysBetween } from "./utils.js";
 
 /* --- Répétition espacée ------------------------------------------ */
 
@@ -190,7 +190,10 @@ export function questDone(q, quest) { return (q.counts[quest.metric] || 0) >= qu
 
 /* --- Série et gel -------------------------------------------------- */
 
-export const STREAK_MILESTONES = [3, 7, 14, 30, 50, 100, 200, 365];
+/* Les paliers de série et leur prime. La récompense grandit avec la
+   régularité, pas avec le temps passé dans l'app : c'est revenir qui
+   compte, pas rester. */
+export const STREAK_MILESTONES = { 3: 20, 7: 40, 14: 60, 30: 100, 50: 150, 100: 250, 200: 400, 365: 600 };
 export const FREEZE_PRICE = 80;
 export const MAX_FREEZES = 2;
 
@@ -328,9 +331,3 @@ export function chestReward(p) {
   return { kind: "gems", label: `${gems} gemmes`, gems };
 }
 
-/* Un mot au hasard parmi ceux que l'élève connaît le mieux, pour les
-   petites félicitations de l'app. */
-export function praiseWord(p) {
-  const solid = ALL_ITEMS.filter((it) => srsOf(p, it.pt).box >= 4);
-  return shuffle(solid)[0] || null;
-}

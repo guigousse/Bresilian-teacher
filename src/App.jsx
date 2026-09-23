@@ -9,7 +9,7 @@ import {
   defaultProgress, defaultPrefs, migrate, storyProgress, freshBadges,
   rollOverDay, markActivity, recordAnswer, dueItems, weakItems, seenItems,
   crownOf, MAX_CROWN, bumpQuest, ensureQuests, goalOf, chestReward, MAX_FREEZES,
-  XP_PER_CORRECT,
+  XP_PER_CORRECT, STREAK_MILESTONES,
 } from "./lib/progress.js";
 import { storage, SAVE_KEY, PREFS_KEY } from "./lib/storage.js";
 import { makeSession } from "./lib/exercises.js";
@@ -135,6 +135,8 @@ export default function App() {
     let earnedBadges = [];
     let crownUp = false;
     let goalReached = false;
+    let streakMilestone = 0;
+    const streakBefore = progress.streak;
 
     setProgress((prev) => {
       const p = JSON.parse(JSON.stringify(prev));
@@ -143,6 +145,10 @@ export default function App() {
 
       p.xp += gained; p.xpToday += gained; p.gems += gemsGained + levelGems;
       markActivity(p, { xp: gained, right, wrong: mistakes });
+      if (p.streak !== streakBefore && STREAK_MILESTONES[p.streak]) {
+        streakMilestone = p.streak;
+        p.gems += STREAK_MILESTONES[p.streak];
+      }
 
       /* La mémoire des mots se met à jour réponse par réponse. */
       answers.forEach((a) => recordAnswer(p, a.pt, a.correct));
@@ -151,7 +157,7 @@ export default function App() {
         const prevL = p.lessons[u.id] || { stars: 0 };
         p.lessons[u.id] = { done: true, stars: Math.max(prevL.stars, stars), plays: (prevL.plays || 0) + 1 };
         /* Une session propre fait gagner une couronne, jusqu'à la maîtrise. */
-        if (mistakes <= 2 && crownOf(p, u.id) < MAX_CROWN) {
+        if (mistakes <= 3 && crownOf(p, u.id) < MAX_CROWN) {
           p.crowns[u.id] = crownOf(p, u.id) + 1;
           crownUp = true;
         }
@@ -180,6 +186,7 @@ export default function App() {
       xpGained: gained, gemsGained, stars, mistakes, right, total: answers.length,
       levelUps, levelGems, newLevel: afterInfo.level, newTitle: afterInfo.title,
       newBadges: earnedBadges, crownUp, unit: u, goalReached,
+      streakMilestone, streakGems: STREAK_MILESTONES[streakMilestone] || 0,
     });
     setView("result");
   }
