@@ -16,6 +16,9 @@ export const CARDS = [
     history: "L'idée d'une statue sur le Corcovado circule dès 1850, mais le projet ne démarre qu'en 1922, financé par une souscription populaire. Conçu par Heitor da Silva Costa, le colosse est inauguré en 1931 ; son visage est l'œuvre du sculpteur roumain Gheorghe Leonida.",
     culture: "Élu l'une des sept nouvelles merveilles du monde en 2007, il est devenu le symbole d'un Brésil qui accueille bras ouverts, bien au-delà de sa dimension religieuse. La foudre le frappe plusieurs fois par an : un stock de pierre d'origine est gardé pour les retouches.",
     facts: ["30 m de statue sur un socle de 8 m, 28 m d'envergure, 635 tonnes.", "Recouvert de mosaïques de stéatite, la pierre à savon de Minas Gerais.", "Perché à 710 m ; le train à crémaillère du Corcovado existe depuis 1884."],
+    numbers: [{ v: "38 m", k: "hauteur totale" }, { v: "28 m", k: "envergure" }, { v: "1931", k: "inauguration" }, { v: "710 m", k: "altitude" }],
+    visit: "Monte tôt : le train à crémaillère part de Cosme Velho et la brume tombe souvent l'après-midi. Créneau horaire imposé, billet à réserver.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Christ+R%C3%A9dempteur" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Cristo+Redentor+Rio+de+Janeiro" }, { label: "UNESCO", url: "https://whc.unesco.org/fr/list/?search=Rio+de+Janeiro" }],
   },
   {
     id: "c2", name: "Pão de Açúcar", place: "Rio de Janeiro", emoji: "🚡", scene: "cablecar", r: "comum",
@@ -24,6 +27,9 @@ export const CARDS = [
     history: "Le nom viendrait des moules coniques dans lesquels on raffinait le sucre — ou du tupi pau-nh-acuqua, « la colline haute et pointue ». Son téléphérique, imaginé par l'ingénieur Augusto Ferreira Ramos, fonctionne depuis 1912 : l'un des tout premiers au monde.",
     culture: "C'est le décor du combat final de Moonraker (James Bond, 1979), câble tranché à pleines dents compris. Les Cariocas, eux, y viennent surtout pour l'escalade : des dizaines de voies grimpent directement dans le granit.",
     facts: ["396 m d'un bloc de granit vieux d'environ 600 millions d'années.", "Deux tronçons : Praia Vermelha → Morro da Urca → Pão de Açúcar.", "Le second tronçon au coucher du soleil est le moment le plus couru."],
+    numbers: [{ v: "396 m", k: "de granit" }, { v: "1912", k: "téléphérique" }, { v: "2", k: "tronçons" }],
+    visit: "Prendre le dernier tronçon vers 17 h : le soleil tombe derrière le Christ. File nettement plus courte en semaine.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Pain+de+Sucre+Rio" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Pao+de+Acucar+Rio+de+Janeiro" }],
   },
   {
     id: "c3", name: "Copacabana", place: "Rio de Janeiro", emoji: "🏖️", scene: "beach", r: "comum",
@@ -32,6 +38,9 @@ export const CARDS = [
     history: "Le quartier naît avec le percement du tunnel Velho en 1892 et explose dans les années 1920 avec le Copacabana Palace, inauguré en 1923. Son nom vient d'une chapelle dédiée à la Vierge de Copacabana, rapportée de Bolivie.",
     culture: "Le trottoir en vagues noires et blanches a été dessiné par le paysagiste Roberto Burle Marx en 1970 : un motif portugais pivoté de 90°. Le 31 décembre, plus de deux millions de personnes s'y rassemblent en blanc et offrent des fleurs à Iemanjá, déesse de la mer.",
     facts: ["4 km de sable découpés en « postos », repères sociaux autant que géographiques.", "Foot de plage et futevôlei s'y pratiquent toute l'année, pieds nus.", "L'eau de coco se boit directement dans la noix, à la paille."],
+    numbers: [{ v: "4 km", k: "de sable" }, { v: "1923", k: "Copacabana Palace" }, { v: "2 M", k: "au réveillon" }],
+    visit: "Les « postos » servent d'adresse : « posto 5 » suffit pour se donner rendez-vous. Eau de coco au kiosque, chaise louée à la journée.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Copacabana" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Praia+de+Copacabana+Rio+de+Janeiro" }],
   },
   {
     id: "c4", name: "Cataratas do Iguaçu", place: "Paraná", emoji: "💦", scene: "waterfall", r: "rara",
@@ -40,6 +49,9 @@ export const CARDS = [
     history: "« Y-guasu » signifie « grande eau » en guarani. Le conquistador Cabeza de Vaca est le premier Européen à les décrire, en 1542 ; le parc national brésilien date de 1939 et le classement à l'UNESCO de 1986.",
     culture: "Une légende guarani raconte que le dieu-serpent M'Boi, furieux de voir la belle Naipí s'enfuir avec le guerrier Tarobá, fendit la rivière pour les séparer à jamais. En découvrant le site, Eleanor Roosevelt aurait lâché : « Poor Niagara ! ».",
     facts: ["275 chutes réparties sur 2,7 km de largeur.", "La Garganta do Diabo tombe de 80 m dans un fracas permanent.", "80 % des chutes sont côté argentin, mais la vue d'ensemble est côté brésilien."],
+    numbers: [{ v: "275", k: "chutes" }, { v: "80 m", k: "Garganta do Diabo" }, { v: "2,7 km", k: "de large" }, { v: "1986", k: "UNESCO" }],
+    visit: "Côté brésilien pour le panorama (une demi-journée), côté argentin pour marcher au-dessus des chutes — passeport nécessaire pour traverser.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Chutes+d%27Igua%C3%A7u" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Cataratas+do+Iguacu" }, { label: "UNESCO", url: "https://whc.unesco.org/fr/list/?search=Iguacu" }],
   },
   {
     id: "c5", name: "Amazônia", place: "Manaus", emoji: "🌳", scene: "jungle", r: "rara",
@@ -48,6 +60,9 @@ export const CARDS = [
     history: "Manaus s'est enrichie avec le boom du caoutchouc, entre 1880 et 1910 : le Teatro Amazonas, inauguré en 1896, arbore des tuiles venues d'Alsace et des lustres de Murano. Le boom s'effondre quand des graines d'hévéa sorties clandestinement font naître les plantations d'Asie.",
     culture: "La forêt abrite des dizaines de peuples autochtones et nous a donné l'açaí, le guaraná, le tucupi et le jambu, cette feuille qui anesthésie la bouche. Chaque juin, le festival de Parintins oppose deux bœufs de légende : Garantido, le rouge, et Caprichoso, le bleu.",
     facts: ["Environ 5,5 millions de km², dont 60 % en territoire brésilien.", "Près de 10 % des espèces connues sur Terre y vivent.", "L'Amazone déverse à lui seul près de 20 % de l'eau douce fluviale du globe."],
+    numbers: [{ v: "5,5 M km²", k: "de forêt" }, { v: "60 %", k: "au Brésil" }, { v: "10 %", k: "des espèces connues" }],
+    visit: "Manaus est la porte d'entrée ; les lodges se rejoignent en bateau. Hautes eaux de mai à juillet pour naviguer entre les arbres.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=For%C3%AAt+amazonienne" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Manaus+Amazonas+Brasil" }],
   },
   {
     id: "c6", name: "Encontro das Águas", place: "Manaus", emoji: "🌊", scene: "rivers", r: "rara",
@@ -56,6 +71,9 @@ export const CARDS = [
     history: "C'est ici, face à Manaus, que le Rio Negro rejoint le Solimões pour former officiellement l'Amazone. Le premier est noir de tanins arrachés à la forêt, le second ocre des sédiments descendus des Andes.",
     culture: "Les deux fleuves refusent de se mélanger pendant des kilomètres : 28 °C contre 22 °C, des densités et des vitesses différentes, 2 km/h contre 6 km/h. Les guides invitent les visiteurs à plonger la main d'un côté puis de l'autre pour sentir l'écart.",
     facts: ["Environ 6 km côte à côte avant que les eaux ne se mêlent.", "L'acidité du Rio Negro éloigne les moustiques : Manaus est sur sa rive.", "Le phénomène se voit à l'œil nu depuis l'avion, à l'atterrissage."],
+    numbers: [{ v: "6 km", k: "sans se mêler" }, { v: "28 / 22 °C", k: "des deux eaux" }, { v: "2 / 6 km/h", k: "de courant" }],
+    visit: "Une heure de bateau depuis Manaus, souvent combinée avec les igarapés et la forêt inondée. Lumière du matin pour la photo.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Rencontre+des+eaux" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Encontro+das+Aguas+Manaus" }],
   },
   {
     id: "c7", name: "Pelourinho", place: "Salvador", emoji: "🥁", scene: "colonial", r: "comum",
@@ -64,6 +82,9 @@ export const CARDS = [
     history: "Cœur de Salvador, première capitale du Brésil de 1549 à 1763, le quartier tire son nom du pilori où l'on châtiait les esclaves. Laissé à l'abandon pendant des décennies, il a été restauré à partir de 1992 et classé à l'UNESCO en 1985.",
     culture: "C'est le berceau de la culture afro-brésilienne : candomblé, capoeira, samba de roda et blocos afro comme Olodum, dont les percussions ont servi de décor à un clip de Michael Jackson en 1996. L'église São Francisco, elle, croule sous le bois doré.",
     facts: ["Salvador est la ville à la plus forte population noire hors d'Afrique.", "Les rubans du Bonfim se nouent trois fois, pour trois vœux.", "L'acarajé, beignet de haricots frit à l'huile de palme, se vend à chaque coin de rue."],
+    numbers: [{ v: "1549", k: "première capitale" }, { v: "1985", k: "UNESCO" }, { v: "1992", k: "restauration" }],
+    visit: "Le mardi soir (terça da bênção), les groupes jouent dans les rues. Se déplacer léger, en groupe, et goûter l'acarajé au coin des places.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Pelourinho" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Pelourinho+Salvador+Bahia" }, { label: "UNESCO", url: "https://whc.unesco.org/fr/list/?search=Salvador+de+Bahia" }],
   },
   {
     id: "c8", name: "Chapada Diamantina", place: "Bahia", emoji: "⛰️", scene: "canyon", r: "rara",
@@ -72,6 +93,9 @@ export const CARDS = [
     history: "La ruée vers les diamants commence en 1844 et fait naître des villes de garimpeiros comme Lençóis. L'extraction est interdite en 1996 ; le parc national, créé en 1985, protège désormais 1 520 km² de plateaux.",
     culture: "Le forró pé de serra anime les soirées et les guides locaux sont souvent les descendants des chercheurs de pierres. Au Poço Encantado, entre avril et septembre, un rayon de soleil transforme le lac souterrain en bleu électrique.",
     facts: ["La Cachoeira da Fumaça tombe de 340 m : l'eau devient brume avant d'arriver en bas.", "Le Morro do Pai Inácio offre le panorama le plus photographié de Bahia.", "Grottes, rivières souterraines et piscines naturelles se visitent toute l'année."],
+    numbers: [{ v: "1 520 km²", k: "de parc" }, { v: "340 m", k: "Cachoeira da Fumaça" }, { v: "1844", k: "ruée vers les diamants" }],
+    visit: "Base à Lençóis ou au Vale do Capão ; guide obligatoire pour les grandes traversées. Le Poço Encantado s'illumine d'avril à septembre.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Chapada+Diamantina" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Chapada+Diamantina+Bahia" }],
   },
   {
     id: "c9", name: "Lençóis Maranhenses", place: "Maranhão", emoji: "🏜️", scene: "dunes", r: "lendaria",
@@ -80,6 +104,9 @@ export const CARDS = [
     history: "Les dunes sont faites du sable charrié par les fleuves Parnaíba et Preguiças, puis repoussé vers l'intérieur des terres par les alizés. Le parc national protège l'ensemble depuis 1981.",
     culture: "« Lençóis » veut dire « draps » : vues d'en haut, les dunes ressemblent à du linge étendu. Quelques familles de vaqueiros vivent dans des oasis au milieu du sable, comme Queimada dos Britos, à plusieurs heures de marche de tout.",
     facts: ["1 550 km² de dunes blanches et de lagunes turquoise.", "Ce n'est pas un désert : il y tombe environ 1 600 mm de pluie par an.", "Les lagunes se remplissent de juin à septembre, puis s'évaporent."],
+    numbers: [{ v: "1 550 km²", k: "de dunes" }, { v: "1 600 mm", k: "de pluie par an" }, { v: "juin–sept.", k: "lagunes pleines" }],
+    visit: "Entrée par Barreirinhas ou Atins, en 4x4. Hors saison les lagunes sont sèches : viser juillet-août pour les voir turquoise.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Len%C3%A7%C3%B3is+Maranhenses" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Lencois+Maranhenses" }, { label: "UNESCO", url: "https://whc.unesco.org/fr/list/?search=Lencois+Maranhenses" }],
   },
   {
     id: "c10", name: "Fernando de Noronha", place: "Pernambuco", emoji: "🐬", scene: "dolphins", r: "lendaria",
@@ -88,6 +115,9 @@ export const CARDS = [
     history: "L'archipel volcanique est repéré en 1503 lors d'une expédition à laquelle participe Amerigo Vespucci, puis concédé au marchand Fernão de Loronha. Il a servi de prison politique, puis de base militaire américaine pendant la Seconde Guerre mondiale.",
     culture: "L'accès est strictement encadré : nombre de visiteurs plafonné et écotaxe payée pour chaque jour de séjour. Chaque matin, des centaines de dauphins à long bec entrent dans la Baía dos Golfinhos pour s'y reposer.",
     facts: ["21 îles pour seulement 26 km² de terres émergées.", "Classé au patrimoine mondial de l'UNESCO en 2001.", "La praia do Sancho a été élue plusieurs fois plus belle plage du monde."],
+    numbers: [{ v: "21", k: "îles" }, { v: "26 km²", k: "de terres" }, { v: "2001", k: "UNESCO" }, { v: "écotaxe", k: "par jour" }],
+    visit: "Nombre de visiteurs plafonné : réserver des mois à l'avance. Prévoir l'écotaxe journalière et le droit d'entrée du parc marin.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Fernando+de+Noronha" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Fernando+de+Noronha" }, { label: "UNESCO", url: "https://whc.unesco.org/fr/list/?search=Fernando+de+Noronha" }],
   },
   {
     id: "c11", name: "Ouro Preto", place: "Minas Gerais", emoji: "⛪", scene: "church", r: "comum",
@@ -96,6 +126,9 @@ export const CARDS = [
     history: "Fondée en 1711, la ville a vu passer une part considérable de l'or extrait au XVIIIe siècle. C'est là qu'éclate en 1789 l'Inconfidência Mineira, complot indépendantiste dont le martyr, Tiradentes, finit pendu et écartelé.",
     culture: "Ouro Preto est le sommet du baroque brésilien grâce à Aleijadinho, sculpteur métis rongé par une maladie dégénérative, qui travaillait les outils attachés aux mains. Pendant la Semaine sainte, les rues se couvrent de tapis de sciure colorée.",
     facts: ["Premier site brésilien inscrit à l'UNESCO, en 1980.", "Treize églises baroques dans un rayon de quelques rues.", "Les pavés « pé de moleque » grimpent à des pentes vertigineuses."],
+    numbers: [{ v: "1711", k: "fondation" }, { v: "1980", k: "UNESCO" }, { v: "13", k: "églises baroques" }],
+    visit: "Rues très pentues et pavées : chaussures fermées indispensables. La Semaine sainte est le moment fort, mais la ville est pleine.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Ouro+Preto" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Ouro+Preto+Minas+Gerais" }, { label: "UNESCO", url: "https://whc.unesco.org/fr/list/?search=Ouro+Preto" }],
   },
   {
     id: "c12", name: "Brasília", place: "Distrito Federal", emoji: "🏛️", scene: "modernist", r: "comum",
@@ -104,6 +137,9 @@ export const CARDS = [
     history: "L'idée d'une capitale au centre du pays figure déjà dans la constitution de 1891, mais c'est Juscelino Kubitschek qui la réalise : chantier lancé en 1956, inauguration le 21 avril 1960, après 41 mois de travaux.",
     culture: "Lucio Costa dessine un plan en forme d'avion, Oscar Niemeyer les bâtiments, Burle Marx les jardins. Les candangos, ouvriers venus du Nordeste, ont bâti la ville puis se sont installés dans les villes satellites, aujourd'hui bien plus peuplées que le plan pilote.",
     facts: ["Classée au patrimoine mondial dès 1987, à seulement 27 ans.", "La cathédrale dresse seize colonnes de béton comme deux mains jointes.", "Les adresses sont codées : SQN 214, bloco C — presque pas de noms de rue."],
+    numbers: [{ v: "41 mois", k: "de chantier" }, { v: "1960", k: "inauguration" }, { v: "1987", k: "UNESCO" }, { v: "16", k: "colonnes" }],
+    visit: "Tout est à distance de voiture : taxi ou location. Les bâtiments de Niemeyer se visitent surtout en semaine, aux heures ouvrées.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Brasilia" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Catedral+de+Brasilia" }, { label: "UNESCO", url: "https://whc.unesco.org/fr/list/?search=Brasilia" }],
   },
   {
     id: "c13", name: "Avenida Paulista", place: "São Paulo", emoji: "🏙️", scene: "skyline", r: "comum",
@@ -112,6 +148,9 @@ export const CARDS = [
     history: "Ouverte en 1891 sur une ligne de crête, l'avenue s'est d'abord bordée des palais des barons du café. Ceux-ci ont été rasés à partir des années 1950 pour laisser place aux tours des banques.",
     culture: "Le MASP de Lina Bo Bardi, suspendu à quatre piliers rouges depuis 1968, expose ses tableaux sur des chevalets de verre. L'avenue est le lieu de tous les rassemblements : manifestations, réveillon et l'une des plus grandes marches LGBT+ du monde.",
     facts: ["2,8 km de long, fermée aux voitures tous les dimanches depuis 2015.", "Environ 1,5 million de personnes y passent chaque jour.", "São Paulo compte plus d'habitants que le Portugal tout entier."],
+    numbers: [{ v: "2,8 km", k: "d'avenue" }, { v: "1,5 M", k: "de passages par jour" }, { v: "1968", k: "MASP" }],
+    visit: "Le dimanche, l'avenue est fermée aux voitures : musiciens, vélos, patins. Le MASP mérite une visite, ses tableaux flottent sur des chevalets de verre.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Avenue+Paulista" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Avenida+Paulista+Sao+Paulo" }],
   },
   {
     id: "c14", name: "Pantanal", place: "Mato Grosso", emoji: "🐆", scene: "wildlife", r: "rara",
@@ -120,6 +159,9 @@ export const CARDS = [
     history: "La plaine est exploitée depuis le XVIIIe siècle par un élevage extensif rythmé par les crues. Les pantaneiros, cow-boys locaux, déplacent les troupeaux au gré de la montée des eaux.",
     culture: "Beaucoup de fazendas se sont converties à l'écotourisme : c'est ici qu'on a le plus de chances au monde d'apercevoir un jaguar. La Transpantaneira, piste de terre de 147 km ponctuée de plus de cent ponts de bois, s'enfonce jusqu'à Porto Jofre.",
     facts: ["150 000 à 200 000 km² : la plus grande zone humide de la planète.", "Environ 650 espèces d'oiseaux, dont le jabiru, emblème de la région.", "De novembre à mars, l'essentiel de la plaine passe sous l'eau."],
+    numbers: [{ v: "150–200 000 km²", k: "de zone humide" }, { v: "650", k: "espèces d'oiseaux" }, { v: "147 km", k: "de Transpantaneira" }],
+    visit: "Saison sèche (juillet-octobre) : les animaux se concentrent autour de l'eau. Porto Jofre est le meilleur point de départ pour les jaguars.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Pantanal" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Transpantaneira+Mato+Grosso" }, { label: "UNESCO", url: "https://whc.unesco.org/fr/list/?search=Pantanal" }],
   },
   {
     id: "c15", name: "Jericoacoara", place: "Ceará", emoji: "🪁", scene: "kite", r: "rara",
@@ -128,6 +170,9 @@ export const CARDS = [
     history: "Village de pêcheurs isolé, « Jeri » n'a eu l'électricité qu'à la fin des années 1990. Protégée dès 1984, la zone est devenue parc national en 2002.",
     culture: "Chaque soir, la foule monte sur la Duna do Pôr do Sol et applaudit le soleil quand il disparaît dans l'océan. Les rues sont en sable, sans bitume ni éclairage public : c'est voulu, pour préserver le ciel et les tortues.",
     facts: ["La Pedra Furada, arche sculptée par la mer, est l'emblème du village.", "Vents constants de juillet à décembre : paradis du kitesurf.", "On y accède uniquement en 4x4, à travers les dunes."],
+    numbers: [{ v: "2002", k: "parc national" }, { v: "juil.–déc.", k: "saison de vent" }, { v: "0", k: "route goudronnée" }],
+    visit: "Accès en 4x4 depuis Jijoca, à travers les dunes. Pas d'éclairage public : lampe de poche utile le soir, ciel étoilé en prime.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Jericoacoara" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Jericoacoara+Ceara" }],
   },
   {
     id: "c16", name: "Olinda", place: "Pernambuco", emoji: "🎭", scene: "carnival", r: "comum",
@@ -136,6 +181,9 @@ export const CARDS = [
     history: "Fondée en 1535, incendiée par les Hollandais en 1631 puis reconstruite au XVIIIe siècle, Olinda doit son nom à l'exclamation de son fondateur : « Ó, linda ! », « Oh, la belle ! ». Elle est classée à l'UNESCO depuis 1982.",
     culture: "Son carnaval se fait sans sponsors ni cordes de sécurité : on y danse le frevo, ombrelle à la main, derrière des bonecos gigantes, géants de papier mâché de trois à quatre mètres qui caricaturent célébrités et figures du quartier.",
     facts: ["Le carnaval s'ouvre avec la sortie du Homem da Meia-Noite, l'Homme de Minuit.", "Plus de cinq cents géants ont été recensés au fil des années.", "Depuis l'Alto da Sé, on voit les gratte-ciel de Recife à l'horizon."],
+    numbers: [{ v: "1535", k: "fondation" }, { v: "1982", k: "UNESCO" }, { v: "500+", k: "géants recensés" }],
+    visit: "Le carnaval dure une semaine et l'hébergement se réserve des mois à l'avance. Le reste de l'année, la ville se visite à pied, au calme.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Olinda" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Olinda+Pernambuco" }, { label: "UNESCO", url: "https://whc.unesco.org/fr/list/?search=Olinda" }],
   },
   {
     id: "c17", name: "Paraty", place: "Rio de Janeiro", emoji: "⛵", scene: "sailboat", r: "comum",
@@ -144,6 +192,9 @@ export const CARDS = [
     history: "Par ce port transitait l'or du Minas Gerais avant de partir pour Lisbonne, au bout du Caminho do Ouro pavé par les esclaves. Contournée plus tard par une route plus directe, la ville s'est endormie — ce qui a sauvé son centre historique.",
     culture: "Les rues en pierres irrégulières, les fameux « pés de moleque », sont conçues pour que les grandes marées les inondent et les nettoient. Chaque année, la FLIP, fête littéraire internationale, remplit la ville d'écrivains et de lecteurs.",
     facts: ["Classée à l'UNESCO en 2019, pour sa culture et sa biodiversité à la fois.", "La région compte des centaines d'alambics de cachaça artisanale.", "Le centre historique est interdit aux voitures."],
+    numbers: [{ v: "2019", k: "UNESCO" }, { v: "~300", k: "alambics de cachaça" }, { v: "0", k: "voiture au centre" }],
+    visit: "Viser les grandes marées de pleine lune : les rues se remplissent d'eau, c'est le moment à photographier. Sorties en goélette vers les îles.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Paraty" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Paraty+Rio+de+Janeiro" }, { label: "UNESCO", url: "https://whc.unesco.org/fr/list/?search=Paraty" }],
   },
   {
     id: "c18", name: "Bonito", place: "Mato Grosso do Sul", emoji: "🐠", scene: "reef", r: "rara",
@@ -152,6 +203,9 @@ export const CARDS = [
     history: "Le calcaire de la région filtre l'eau des rivières et la rend transparente. Depuis les années 1990, un système de bons obligatoires limite strictement le nombre de visiteurs par site et par jour.",
     culture: "Bonito est devenue la vitrine du tourisme durable brésilien : guide obligatoire, quotas, équipements contrôlés. En flottaison, on se laisse porter par le courant sans battre des pieds, pour ne pas soulever les sédiments.",
     facts: ["Rio da Prata et Rio Sucuri : visibilité jusqu'à cinquante mètres.", "La Gruta do Lago Azul abrite un lac souterrain de 90 m de profondeur.", "L'Abismo Anhumas se descend en rappel sur 72 m."],
+    numbers: [{ v: "50 m", k: "de visibilité" }, { v: "90 m", k: "Gruta do Lago Azul" }, { v: "72 m", k: "Abismo Anhumas" }],
+    visit: "Tout se réserve par voucher, avec des quotas quotidiens : organiser les sorties à l'avance. Eaux les plus claires en saison sèche.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Bonito+Mato+Grosso+do+Sul" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Bonito+Mato+Grosso+do+Sul" }],
   },
   {
     id: "c19", name: "Porto de Galinhas", place: "Pernambuco", emoji: "🐟", scene: "fishpools", r: "comum",
@@ -160,6 +214,9 @@ export const CARDS = [
     history: "Le nom rappelle une histoire sombre : après l'interdiction de la traite en 1831, les navires annonçaient en code « tem galinha nova », « il y a des poules fraîches », pour signaler l'arrivée clandestine d'Africains.",
     culture: "Les jangadas, radeaux à voile hérités des pêcheurs, emmènent les visiteurs jusqu'aux piscines naturelles. Le village, longtemps confidentiel, est aujourd'hui l'une des plages les plus primées du pays.",
     facts: ["À marée basse, les récifs forment des bassins tièdes, proches de 30 °C.", "Poissons-clowns et sergents-majors s'observent à un mètre du bord.", "Il faut consulter le tableau des marées avant de partir."],
+    numbers: [{ v: "~30 °C", k: "dans les piscines" }, { v: "marée basse", k: "obligatoire" }, { v: "jangada", k: "pour y aller" }],
+    visit: "Consulter la table des marées : les piscines n'existent qu'à marée basse. Les jangadas partent de la plage centrale, tarif affiché.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Porto+de+Galinhas" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Porto+de+Galinhas+Ipojuca" }],
   },
   {
     id: "c20", name: "Gramado", place: "Rio Grande do Sul", emoji: "🍫", scene: "snowvillage", r: "lendaria",
@@ -168,6 +225,9 @@ export const CARDS = [
     history: "Colonisée à partir de 1875 par des immigrants allemands puis italiens, la ville a construit son image bavaroise à partir des années 1950 — une mise en scène touristique parfaitement assumée.",
     culture: "Le festival de cinéma brésilien s'y tient depuis 1973 et remet le Kikito d'or. De novembre à janvier, le Natal Luz illumine la ville et attire des millions de visiteurs, entre chocolateries artisanales et fondues héritées des colons.",
     facts: ["850 m d'altitude : il gèle l'hiver, il neige très rarement.", "La Rua Coberta, rue couverte, sert de salon au centre-ville.", "Pulls et chocolat chaud : le Brésil auquel personne ne pense."],
+    numbers: [{ v: "850 m", k: "d'altitude" }, { v: "1973", k: "festival de cinéma" }, { v: "nov.–janv.", k: "Natal Luz" }],
+    visit: "Hiver austral (juin-août) pour les pulls et le chocolat chaud ; Natal Luz de novembre à janvier, magnifique mais très fréquenté.",
+    links: [{ label: "Wikipédia", url: "https://fr.wikipedia.org/w/index.php?search=Gramado" }, { label: "Sur la carte", url: "https://www.google.com/maps/search/?api=1&query=Gramado+Rio+Grande+do+Sul" }],
   },
 ];
 

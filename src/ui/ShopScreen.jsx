@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Gem, Package, RotateCcw, Snowflake, Sparkles, Volume2 } from "lucide-react";
+import { ExternalLink, Gem, Package, RotateCcw, Snowflake, Sparkles, Volume2 } from "lucide-react";
 import { CARDS, CARD_PRICE, RARITY } from "../data/cards.js";
 import { LEVEL_GEMS } from "../lib/levels.js";
 import { FREEZE_PRICE, MAX_FREEZES } from "../lib/progress.js";
@@ -109,6 +109,17 @@ export function CardBack({ card, index, onFlipBack }) {
 
       <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-3" onClick={(e) => e.stopPropagation()}>
         <p className="text-[13px] text-slate-500 italic leading-relaxed">{card.note}</p>
+
+        {card.numbers && card.numbers.length > 0 && (
+          <div className="grid grid-cols-2 gap-1.5">
+            {card.numbers.map((n, i) => (
+              <div key={i} className="rounded-xl bg-slate-50 border border-slate-100 px-2 py-1.5">
+                <div className="text-[13px] font-extrabold text-slate-800 leading-tight">{n.v}</div>
+                <div className="text-[10px] text-slate-400 leading-tight">{n.k}</div>
+              </div>
+            ))}
+          </div>
+        )}
         {card.history && (
           <section>
             <h4 className="text-[10px] font-extrabold uppercase tracking-wider text-amber-600 mb-1">Histoire</h4>
@@ -131,6 +142,27 @@ export function CardBack({ card, index, onFlipBack }) {
                 </li>
               ))}
             </ul>
+          </section>
+        )}
+        {card.visit && (
+          <section>
+            <h4 className="text-[10px] font-extrabold uppercase tracking-wider text-sky-600 mb-1">Si tu y vas</h4>
+            <p className="text-[13px] text-slate-600 leading-relaxed">{card.visit}</p>
+          </section>
+        )}
+        {card.links && card.links.length > 0 && (
+          <section>
+            <h4 className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1.5">Pour aller plus loin</h4>
+            <div className="flex flex-wrap gap-1.5">
+              {card.links.map((l) => (
+                <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1 rounded-xl border-2 border-slate-200 px-2.5 py-1.5 text-[11px] font-bold text-slate-600 active:translate-y-0.5">
+                  {l.label} <ExternalLink className="w-3 h-3 text-slate-400" />
+                </a>
+              ))}
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1.5">Ces liens ouvrent le navigateur : il faut une connexion.</p>
           </section>
         )}
       </div>
