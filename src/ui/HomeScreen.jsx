@@ -1,12 +1,12 @@
 import React from "react";
 import {
-  AlertTriangle, BarChart3, Check, Flame, Gem, Lock, RotateCcw, Settings, Sparkles, Volume2, X,
+  AlertTriangle, BarChart3, BookOpen, Check, Flame, Gem, Lock, RotateCcw, Settings, Sparkles, Volume2, X,
 } from "lucide-react";
 import { UNITS } from "../data/units.js";
-import { STORIES } from "../data/stories.js";
+import { BOOKS, SECTIONS } from "../data/stories.js";
 import { levelInfo } from "../lib/levels.js";
 import {
-  booksDone, storyProgress, crownOf, MAX_CROWN, CROWN_LABELS, goalOf,
+  booksDone, storyProgress, bookPagesDone, crownOf, MAX_CROWN, CROWN_LABELS, goalOf,
   ensureQuests, questDone, dueCount, weakItems, masteryBreakdown,
 } from "../lib/progress.js";
 import { sndTap } from "../lib/audio.js";
@@ -54,7 +54,7 @@ function SoundWarning({ status, onSettings, onHide }) {
 }
 
 /* Un palier sur le chemin : pastille ronde, couronnes en dessous. */
-function PathNode({ unit, index, crown, unlocked, reason, onStart }) {
+function PathNode({ unit, index, crown, unlocked, reason, pageDone, lessonDone, onStart, onOpenBook }) {
   const side = index % 4 === 1 ? "ml-16" : index % 4 === 3 ? "mr-16 self-end" : "";
   const done = crown >= MAX_CROWN;
   return (
@@ -80,6 +80,14 @@ function PathNode({ unit, index, crown, unlocked, reason, onStart }) {
         ) : (
           <div className="text-[10px] text-slate-400 mt-0.5">{reason}</div>
         )}
+        {/* La page de livre que ce chapitre ouvre. */}
+        {unlocked && lessonDone && (
+          <button onClick={() => { sndTap(); onOpenBook(); }}
+            className={`mt-1.5 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-extrabold
+              ${pageDone ? "bg-emerald-50 text-emerald-700" : "bg-amber-100 text-amber-800 fb-pulse"}`}>
+            <BookOpen className="w-3 h-3" /> {pageDone ? "Page lue" : "Page à lire"}
+          </button>
+        )}
       </div>
     </div>
   );
@@ -87,7 +95,7 @@ function PathNode({ unit, index, crown, unlocked, reason, onStart }) {
 
 export function HomeScreen({
   progress, prefs, onStart, onSettings, storageWarning, speechState,
-  soundWarnHidden, onHideSoundWarn, onClaimQuest, onOpenChest, onStats,
+  soundWarnHidden, onHideSoundWarn, onClaimQuest, onOpenChest, onStats, onOpenBook,
 }) {
   const li = levelInfo(progress.xp);
   const goal = goalOf(prefs);
@@ -230,25 +238,80 @@ export function HomeScreen({
         </div>
       </div>
 
-      {/* Le chemin */}
+      {/* Le chemin, thématique par thématique */}
       <div className="px-4 pt-7">
         <h3 className="font-extrabold text-slate-800 mb-1">Mon parcours</h3>
-        <p className="text-xs text-slate-400 mb-4">Chaque palier se rejoue : à chaque couronne, les exercices deviennent plus exigeants.</p>
-        <div className="flex flex-col gap-5">
-          {UNITS.map((u, i) => {
-            const prevLessonDone = i === 0 || (progress.lessons[UNITS[i - 1].id] || {}).done;
-            const prevStoryDone = i === 0 || storyProgress(progress, UNITS[i - 1].id).done;
-            const unlocked = prevLessonDone && prevStoryDone;
-            return (
-              <PathNode key={u.id} unit={u} index={i} crown={crownOf(progress, u.id)} unlocked={unlocked}
-                reason={prevLessonDone ? "Termine le livre précédent" : "Termine la leçon précédente"}
-                onStart={onStart} />
-            );
-          })}
-        </div>
+        <p className="text-xs text-slate-400 mb-4">Cinq thématiques, quatre chapitres chacune. Chaque chapitre terminé ouvre une page de son livre.</p>
+
+        {SECTIONS.map((section, si) => {
+          const opened = bookPagesDone(progress, section.book);
+          /* Une thématique s'ouvre quand la précédente est finie — ou si
+             l'élève y a déjà travaillé, pour ne rien retirer à une
+             ancienne sauvegarde. */
+          const sectionOpen = si === 0
+            || SECTIONS[si - 1].chapters.every((c) => storyProgress(progress, c).done)
+            || section.chapters.some((c) => (progress.lessons[c] || {}).done);
+          return (
+            <div key={section.id} className="mb-7">
+              {/* L'en-tête de thématique : le livre à remplir */}
+              <button onClick={() => sectionOpen && onOpenBook && onOpenBook(section.id)}
+                disabled={!sectionOpen}
+                className={`w-full text-left rounded-2xl p-3 mb-4 flex items-center gap-3 border-2 transition-colors
+                  ${sectionOpen ? "bg-gradient-to-br " + section.color + " border-transparent text-white shadow"
+                    : "bg-slate-50 border-slate-100 text-slate-400"}`}>
+                <span className="text-2xl shrink-0">{sectionOpen ? section.emoji : "🔒"}</span>
+                <span className="flex-1 min-w-0">
+                  <span className="block text-[10px] font-bold uppercase tracking-widest opacity-80">Livro {si + 1}</span>
+                  <span className="block font-extrabold leading-tight truncate">{section.title}</span>
+                </span>
+                {sectionOpen ? (
+                  <span className="flex gap-1 shrink-0" aria-label={`${opened} pages sur 4`}>
+                    {section.chapters.map((c) => (
+                      <span key={c} className={`w-2 h-6 rounded-sm ${storyProgress(progress, c).done ? "bg-white" : "bg-white/30"}`} />
+                    ))}
+                  </span>
+                ) : (
+                  <span className="text-[10px] font-bold shrink-0 text-right leading-tight">Termine<br />le livre précédent</span>
+                )}
+              </button>
+
+              {!sectionOpen ? (
+                /* Thématique encore fermée : on montre sa forme, pas son contenu. */
+                <div className="flex items-center justify-center gap-3">
+                  {section.chapters.map((cid) => (
+                    <div key={cid} className="w-11 h-11 rounded-full bg-slate-100 border-b-4 border-slate-200 grid place-items-center">
+                      <Lock className="w-4 h-4 text-slate-300" />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+              <div className="flex flex-col gap-5">
+                {section.chapters.map((cid, ci) => {
+                  const u = UNITS.find((x) => x.id === cid);
+                  const all = SECTIONS.flatMap((x) => x.chapters);
+                  const gi = all.indexOf(cid);
+                  const prev = gi === 0 ? null : all[gi - 1];
+                  const prevLessonDone = !prev || (progress.lessons[prev] || {}).done;
+                  const prevStoryDone = !prev || storyProgress(progress, prev).done;
+                  /* Un chapitre déjà travaillé reste ouvert : une ancienne
+                     sauvegarde ne perd pas l'accès à ce qu'elle avait fait. */
+                  const unlocked = !!(progress.lessons[cid] || {}).done || (prevLessonDone && prevStoryDone);
+                  return (
+                    <PathNode key={u.id} unit={u} index={ci} crown={crownOf(progress, u.id)} unlocked={unlocked}
+                      pageDone={storyProgress(progress, u.id).done}
+                      lessonDone={!!(progress.lessons[u.id] || {}).done}
+                      reason={prevLessonDone ? "Lis la page précédente" : "Termine la leçon précédente"}
+                      onStart={onStart} onOpenBook={() => onOpenBook && onOpenBook(section.id)} />
+                  );
+                })}
+              </div>
+              )}
+            </div>
+          );
+        })}
 
         <div className="mt-6 rounded-2xl border-2 border-dashed border-emerald-200 bg-emerald-50 p-3 text-center">
-          <div className="text-sm font-bold text-emerald-800">{booksDone(progress)}/{STORIES.length} livres rangés</div>
+          <div className="text-sm font-bold text-emerald-800">{booksDone(progress)}/{BOOKS.length} livres rangés</div>
           <div className="text-xs text-emerald-700 mt-0.5">L'histoire de Léa continue dans l'onglet Biblioteca.</div>
         </div>
       </div>

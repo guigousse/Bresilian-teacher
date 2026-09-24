@@ -31,9 +31,17 @@ permet. Reconnaître n'est pas savoir : la difficulté monte vers la production.
 jusqu'à cinq couronnes, et le mélange d'exercices change à chaque couronne :
 découverte → reconnaissance → écoute → écriture → production → maîtrise.
 
-**Une histoire par palier.** Les mots appris se retrouvent en surbrillance dans un
-chapitre du voyage de Léa au Brésil. Les retranscrire débloque le palier suivant,
-et le livre terminé se range sur l'étagère de la bibliothèque.
+**Cinq thématiques, vingt chapitres.** Le vocabulaire se précise à l'intérieur
+d'une thématique : on commande à manger, puis on décrit son petit-déjeuner, puis
+on achète au marché, puis on dit ce qu'on aime. 360 mots et phrases en tout.
+
+**Un livre par thématique, une page par chapitre.** Terminer un chapitre ouvre une
+page du livre de sa thématique — il en faut les quatre pour avoir l'histoire
+entière et refermer le livre sur l'étagère. Dans la page, les mots du chapitre
+sont en surbrillance : les retranscrire, puis répondre à deux questions de
+compréhension, ouvre le chapitre suivant. La traduction française s'affiche ligne
+par ligne, les mots à retrouver restant masqués. Chaque page se termine sur une
+phrase en suspens, chaque livre sur une question sans réponse.
 
 ## Ce qui donne envie de revenir
 
@@ -59,8 +67,8 @@ et couronnes par palier.
 ```
 src/
   App.jsx          assemblage : état, navigation, récompenses
-  data/units.js    le contenu pédagogique (UNITS)
-  data/stories.js  les dix chapitres de l'histoire
+  data/units.js    le contenu pédagogique : 20 chapitres, 360 items
+  data/stories.js  les cinq livres, vingt pages en tout
   data/cards.js    les vingt cartes postales
   lib/progress.js  mémoire espacée, couronnes, quêtes, séries, trophées
   lib/exercises.js fabrique les sessions selon la couronne

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 import { UNITS, ALL_ITEMS } from "./data/units.js";
-import { STORIES, STORY_BONUS_XP, STORY_BONUS_GEMS } from "./data/stories.js";
+import { BOOKS, bookOf, pageOf, PAGE_BONUS_XP, PAGE_BONUS_GEMS, BOOK_BONUS_XP, BOOK_BONUS_GEMS } from "./data/stories.js";
 import { CARDS, CARD_PRICE, RARITY } from "./data/cards.js";
 
 import { levelInfo, LEVEL_GEMS } from "./lib/levels.js";
 import {
-  defaultProgress, defaultPrefs, migrate, storyProgress, storyWordsDone, freshBadges,
+  defaultProgress, defaultPrefs, migrate, storyProgress, storyWordsDone, bookDone, freshBadges,
   rollOverDay, markActivity, recordAnswer, dueItems, weakItems, seenItems,
   crownOf, MAX_CROWN, bumpQuest, ensureQuests, goalOf, chestReward, MAX_FREEZES,
   XP_PER_CORRECT, STREAK_MILESTONES,
@@ -41,7 +41,7 @@ export default function App() {
   const [revealed, setRevealed] = useState(null);
   const [openedCard, setOpenedCard] = useState(null);
   const [activeBook, setActiveBook] = useState(null);
-  const [bookDone, setBookDone] = useState(null);
+  const [closedBook, setClosedBook] = useState(null);
   const [chest, setChest] = useState(null);
   const [speechState, setSpeechState] = useState(getSpeechStatus());
   const [soundWarnHidden, setSoundWarnHidden] = useState(false);
@@ -250,25 +250,25 @@ export default function App() {
     setTimeout(() => speak(chosen.pt), 700);
   }
 
-  /* --- Les livres ---------------------------------------------------
+  /* --- Les livres ----------------------------------------------------
      Un mot retrouvé se note avec la manière dont il l'a été : du premier
-     coup, ou après des essais et des indices. Le chapitre ne se ferme
-     pas pour autant — il faut encore répondre aux questions. */
+     coup, ou après des essais et des indices. La page ne se ferme pas
+     pour autant — il faut encore répondre aux questions. */
 
-  function markWordFound(unitId, key, { firstTry = false, hints = 0 } = {}) {
-    const story = STORIES.find((s) => s.id === unitId);
-    if (!story) return;
-    if (storyProgress(progress, unitId).found.includes(key)) return;
+  function markWordFound(chapterId, key, { firstTry = false, hints = 0 } = {}) {
+    const page = pageOf(chapterId);
+    if (!page) return;
+    if (storyProgress(progress, chapterId).found.includes(key)) return;
 
     setProgress((prev) => {
       const p = JSON.parse(JSON.stringify(prev));
       p.story = p.story || {};
-      const c = { found: [], firstTry: [], hints: 0, quiz: null, done: false, ...(p.story[unitId] || {}) };
+      const c = { found: [], firstTry: [], hints: 0, quiz: null, done: false, ...(p.story[chapterId] || {}) };
       if (c.found.includes(key)) return prev;
       c.found = [...c.found, key];
       if (firstTry) c.firstTry = [...c.firstTry, key];
       c.hints = (c.hints || 0) + hints;
-      p.story[unitId] = c;
+      p.story[chapterId] = c;
       recordAnswer(p, key, firstTry);
       bumpQuest(p, "story", 1);
       const fresh = freshBadges(p);
@@ -281,47 +281,46 @@ export default function App() {
     setProgress((prev) => ({ ...prev, gems: Math.max(0, prev.gems - n) }));
   }
 
-  /* Les questions justes ferment le chapitre : c'est là que tombent le
-     bonus, le rangement sur l'étagère et le palier suivant. */
-  function finishBookQuiz(unitId, score, total) {
-    const story = STORIES.find((s) => s.id === unitId);
-    if (!story) return;
-    const cur = storyProgress(progress, unitId);
-    if (cur.done) return;
-    const willBeDone = storyWordsDone(progress, story);
+  /* Les questions justes ferment la page. Si c'était la dernière du
+     livre, le livre se referme et va se ranger sur l'étagère. */
+  function finishPageQuiz(chapterId, score, total) {
+    const page = pageOf(chapterId);
+    const book = bookOf(chapterId);
+    if (!page || !book) return;
+    if (storyProgress(progress, chapterId).done) return;
+    if (!storyWordsDone(progress, page)) return;
+
+    const others = book.chapters.filter((c) => c !== chapterId);
+    const bookCloses = others.every((c) => storyProgress(progress, c).done);
 
     setProgress((prev) => {
       const p = JSON.parse(JSON.stringify(prev));
       p.story = p.story || {};
-      const c = { found: [], firstTry: [], hints: 0, quiz: null, done: false, ...(p.story[unitId] || {}) };
-      c.quiz = { score, total, passed: score === total };
-      if (willBeDone && !c.done) {
-        c.done = true;
-        p.gems += STORY_BONUS_GEMS;
-        p.xp += STORY_BONUS_XP;
-        p.xpToday += STORY_BONUS_XP;
-        markActivity(p, { xp: STORY_BONUS_XP });
-      }
-      p.story[unitId] = c;
+      const c = { found: [], firstTry: [], hints: 0, quiz: null, done: false, ...(p.story[chapterId] || {}) };
+      c.quiz = { score, total, passed: true };
+      c.done = true;
+      p.story[chapterId] = c;
+      const xp = PAGE_BONUS_XP + (bookCloses ? BOOK_BONUS_XP : 0);
+      p.gems += PAGE_BONUS_GEMS + (bookCloses ? BOOK_BONUS_GEMS : 0);
+      p.xp += xp; p.xpToday += xp;
+      markActivity(p, { xp });
       const fresh = freshBadges(p);
       p.badges = [...p.badges, ...fresh.map((b) => b.id)];
       return p;
     });
 
-    if (!willBeDone) return;
+    if (!bookCloses) { sndCard(); return; }
     sndLevel();
-    const shelvedBefore = STORIES
-      .map((s, i) => ({ s, number: i + 1 }))
-      .filter(({ s }) => s.id !== unitId && storyProgress(progress, s.id).done)
-      .map(({ s, number }) => ({ unit: UNITS.find((u) => u.id === s.id), number }));
-    const st = storyProgress(progress, unitId);
-    const score2 = {
-      found: st.found.length, total: story.targetKeys.length,
-      firstTry: st.firstTry.length, hints: st.hints || 0,
-      quiz: { score, total },
-      perfect: st.firstTry.length >= story.targetKeys.length && !st.hints && score === total,
-    };
-    setBookDone({ story, shelvedBefore, score: score2 });
+    const shelvedBefore = BOOKS.filter((b) => b.id !== book.id && bookDone(progress, b));
+    const parts = book.pages.map((pg) => storyProgress(progress, pg.unit));
+    const st = storyProgress(progress, chapterId);
+    const firstTry = parts.reduce((n, s) => n + s.firstTry.length, 0) + st.firstTry.length;
+    const hints = parts.reduce((n, s) => n + (s.hints || 0), 0);
+    setClosedBook({
+      book, shelvedBefore,
+      score: { pages: book.pages.length, total: book.pages.length, words: book.targetTotal, firstTry, hints,
+        perfect: firstTry >= book.targetTotal && !hints },
+    });
   }
 
   if (!ready) {
@@ -346,21 +345,22 @@ export default function App() {
             onSettings={() => setShowSettings(true)} storageWarning={storageWarning}
             speechState={speechState} soundWarnHidden={soundWarnHidden}
             onHideSoundWarn={() => setSoundWarnHidden(true)}
-            onClaimQuest={claimQuest} onOpenChest={openChest} onStats={() => setView("stats")} />
+            onClaimQuest={claimQuest} onOpenChest={openChest} onStats={() => setView("stats")}
+            onOpenBook={(id) => { setActiveBook(id); setView("story"); }} />
         )}
         {view === "stats" && <StatsScreen progress={progress} prefs={prefs} onBack={() => setView("path")} onStart={startLesson} />}
         {view === "library" && (
           <LibraryScreen progress={progress} onOpenBook={(id) => { setActiveBook(id); setView("story"); }} />
         )}
         {view === "story" && activeBook && (
-          <BookReader story={STORIES.find((s) => s.id === activeBook)}
-            number={STORIES.findIndex((s) => s.id === activeBook) + 1}
-            unit={UNITS.find((u) => u.id === activeBook)}
-            state={storyProgress(progress, activeBook)}
+          <BookReader book={BOOKS.find((b) => b.id === activeBook)}
+            progress={progress}
+            isUnlocked={(chapterId) => !!(progress.lessons[chapterId] || {}).done}
             gems={progress.gems}
-            onWordFound={(key, meta) => markWordFound(activeBook, key, meta)}
-            onQuizDone={(score, total) => finishBookQuiz(activeBook, score, total)}
+            onWordFound={markWordFound}
+            onPageDone={finishPageQuiz}
             onSpendGems={spendGems}
+            onStartLesson={(chapterId) => { setActiveBook(null); startLesson(chapterId); }}
             onClose={() => { setActiveBook(null); setView("library"); }} />
         )}
         {view === "shop" && (
@@ -391,9 +391,9 @@ export default function App() {
           <CardModal card={openedCard.card} index={openedCard.index}
             onClose={() => { sndTap(); setOpenedCard(null); }} />
         )}
-        {bookDone && (
-          <BookCompleteModal story={bookDone.story} shelvedBefore={bookDone.shelvedBefore} score={bookDone.score}
-            onClose={() => { sndTap(); setBookDone(null); setActiveBook(null); setView("library"); }} />
+        {closedBook && (
+          <BookCompleteModal book={closedBook.book} shelvedBefore={closedBook.shelvedBefore} score={closedBook.score}
+            onClose={() => { sndTap(); setClosedBook(null); setActiveBook(null); setView("library"); }} />
         )}
         {chest && <ChestModal reward={chest} onClose={() => { sndTap(); setChest(null); }} />}
       </div>

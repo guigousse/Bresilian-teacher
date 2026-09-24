@@ -9,7 +9,7 @@
    ================================================================== */
 
 import { UNITS, ALL_ITEMS } from "../data/units.js";
-import { STORIES } from "../data/stories.js";
+import { BOOKS } from "../data/stories.js";
 import { CARDS } from "../data/cards.js";
 import { levelInfo } from "./levels.js";
 import { todayKey, daysBetween } from "./utils.js";
@@ -251,29 +251,48 @@ export function activeDays(p, days = 56) {
 /* --- Trophées ------------------------------------------------------ */
 
 export function doneCount(p) { return Object.values(p.lessons).filter((l) => l.done).length; }
-export function booksDone(p) { return Object.values(p.story || {}).filter((s) => s.done).length; }
+/* Une page de livre appartient à un chapitre ; un livre est terminé
+   quand ses quatre pages le sont. C'est ce qui ouvre la section
+   suivante — il faut toute la thématique pour avoir toute l'histoire. */
+export function pagesDone(p) { return Object.values(p.story || {}).filter((s) => s.done).length; }
+export function booksDone(p) { return BOOKS.filter((b) => bookDone(p, b)).length; }
+export function bookDone(p, book) { return book.chapters.every((c) => storyProgress(p, c).done); }
+export function bookPagesDone(p, book) { return book.chapters.filter((c) => storyProgress(p, c).done).length; }
+
 export function storyProgress(p, unitId) {
   const s = (p.story && p.story[unitId]) || {};
   return { found: [], firstTry: [], hints: 0, quiz: null, done: false, ...s };
 }
 
-/* Un chapitre n'est terminé que si ses mots sont retrouvés ET si les
-   questions de compréhension sont justes : traduire des mots isolés ne
-   prouve pas qu'on a suivi l'histoire. */
-export function storyWordsDone(p, story) {
-  const st = storyProgress(p, story.id);
-  return story.targetKeys.every((k) => st.found.includes(k));
+/* Une page n'est terminée que si ses mots sont retrouvés ET si les
+   questions sont justes : traduire des mots isolés ne prouve pas qu'on
+   a suivi l'histoire. */
+export function storyWordsDone(p, page) {
+  const st = storyProgress(p, page.unit);
+  return page.targetKeys.every((k) => st.found.includes(k));
 }
 
-export function storyScore(p, story) {
-  const st = storyProgress(p, story.id);
-  const total = story.targetKeys.length;
+export function storyScore(p, page) {
+  const st = storyProgress(p, page.unit);
+  const total = page.targetKeys.length;
   return {
     found: st.found.length, total,
     firstTry: st.firstTry.length,
     hints: st.hints || 0,
     quiz: st.quiz,
     perfect: st.done && st.firstTry.length >= total && !st.hints && st.quiz && st.quiz.score === st.quiz.total,
+  };
+}
+
+/* Le bilan d'un livre entier, pour l'étagère et l'écran de fin. */
+export function bookScore(p, book) {
+  const parts = book.pages.map((pg) => storyScore(p, pg));
+  return {
+    pages: bookPagesDone(p, book), total: book.pages.length,
+    firstTry: parts.reduce((n, s) => n + s.firstTry, 0),
+    words: book.targetTotal,
+    hints: parts.reduce((n, s) => n + s.hints, 0),
+    perfect: bookDone(p, book) && parts.every((s) => s.perfect),
   };
 }
 
@@ -296,7 +315,7 @@ export const BADGES = [
   { id: "cardAll", label: "Álbum completo", desc: "Les 20 cartes", emoji: "🏆", test: (p) => (p.cards || []).length >= CARDS.length },
   { id: "allLessons", label: "Brasileiro", desc: "Toutes les leçons", emoji: "🇧🇷", test: (p) => doneCount(p) >= UNITS.length },
   { id: "book1", label: "Primeiro livro", desc: "Terminer un livre", emoji: "📖", test: (p) => booksDone(p) >= 1 },
-  { id: "allBooks", label: "Bibliotecário", desc: "Tous les livres terminés", emoji: "🎓", test: (p) => booksDone(p) >= STORIES.length },
+  { id: "allBooks", label: "Bibliotecário", desc: "Tous les livres terminés", emoji: "🎓", test: (p) => booksDone(p) >= BOOKS.length },
 ];
 
 export function freshBadges(p) {

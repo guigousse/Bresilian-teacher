@@ -32,12 +32,20 @@ function articleOf(pt) {
   return m ? m[1].toLowerCase() : null;
 }
 
+/* Les mauvaises réponses viennent d'abord du chapitre en cours : avec
+   360 mots au catalogue, tirer au hasard dans tout le vocabulaire
+   donnerait « tchau » contre « l'hôpital » — un choix qu'on fait sans
+   rien savoir. On ne complète avec le reste que s'il manque du monde. */
 function mcq(item, pool, dir) {
   const field = dir === "pt_fr" ? "fr" : "pt";
-  const others = pick(
-    [...pool, ...ALL_ITEMS].filter((x) => x[field] !== item[field])
-      .filter((x, idx, self) => self.findIndex((y) => y[field] === x[field]) === idx), 3
-  ).map((x) => x[field]);
+  const uniq = (arr) => arr
+    .filter((x) => x[field] !== item[field])
+    .filter((x, idx, self) => self.findIndex((y) => y[field] === x[field]) === idx);
+  const near = pick(uniq(pool), 3);
+  const far = near.length < 3
+    ? pick(uniq(ALL_ITEMS).filter((x) => !near.some((n) => n[field] === x[field])), 3 - near.length)
+    : [];
+  const others = [...near, ...far].map((x) => x[field]);
   return {
     kind: "mcq", dir, item,
     question: dir === "pt_fr" ? item.pt : item.fr,
