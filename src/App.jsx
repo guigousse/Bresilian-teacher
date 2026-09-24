@@ -338,7 +338,7 @@ export default function App() {
 
   if (!ready) {
     return (
-      <div className="min-h-screen grid place-items-center bg-emerald-50">
+      <div className="min-h-app grid place-items-center bg-emerald-50">
         <div className="text-center">
           <div className="text-5xl mb-2" style={{ animation: "fb-pop .6s ease-out" }}>🦜</div>
           <div className="font-extrabold text-emerald-700">Fala, Brasil!</div>
@@ -350,9 +350,12 @@ export default function App() {
   const fullScreen = view === "lesson" || view === "result" || view === "story";
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 antialiased">
+    <div className="min-h-app bg-slate-50 text-slate-900 antialiased">
       <GlobalStyle />
-      <div className="mx-auto max-w-md bg-white min-h-screen shadow-xl relative overflow-hidden">
+      {/* overflow-x-clip et non overflow-hidden : ce dernier fait du
+          conteneur une zone de défilement, et les en-têtes « sticky » des
+          écrans cessaient de coller en haut. */}
+      <div className="mx-auto max-w-md bg-white min-h-app shadow-xl relative overflow-x-clip">
         {view === "path" && (
           <HomeScreen progress={progress} prefs={prefs} onStart={startLesson}
             onSettings={() => setShowSettings(true)} storageWarning={storageWarning}

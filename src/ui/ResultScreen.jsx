@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Gem, Sparkles, Star, Target, Zap } from "lucide-react";
 import { sndTap } from "../lib/audio.js";
-import { Confetti } from "./bits.jsx";
+import { Confetti, useShortScreen } from "./bits.jsx";
 import { Mascot } from "./Mascot.jsx";
 
 /* Un compteur qui grimpe : la récompense se regarde arriver. */
@@ -28,11 +28,15 @@ export function ResultScreen({ result, onHome }) {
     streakMilestone = 0, streakGems = 0,
   } = result;
   const accuracy = total ? Math.round((right / total) * 100) : 0;
+  const short = useShortScreen();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center py-10">
+    <div className="h-app flex flex-col overflow-hidden">
       <Confetti />
-      <Mascot mood="celebrate" size={130} />
+      {/* Le bilan défile s'il est long ; « Continuer » reste en bas. */}
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col px-6 pt-safe">
+      <div className="my-auto py-8 short:py-4 flex flex-col items-center text-center">
+      <Mascot mood="celebrate" size={short ? 90 : 130} />
       <h2 className="text-3xl font-extrabold text-emerald-700 mt-1">Muito bem!</h2>
       <p className="text-slate-500 mt-1 mb-5">
         {mistakes === 0 ? "Aucune erreur, chapeau." : `${mistakes} erreur${mistakes > 1 ? "s" : ""} — ces mots reviendront en révision.`}
@@ -102,10 +106,14 @@ export function ResultScreen({ result, onHome }) {
         </div>
       )}
 
-      <button onClick={() => { sndTap(); onHome(); }}
-        className="w-full max-w-xs rounded-2xl bg-emerald-500 text-white font-extrabold py-4 border-b-4 border-emerald-700 active:border-b-0 active:translate-y-1">
-        Continuer
-      </button>
+      </div>
+      </div>
+      <div className="shrink-0 px-6 pt-3 pb-safe-6 flex justify-center">
+        <button onClick={() => { sndTap(); onHome(); }}
+          className="w-full max-w-xs rounded-2xl bg-emerald-500 text-white font-extrabold py-4 short:py-3 border-b-4 border-emerald-700 active:border-b-0 active:translate-y-1">
+          Continuer
+        </button>
+      </div>
     </div>
   );
 }

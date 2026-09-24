@@ -119,14 +119,14 @@ export function HomeScreen({
           : "Bom dia ! On commence par dix minutes ?";
 
   return (
-    <div className="pb-28">
-      <header className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-100">
+    <div className="pb-tabbar">
+      <header className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-100 pt-safe">
         <div className="flex items-center justify-between px-4 py-2.5">
           <button onClick={onStats} className="flex items-center gap-2 min-w-0">
             <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-emerald-400 to-yellow-400 grid place-items-center text-lg shrink-0">🦜</div>
             <div className="leading-tight text-left min-w-0">
-              <div className="text-[13px] font-extrabold text-emerald-900 truncate">Niveau {li.level} · {li.title}</div>
-              <div className="text-[11px] text-emerald-700 tabular-nums">{progress.xp} XP · {mastery.acquis} mots acquis</div>
+              <div className="text-[13px] font-extrabold text-emerald-900 truncate"><span className="min-[360px]:hidden">Niv.</span><span className="hidden min-[360px]:inline">Niveau</span> {li.level} · {li.title}</div>
+              <div className="text-[11px] text-emerald-700 tabular-nums truncate">{progress.xp} XP · {mastery.acquis} acquis</div>
             </div>
           </button>
           <div className="flex items-center gap-1.5 shrink-0">
@@ -137,7 +137,7 @@ export function HomeScreen({
             <div className="flex items-center gap-1 rounded-full px-2 py-1 bg-sky-50 text-sky-700">
               <Gem className="w-4 h-4 text-sky-500" /><span className="text-sm font-bold tabular-nums">{progress.gems}</span>
             </div>
-            <button onClick={onSettings} aria-label="Réglages" className="w-8 h-8 grid place-items-center rounded-full text-slate-400"><Settings className="w-5 h-5" /></button>
+            <button onClick={onSettings} aria-label="Réglages" className="w-10 h-10 -mr-2 grid place-items-center rounded-full text-slate-400"><Settings className="w-5 h-5" /></button>
           </div>
         </div>
         <div className="px-4 pb-2.5">
@@ -199,13 +199,13 @@ export function HomeScreen({
         <button onClick={() => { sndTap(); onStart("review"); }} disabled={due === 0}
           className={`rounded-2xl p-3 text-left border-b-4 transition-all active:border-b-0 active:translate-y-1
             ${due > 0 ? "bg-sky-500 text-white border-sky-700" : "bg-slate-100 text-slate-400 border-slate-200"}`}>
-          <div className="flex items-center gap-1.5 font-extrabold"><RotateCcw className="w-4 h-4" /> Réviser</div>
+          <div className="flex items-center gap-1.5 font-extrabold text-sm min-[360px]:text-[15px] min-[380px]:text-base min-[360px]:whitespace-nowrap"><RotateCcw className="w-4 h-4 shrink-0" /> Réviser</div>
           <div className="text-xs mt-0.5 opacity-90">{due > 0 ? `${due} mot${due > 1 ? "s" : ""} à revoir` : "Rien à revoir, bravo"}</div>
         </button>
         <button onClick={() => { sndTap(); onStart("weak"); }} disabled={weak < 4}
           className={`rounded-2xl p-3 text-left border-b-4 transition-all active:border-b-0 active:translate-y-1
             ${weak >= 4 ? "bg-orange-500 text-white border-orange-700" : "bg-slate-100 text-slate-400 border-slate-200"}`}>
-          <div className="flex items-center gap-1.5 font-extrabold">🩹 Mots fragiles</div>
+          <div className="flex items-center gap-1.5 font-extrabold text-sm min-[360px]:text-[15px] min-[380px]:text-base min-[360px]:whitespace-nowrap">🩹 Mots fragiles</div>
           <div className="text-xs mt-0.5 opacity-90">{weak >= 4 ? `${weak} mots résistent` : "Rien ne coince"}</div>
         </button>
       </div>

@@ -48,8 +48,8 @@ export function StatsScreen({ progress, prefs, onBack, onStart }) {
   ];
 
   return (
-    <div className="pb-28">
-      <div className="px-4 py-4 flex items-center gap-3 border-b border-slate-100 sticky top-0 bg-white z-20">
+    <div className="pb-tabbar">
+      <div className="px-4 py-4 flex items-center gap-3 border-b border-slate-100 sticky top-0 bg-white z-20 pt-[max(1rem,env(safe-area-inset-top))]">
         <button onClick={onBack} className="w-9 h-9 grid place-items-center rounded-xl text-slate-500 shrink-0"><ArrowLeft className="w-5 h-5" /></button>
         <div>
           <h2 className="font-extrabold text-lg text-slate-800">Ma progression</h2>

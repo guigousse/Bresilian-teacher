@@ -17,8 +17,8 @@ export function ShopScreen({ progress, onBuy, onBuyFreeze, onOpenCard }) {
   const canBuy = progress.gems >= CARD_PRICE && remaining > 0;
 
   return (
-    <div className="pb-28">
-      <div className="px-4 py-4 flex items-center justify-between border-b border-slate-100 sticky top-0 bg-white z-20">
+    <div className="pb-tabbar">
+      <div className="px-4 py-4 flex items-center justify-between border-b border-slate-100 sticky top-0 bg-white z-20 pt-[max(1rem,env(safe-area-inset-top))]">
         <h2 className="font-extrabold text-lg text-slate-800">Loja · Boutique</h2>
         <StatPill icon={<Gem className="w-4 h-4 text-sky-500" />} value={progress.gems} tone="bg-sky-50 text-sky-700" />
       </div>
@@ -184,14 +184,14 @@ export function CardModal({ card, index, owned = true, revealMode = false, onClo
   if (!card) return null;
   const rar = RARITY[card.r];
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/70 grid place-items-center px-6" onClick={onClose}>
+    <div className="fixed inset-0 z-50 bg-slate-900/70 flex flex-col overflow-y-auto overscroll-contain px-6 pt-safe pb-safe" onClick={onClose}>
       {revealMode && <Confetti />}
-      <div className="w-full max-w-xs" onClick={(e) => e.stopPropagation()}
+      <div className="my-auto py-5 short:py-3 w-full max-w-xs mx-auto" onClick={(e) => e.stopPropagation()}
         style={revealMode ? { animation: "fb-pop .5s ease-out" } : undefined}>
         {revealMode && (
           <div className={`text-center text-xs font-bold rounded-full px-3 py-1 w-fit mx-auto mb-3 ${rar.chip}`}>{rar.label}</div>
         )}
-        <div className="fb-flip-outer" style={{ height: "min(66vh, 480px)" }}>
+        <div className="fb-flip-outer" style={{ height: "min(62vh, 480px)" }}>
           <div className={`fb-flip-inner h-full ${flipped ? "flipped" : ""}`}>
             <div className="fb-flip-face h-full" style={{ pointerEvents: flipped ? "none" : "auto" }}
               onClick={() => { sndTap(); setFlipped(true); }}>
@@ -202,11 +202,11 @@ export function CardModal({ card, index, owned = true, revealMode = false, onClo
             </div>
           </div>
         </div>
-        <p className="text-white/70 text-xs text-center mt-3">
+        <p className="text-white/70 text-xs text-center mt-3 short:mt-2">
           {flipped ? "Fais défiler pour tout lire · ↺ pour revenir au recto" : "Touche la carte pour la retourner"}
         </p>
         <button onClick={onClose}
-          className="w-full mt-3 rounded-2xl bg-white text-slate-800 font-extrabold py-4 border-b-4 border-slate-300 active:border-b-0 active:translate-y-1">
+          className="w-full mt-3 short:mt-2 rounded-2xl bg-white text-slate-800 font-extrabold py-4 short:py-3 border-b-4 border-slate-300 active:border-b-0 active:translate-y-1">
           {revealMode ? "Ajouter à l'album" : "Fermer"}
         </button>
       </div>

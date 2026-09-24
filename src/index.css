@@ -10,3 +10,29 @@ body {
   overscroll-behavior-y: none;
 }
 select, input, textarea, button { font: inherit; }
+
+/* ------------------------------------------------------------------
+   Hauteur d'écran : 100vh vaut, sur iPhone, la hauteur SANS les barres
+   de Safari — ce qui est calé en bas passe dessous. 100dvh suit ce qui
+   est réellement visible ; 100vh reste en repli pour les vieux
+   navigateurs.
+   ------------------------------------------------------------------ */
+@layer utilities {
+  .h-app { height: 100vh; height: 100dvh; }
+  .min-h-app { min-height: 100vh; min-height: 100dvh; }
+  .max-h-app { max-height: 100vh; max-height: 100dvh; }
+  .max-h-sheet { max-height: 88vh; max-height: 88dvh; }
+  /* Encoche et barre d'accueil de l'iPhone */
+  .pt-safe { padding-top: env(safe-area-inset-top); }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+  .pb-safe-4 { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+  .pb-safe-3 { padding-bottom: max(.75rem, env(safe-area-inset-bottom)); }
+  .pb-safe-6 { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
+  /* Place laissée sous le contenu pour la barre d'onglets */
+  .pb-tabbar { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+}
+
+/* Un toucher = un clic, sans le délai du double-tap ni la sélection de
+   texte quand on tapote vite sur les boutons. */
+button, a, [role="button"], label { touch-action: manipulation; }
+button { -webkit-user-select: none; user-select: none; }

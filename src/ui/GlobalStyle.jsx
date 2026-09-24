@@ -135,6 +135,10 @@ export function GlobalStyle() {
         .fb-unfold { animation: fb-unfold .55s cubic-bezier(.3,1.2,.4,1) backwards; transform-origin: top center; }
         @keyframes fb-unfold { 0% { transform: perspective(600px) rotateX(-88deg); opacity: .3; } 100% { transform: none; opacity: 1; } }
 
+        /* La scène de rangement mesure 280px : on la réduit quand l'écran est bas. */
+        @media (max-height: 700px) { .fb-shelve-stage { transform: scale(.78); margin: -30px 0 -32px; } }
+        @media (max-height: 480px) { .fb-shelve-stage { transform: scale(.6); margin: -56px 0 -58px; } }
+
         /* --- Mascotte et retours visuels --- */
         .fb-bob { animation: fb-bob 2.6s ease-in-out infinite; }
         @keyframes fb-bob { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-5px) rotate(1deg); } }

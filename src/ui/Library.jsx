@@ -104,8 +104,8 @@ export function LibraryScreen({ progress, onOpenBook, onOpenMemories }) {
   const rows = [entries.slice(0, 3), [...entries.slice(3, 5), { kind: "plant" }]];
 
   return (
-    <div className="pb-28">
-      <div className="px-4 py-4 border-b border-slate-100 sticky top-0 bg-white z-20">
+    <div className="pb-tabbar">
+      <div className="px-4 py-4 border-b border-slate-100 sticky top-0 bg-white z-20 pt-[max(1rem,env(safe-area-inset-top))]">
         <div className="flex items-center justify-between">
           <h2 className="font-extrabold text-lg text-slate-800">Biblioteca</h2>
           <span className="text-sm font-bold text-slate-400 tabular-nums">{shelved}/{BOOKS.length}</span>
@@ -228,9 +228,10 @@ export function BookCompleteModal({ book, shelvedBefore = [], score, onClose }) 
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/85 grid place-items-center px-6 overflow-y-auto py-6">
+    <div className="fixed inset-0 z-50 bg-slate-900/85 flex flex-col pt-safe">
       <Confetti />
-      <div className="w-full max-w-xs flex flex-col items-center">
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col px-6">
+      <div className="my-auto py-6 short:py-2 w-full max-w-xs mx-auto flex flex-col items-center">
         <div className="fb-shelve-stage">
           <div className="fb-shelve-backpanel" />
           <div className="fb-shelve-prior">
@@ -295,11 +296,14 @@ export function BookCompleteModal({ book, shelvedBefore = [], score, onClose }) 
             </div>
           )}
 
-          <button onClick={onClose}
-            className="w-full mt-5 rounded-2xl bg-white text-slate-800 font-extrabold py-4 border-b-4 border-slate-300 active:border-b-0 active:translate-y-1">
-            Voir mon étagère
-          </button>
         </div>
+      </div>
+      </div>
+      <div className="shrink-0 px-6 pt-3 pb-safe-6 fb-shelve-text">
+        <button onClick={onClose}
+          className="block w-full max-w-xs mx-auto rounded-2xl bg-white text-slate-800 font-extrabold py-4 short:py-3 border-b-4 border-slate-300 active:border-b-0 active:translate-y-1">
+          Voir mon étagère
+        </button>
       </div>
     </div>
   );

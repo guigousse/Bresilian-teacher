@@ -26,7 +26,7 @@ export function VoiceSettings({ prefs, setPrefs, onClose }) {
 
   return (
     <div className="fixed inset-0 z-40 bg-slate-900/40 flex items-end justify-center">
-      <div className="w-full max-w-md bg-white rounded-t-3xl p-5 max-h-screen overflow-y-auto" style={{ animation: "fb-up .25s ease-out" }}>
+      <div className="w-full max-w-md bg-white rounded-t-3xl p-5 pb-safe-6 max-h-sheet overflow-y-auto overscroll-contain" style={{ animation: "fb-up .25s ease-out" }}>
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-extrabold text-lg text-slate-800">Voix et prononciation</h3>
           <button onClick={onClose} className="w-9 h-9 grid place-items-center rounded-xl text-slate-400"><X className="w-6 h-6" /></button>

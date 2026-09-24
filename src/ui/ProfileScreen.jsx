@@ -91,8 +91,8 @@ export function ProfileScreen({ progress, onReset, onImport, prefs, storageWarni
   }
 
   return (
-    <div className="pb-28">
-      <div className="px-4 py-4 border-b border-slate-100 sticky top-0 bg-white z-20">
+    <div className="pb-tabbar">
+      <div className="px-4 py-4 border-b border-slate-100 sticky top-0 bg-white z-20 pt-[max(1rem,env(safe-area-inset-top))]">
         <h2 className="font-extrabold text-lg text-slate-800">Mon profil</h2>
       </div>
 
@@ -171,7 +171,8 @@ export function ProfileScreen({ progress, onReset, onImport, prefs, storageWarni
             <div className="mt-4">
               <label className="block text-sm font-bold text-slate-600 mb-1">Restaurer depuis un code</label>
               <textarea value={importCode} onChange={(e) => setImportCode(e.target.value)} rows={3} placeholder="Colle ton code ici"
-                className="w-full rounded-2xl border-2 border-slate-200 p-3 font-mono text-[10px] text-slate-700" />
+                autoCapitalize="off" autoCorrect="off" spellCheck="false"
+                className="w-full rounded-2xl border-2 border-slate-200 p-3 font-mono text-base text-slate-700 break-all" />
               <button onClick={doImport} disabled={!importCode.trim()}
                 className={`w-full mt-2 rounded-2xl font-bold py-3 ${importCode.trim() ? "bg-emerald-500 text-white" : "bg-slate-200 text-slate-400"}`}>
                 Restaurer

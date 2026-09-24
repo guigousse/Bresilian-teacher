@@ -4,7 +4,7 @@ import { PH_OF } from "../data/units.js";
 import { speak } from "../lib/speech.js";
 import { sndTap, sndSelect, sndGood, sndBad, sndWin, sndCombo, sndHeart } from "../lib/audio.js";
 import { isCloseEnough, normalizeAnswer } from "../lib/answers.js";
-import { Phonetic, SpeakButton } from "./bits.jsx";
+import { Phonetic, SpeakButton, useShortScreen, useKeyboardInset } from "./bits.jsx";
 import { Mascot } from "./Mascot.jsx";
 
 const PRAISE = ["Isso aí !", "Perfeito !", "Muito bem !", "Boa !", "Mandou bem !", "Show !"];
@@ -30,6 +30,8 @@ function listenOnce(onResult, onEnd) {
 }
 
 export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive, prefs }) {
+  const short = useShortScreen();
+  const kb = useKeyboardInset();
   const [idx, setIdx] = useState(0);
   const [hearts, setHearts] = useState(5);
   const [choice, setChoice] = useState(null);
@@ -164,8 +166,8 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
 
   if (state === "dead") {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center gap-4">
-        <Mascot mood="sad" size={120} />
+      <div className="min-h-app flex flex-col items-center justify-center px-6 py-6 text-center gap-4 short:gap-3 pt-safe pb-safe-6">
+        <Mascot mood="sad" size={short ? 84 : 120} />
         <h2 className="text-2xl font-extrabold text-slate-800">Plus de cœurs</h2>
         <p className="text-slate-500 max-w-xs">Pas grave : les mots ratés reviendront vite en révision, c'est là que ça rentre.</p>
         <button onClick={() => { sndTap(); onFinish({ mistakes, answers }); }}
@@ -194,9 +196,9 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
   }[ex.kind] || (ex.dir === "pt_fr" ? "Que veut dire ce mot ?" : "Comment on dit ?");
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex items-center gap-3 px-4 py-3">
-        <button onClick={() => { sndTap(); onQuit(); }} aria-label="Quitter la leçon" className="w-9 h-9 grid place-items-center rounded-xl text-slate-400"><X className="w-6 h-6" /></button>
+    <div className="h-app flex flex-col overflow-hidden" style={kb ? { paddingBottom: kb } : undefined}>
+      <div className="shrink-0 pt-safe flex items-center gap-3 px-4 py-3 short:py-2 tiny:py-1">
+        <button onClick={() => { sndTap(); onQuit(); }} aria-label="Quitter la leçon" className="w-10 h-10 -ml-1 grid place-items-center rounded-xl text-slate-400"><X className="w-6 h-6" /></button>
         <div className="flex-1 h-4 rounded-full bg-slate-200 overflow-hidden">
           <div className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500 transition-all duration-500" style={{ width: `${pct}%` }} />
         </div>
@@ -207,34 +209,36 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
       </div>
 
       {combo >= 3 && state === "answering" && (
-        <div className="px-4">
+        <div className="shrink-0 px-4">
           <div className="inline-flex items-center gap-1 rounded-full bg-orange-100 text-orange-700 px-3 py-1 text-xs font-bold fb-pop">
             <Flame className="w-3.5 h-3.5 fb-flame" /> {combo} d'affilée !
           </div>
         </div>
       )}
 
-      <div key={idx} className="flex-1 px-4 pt-5 fb-in">
-        <p className="text-sm font-bold text-slate-400 mb-3">{prompt}</p>
+      {/* Seul l'exercice défile : le bouton du bas reste toujours à portée. */}
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
+      <div key={idx} className="px-4 pt-5 pb-4 short:pt-2 fb-in">
+        <p className="text-sm font-bold text-slate-400 mb-3 short:mb-2">{prompt}</p>
 
         {/* --- L'énoncé ------------------------------------------------ */}
         {ex.kind === "listen" || ex.kind === "listen_type" ? (
-          <div className="flex flex-col items-center py-4 gap-2">
+          <div className="flex flex-col items-center py-4 gap-2 short:py-1 short:mb-2">
             <SpeakButton text={ex.item.pt} big />
             <button onClick={() => speak(ex.item.pt, { slow: true })} className="text-xs font-bold text-sky-600 rounded-full border-2 border-sky-200 px-3 py-1">Plus lentement</button>
           </div>
         ) : ex.kind === "pairs" ? null : (
-          <div className="flex items-center gap-3 mb-5">
-            <Mascot mood={state === "right" ? "happy" : state === "wrong" ? "sad" : "idle"} size={56} className="shrink-0" />
-            <div className="relative bg-white border-2 border-slate-200 rounded-2xl px-4 py-3 flex-1 min-w-0">
-              <div className="text-xl font-extrabold text-slate-800 break-words">
+          <div className="flex items-center gap-3 mb-5 short:mb-3">
+            <Mascot mood={state === "right" ? "happy" : state === "wrong" ? "sad" : "idle"} size={short ? 42 : 56} className="shrink-0 tiny:hidden" />
+            <div className="relative bg-white border-2 border-slate-200 rounded-2xl px-4 py-3 short:py-2 flex-1 min-w-0">
+              <div className="text-xl short:text-lg font-extrabold text-slate-800 break-words">
                 {ex.kind === "article" ? <span>___ {ex.question}</span> : ex.question}
               </div>
               {(ex.dir === "pt_fr" || ex.kind === "article" || ex.kind === "speak") && showPh && (
                 <div className="text-sm mt-0.5"><Phonetic text={ex.item.ph} /></div>
               )}
               {(ex.dir === "pt_fr" || ex.kind === "article" || ex.kind === "speak") && (
-                <button onClick={() => speak(ex.item.pt)} aria-label="Écouter" className="absolute -right-2 -top-3 w-8 h-8 rounded-full bg-sky-500 text-white grid place-items-center shadow"><Volume2 className="w-4 h-4" /></button>
+                <button onClick={() => speak(ex.item.pt)} aria-label="Écouter" className="absolute -right-2 -top-3 w-9 h-9 rounded-full bg-sky-500 text-white grid place-items-center shadow"><Volume2 className="w-4 h-4" /></button>
               )}
             </div>
           </div>
@@ -243,7 +247,7 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
         {/* --- La réponse ---------------------------------------------- */}
         {ex.kind === "bank" ? (
           <div>
-            <div className="min-h-16 rounded-2xl border-2 border-dashed border-slate-300 p-2 flex flex-wrap gap-2 mb-5">
+            <div className="min-h-16 short:min-h-12 rounded-2xl border-2 border-dashed border-slate-300 p-2 flex flex-wrap gap-2 mb-5 short:mb-3">
               {built.map((t) => (
                 <button key={t.id} disabled={state !== "answering"} onClick={() => { sndTap(); setBuilt(built.filter((x) => x.id !== t.id)); }}
                   className="rounded-xl bg-white border-2 border-slate-200 border-b-4 px-3 py-2 font-bold text-slate-700 fb-tile-in">{t.w}</button>
@@ -261,18 +265,18 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
             <input ref={inputRef} value={typed} disabled={state !== "answering"}
               onChange={(e) => setTyped(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter" && ready && state === "answering") check(); }}
-              placeholder="Écris en portugais…" autoCapitalize="off" autoCorrect="off" spellCheck="false"
-              className={`w-full rounded-2xl border-2 px-4 py-4 text-lg font-bold text-slate-800 ${shake ? "fb-shake border-red-300" : "border-slate-200"}`} />
+              placeholder="Écris en portugais…" autoCapitalize="off" autoCorrect="off" spellCheck="false" enterKeyHint="done"
+              className={`w-full rounded-2xl border-2 px-4 py-4 short:py-3 text-lg font-bold text-slate-800 ${shake ? "fb-shake border-red-300" : "border-slate-200"}`} />
             <p className="text-xs text-slate-400 mt-2">Les accents et les petites fautes de frappe sont tolérés.</p>
           </div>
         ) : ex.kind === "pairs" ? (
-          <div className="grid grid-cols-2 gap-2">
-            <div className="space-y-2">
+          <div className="grid grid-cols-2 gap-2 short:gap-1.5">
+            <div className="space-y-2 short:space-y-1.5">
               {ex.left.map((l) => {
                 const done = matched.includes(l.id);
                 return (
                   <button key={l.id} disabled={done} onClick={() => tapPair("left", l.id)}
-                    className={`w-full rounded-2xl border-2 border-b-4 px-3 py-3 font-bold text-sm transition-all
+                    className={`w-full rounded-2xl border-2 border-b-4 px-3 py-3 short:py-2 font-bold text-sm transition-all
                       ${done ? "bg-emerald-50 border-emerald-200 text-emerald-400"
                         : picked === l.id ? "bg-sky-50 border-sky-400 text-sky-800" : "bg-white border-slate-200 text-slate-700"}`}>
                     {l.text}
@@ -280,12 +284,12 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
                 );
               })}
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 short:space-y-1.5">
               {ex.right.map((r) => {
                 const done = matched.includes(r.id);
                 return (
                   <button key={r.id} disabled={done} onClick={() => tapPair("right", r.id)}
-                    className={`w-full rounded-2xl border-2 border-b-4 px-3 py-3 font-bold text-sm transition-all
+                    className={`w-full rounded-2xl border-2 border-b-4 px-3 py-3 short:py-2 font-bold text-sm transition-all
                       ${done ? "bg-emerald-50 border-emerald-200 text-emerald-400"
                         : wrongPair === r.id ? "bg-red-50 border-red-400 text-red-700 fb-shake" : "bg-white border-slate-200 text-slate-700"}`}>
                     {r.text}
@@ -297,7 +301,7 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
         ) : ex.kind === "speak" ? (
           <div className="flex flex-col items-center gap-3 py-2">
             <button onClick={startMic} disabled={micState === "listening" || state !== "answering"}
-              className={`w-24 h-24 rounded-full grid place-items-center text-white shadow-lg border-b-4 transition-all
+              className={`w-24 h-24 short:w-20 short:h-20 rounded-full grid place-items-center text-white shadow-lg border-b-4 transition-all
                 ${micState === "listening" ? "bg-red-500 border-red-700 fb-pulse" : "bg-sky-500 border-sky-700 active:border-b-0 active:translate-y-1"}`}>
               <Mic className="w-10 h-10" />
             </button>
@@ -318,14 +322,14 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
               if (state === "wrong" && selected && !isAnswer) cls = "bg-red-50 border-red-400 text-red-700";
               return (
                 <button key={opt} disabled={state !== "answering"} onClick={() => { sndSelect(); setChoice(opt); }}
-                  className={`rounded-2xl border-2 border-b-4 py-6 text-2xl font-extrabold transition-all active:translate-y-0.5 active:border-b-2 ${cls}`}>
+                  className={`rounded-2xl border-2 border-b-4 py-6 short:py-4 text-2xl font-extrabold transition-all active:translate-y-0.5 active:border-b-2 ${cls}`}>
                   {opt}
                 </button>
               );
             })}
           </div>
         ) : (
-          <div className="grid gap-3">
+          <div className="grid gap-3 short:gap-2 tiny:grid-cols-2">
             {ex.options.map((opt) => {
               const selected = choice === opt, isAnswer = opt === ex.answer;
               let cls = "bg-white border-slate-200 text-slate-700";
@@ -336,7 +340,7 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
               return (
                 <button key={opt} disabled={state !== "answering"}
                   onClick={() => { sndSelect(); setChoice(opt); if (ex.dir === "fr_pt") speak(opt); }}
-                  className={`w-full text-left rounded-2xl border-2 border-b-4 px-4 py-3 font-bold transition-all active:translate-y-0.5 active:border-b-2 ${cls}`}>
+                  className={`w-full text-left rounded-2xl border-2 border-b-4 px-4 py-3 short:py-2.5 font-bold transition-all active:translate-y-0.5 active:border-b-2 ${cls}`}>
                   <div>{opt}</div>
                   {ph && showPh && <div className="text-xs font-normal mt-0.5"><Phonetic text={ph} /></div>}
                 </button>
@@ -346,25 +350,28 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
         )}
       </div>
 
-      <div className={`sticky bottom-0 px-4 py-4 border-t-2 transition-colors
+      </div>
+
+      {/* Le pied : hors de la zone qui défile, donc toujours visible. */}
+      <div className={`shrink-0 px-4 pt-4 pb-safe-4 short:pt-2.5 short:pb-safe-3 tiny:pt-1.5 border-t-2 transition-colors
         ${state === "right" ? "bg-emerald-50 border-emerald-200" : state === "wrong" ? "bg-red-50 border-red-200" : "bg-white border-slate-100"}`}>
         {state !== "answering" && (
-          <div className="flex items-start gap-3 mb-3 fb-slide-in">
-            <div className={`w-9 h-9 rounded-full grid place-items-center shrink-0 ${state === "right" ? "bg-emerald-500" : "bg-red-500"}`}>
+          <div className="flex items-start gap-3 mb-3 short:mb-2 tiny:mb-1.5 fb-slide-in">
+            <div className={`w-9 h-9 tiny:w-7 tiny:h-7 rounded-full grid place-items-center shrink-0 ${state === "right" ? "bg-emerald-500" : "bg-red-500"}`}>
               {state === "right" ? <Check className="w-5 h-5 text-white" /> : <X className="w-5 h-5 text-white" />}
             </div>
             <div className="leading-tight min-w-0">
               <div className={`font-extrabold ${state === "right" ? "text-emerald-700" : "text-red-700"}`}>
                 {state === "right" ? PRAISE[idx % PRAISE.length] : "Réponse attendue"}
               </div>
-              <div className={`text-sm font-semibold ${state === "right" ? "text-emerald-700" : "text-red-700"}`}>{ex.item.pt}</div>
+              <div className={`text-sm font-semibold tiny:hidden ${state === "right" ? "text-emerald-700" : "text-red-700"}`}>{ex.item.pt}</div>
               <div className="text-sm"><Phonetic text={ex.item.ph} /> <span className="text-slate-500">· {ex.item.fr}</span></div>
             </div>
             <button onClick={() => speak(ex.item.pt, { slow: true })} aria-label="Réécouter lentement" className="ml-auto w-9 h-9 rounded-xl bg-white/70 grid place-items-center text-slate-500 shrink-0"><Volume2 className="w-5 h-5" /></button>
           </div>
         )}
         <button disabled={state === "answering" && !ready} onClick={() => (state === "answering" ? check() : next())}
-          className={`w-full rounded-2xl py-4 font-extrabold text-white border-b-4 transition-all active:border-b-0 active:translate-y-1
+          className={`w-full rounded-2xl py-4 short:py-3 tiny:py-2.5 font-extrabold text-white border-b-4 transition-all active:border-b-0 active:translate-y-1
             ${state === "wrong" ? "bg-red-500 border-red-700" : state === "right" ? "bg-emerald-500 border-emerald-700"
               : ready ? "bg-emerald-500 border-emerald-700" : "bg-slate-200 border-slate-300 text-slate-400"}`}>
           {state === "answering" ? (ex.kind === "speak" && !ready ? "Passer" : "Vérifier") : "Continuer"}

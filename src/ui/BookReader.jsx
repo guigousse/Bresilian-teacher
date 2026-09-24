@@ -8,6 +8,7 @@ import { speak } from "../lib/speech.js";
 import { sndTap, sndSelect, sndGood, sndBad, sndQuest, sndWhoosh } from "../lib/audio.js";
 import { shuffle } from "../lib/utils.js";
 import { Mascot } from "./Mascot.jsx";
+import { useShortScreen, useKeyboardInset } from "./bits.jsx";
 
 /* ==================================================================
    LE LIVRE — un livre par thématique, une page par chapitre. On ouvre
@@ -46,6 +47,8 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
     try { return localStorage.getItem("fb_book_fr") !== "0"; } catch (e) { return true; }
   });
   const inputRef = useRef(null);
+  const short = useShortScreen();
+  const kb = useKeyboardInset();
 
   const page = book.pages[idx];
   const unit = unitOf(page.unit);
@@ -145,10 +148,11 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
   const nextPage = book.pages[idx + 1];
 
   return (
-    <div className="min-h-screen flex flex-col bg-amber-50">
+    <div className="h-app flex flex-col overflow-hidden bg-amber-50">
       {/* Bandeau */}
-      <div className="px-4 py-3 flex items-center gap-2 bg-white border-b border-amber-100">
-        <button onClick={onClose} className="w-9 h-9 grid place-items-center rounded-xl text-slate-500 shrink-0"><ArrowLeft className="w-5 h-5" /></button>
+      <div className="shrink-0 pt-safe bg-white border-b border-amber-100">
+      <div className="px-4 py-3 short:py-2 flex items-center gap-2">
+        <button onClick={onClose} aria-label="Retour" className="w-10 h-10 -ml-1 grid place-items-center rounded-xl text-slate-500 shrink-0"><ArrowLeft className="w-5 h-5" /></button>
         <div className="flex-1 min-w-0">
           <div className="font-extrabold text-slate-800 truncate">{book.title}</div>
           <div className="text-xs text-slate-400 truncate">
@@ -167,17 +171,18 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
           <Volume2 className="w-5 h-5" />
         </button>
       </div>
+      </div>
       <Ribbon pct={!unlocked ? 0 : total ? (found.length / total) * 100 : 100} />
 
       {/* Les onglets de page : on voit tout de suite ce qui reste à ouvrir */}
-      <div className="flex gap-1.5 px-4 py-2 bg-white border-b border-amber-100">
+      <div className="shrink-0 flex gap-1.5 px-4 py-2 short:py-1.5 bg-white border-b border-amber-100">
         {book.pages.map((pg, i) => {
           const done = storyProgress(progress, pg.unit).done;
           const open = isUnlocked(pg.unit);
           return (
             <button key={pg.id} onClick={() => { sndTap(); setDir(i > idx ? 1 : -1); setIdx(i); }}
               aria-label={`Page ${i + 1}`}
-              className={`flex-1 h-7 rounded-lg text-[11px] font-extrabold border-b-2 transition-colors
+              className={`flex-1 h-8 short:h-7 rounded-lg text-[11px] font-extrabold border-b-2 transition-colors
                 ${i === idx ? "bg-stone-800 text-white border-stone-900"
                   : done ? "bg-emerald-100 text-emerald-700 border-emerald-300"
                     : open ? "bg-amber-100 text-amber-800 border-amber-300" : "bg-stone-100 text-stone-300 border-stone-200"}`}>
@@ -189,7 +194,7 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
 
       {!unlocked ? (
         /* --- Page encore fermée ------------------------------------ */
-        <div className="flex-1 px-6 py-10 flex flex-col items-center justify-center text-center">
+        <div className="flex-1 min-h-0 overflow-y-auto px-6 py-10 short:py-5 flex flex-col items-center justify-center text-center">
           <div className="w-16 h-16 rounded-2xl bg-stone-200 grid place-items-center mb-4"><Lock className="w-7 h-7 text-stone-400" /></div>
           <h3 className="font-extrabold text-stone-700 text-lg">Página {idx + 1} encore fermée</h3>
           <p className="text-sm text-stone-500 mt-2 max-w-xs">
@@ -205,9 +210,9 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
         </div>
       ) : phase === "quiz" ? (
         /* --- Les questions de compréhension ------------------------ */
-        <div className="flex-1 px-4 py-5 flex flex-col">
-          <div className="flex items-center gap-3 mb-4">
-            <Mascot mood={quizPick ? (quizPick === quiz[quizIdx].answer ? "happy" : "sad") : "think"} size={64} />
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 pt-5 short:pt-3 pb-safe-4 flex flex-col">
+          <div className="flex items-center gap-3 mb-4 short:mb-3">
+            <Mascot mood={quizPick ? (quizPick === quiz[quizIdx].answer ? "happy" : "sad") : "think"} size={short ? 48 : 64} />
             <div className="flex-1 rounded-2xl rounded-bl-sm bg-white border-2 border-stone-200 px-3 py-2">
               <div className="text-[11px] font-bold text-stone-400">Question {quizIdx + 1}/{quiz.length}</div>
               <div className="font-extrabold text-stone-800 leading-tight">{quiz[quizIdx].q}</div>
@@ -237,25 +242,25 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
           )}
 
           <button onClick={() => { sndTap(); setPhase("read"); setQuizIdx(0); setQuizPick(null); setQuizScore(0); }}
-            className="mt-auto w-full rounded-2xl border-2 border-stone-200 font-bold py-3 text-stone-500">
+            className="mt-auto shrink-0 w-full rounded-2xl border-2 border-stone-200 font-bold py-3 text-stone-500">
             Retourner au texte
           </button>
         </div>
       ) : (
         <>
           {/* --- La page ------------------------------------------- */}
-          <div className="flex-1 min-h-0 overflow-y-auto px-3 py-4 flex flex-col">
+          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-3 py-4 short:py-2 flex flex-col">
             {/* Deux feuilles décalées derrière la page : le livre a une épaisseur. */}
             <div className="relative mx-auto w-full max-w-md flex flex-col flex-1">
               <div className="absolute inset-y-2 left-2 right-[-6px] rounded-r-xl bg-amber-100/80 shadow-sm" />
               <div className="absolute inset-y-1 left-1 right-[-3px] rounded-r-xl bg-amber-50 shadow-sm" />
-              <div className="fb-paper relative flex-1 rounded-r-xl rounded-l-sm p-5 pb-12">
+              <div className="fb-paper relative flex-1 rounded-r-xl rounded-l-sm p-5 pb-12 short:p-4 short:pb-10">
                 <div key={page.id} className={dir > 0 ? "fb-page-next" : "fb-page-prev"}>
                   <div className="flex items-baseline justify-between mb-3">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700/60">{page.title}</span>
                     <span className="text-[10px] font-bold text-amber-700/50">{unit.emoji}</span>
                   </div>
-                  <div className="space-y-3 text-[17px] leading-[1.75] text-stone-800 fb-serif">
+                  <div className="space-y-3 text-[17px] leading-[1.75] short:text-[16px] short:leading-[1.65] text-stone-800 fb-serif">
                     {page.paragraphs.map((_, pi) => (
                       <div key={pi}>
                         <p>
@@ -332,15 +337,15 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
           </div>
 
           {/* --- Navigation ---------------------------------------- */}
-          <div className="px-4 pb-5 pt-1 flex items-center gap-3">
+          <div className="shrink-0 px-4 pt-2 pb-safe-4 short:pb-safe-3 flex items-center gap-3 bg-amber-50 border-t border-amber-100">
             <button onClick={() => turn(-1)} disabled={idx === 0} aria-label="Page précédente"
-              className={`w-12 h-12 grid place-items-center rounded-2xl border-b-4 ${idx === 0 ? "bg-stone-100 border-stone-200 text-stone-300" : "bg-white border-stone-300 text-stone-600 active:border-b-0 active:translate-y-1"}`}>
+              className={`w-12 h-12 short:w-11 short:h-11 shrink-0 grid place-items-center rounded-2xl border-b-4 ${idx === 0 ? "bg-stone-100 border-stone-200 text-stone-300" : "bg-white border-stone-300 text-stone-600 active:border-b-0 active:translate-y-1"}`}>
               <ChevronLeft className="w-6 h-6" />
             </button>
 
             {wordsDone && !pageDone ? (
               <button onClick={() => { sndTap(); if (quiz.length) setPhase("quiz"); else onPageDone(page.unit, 0, 0); }}
-                className="flex-1 h-12 rounded-2xl bg-emerald-500 text-white font-extrabold border-b-4 border-emerald-700 active:border-b-0 active:translate-y-1 fb-glow">
+                className="flex-1 h-12 short:h-11 rounded-2xl bg-emerald-500 text-white font-extrabold border-b-4 border-emerald-700 active:border-b-0 active:translate-y-1 fb-glow">
                 Questions sur la page
               </button>
             ) : pageDone ? (
@@ -354,7 +359,7 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
             )}
 
             <button onClick={() => turn(1)} disabled={idx === book.pages.length - 1} aria-label="Page suivante"
-              className={`w-12 h-12 grid place-items-center rounded-2xl border-b-4 ${idx === book.pages.length - 1 ? "bg-stone-100 border-stone-200 text-stone-300" : "bg-white border-stone-300 text-stone-600 active:border-b-0 active:translate-y-1"}`}>
+              className={`w-12 h-12 short:w-11 short:h-11 shrink-0 grid place-items-center rounded-2xl border-b-4 ${idx === book.pages.length - 1 ? "bg-stone-100 border-stone-200 text-stone-300" : "bg-white border-stone-300 text-stone-600 active:border-b-0 active:translate-y-1"}`}>
               <ChevronRight className="w-6 h-6" />
             </button>
           </div>
@@ -363,22 +368,24 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
 
       {/* --- La fiche du mot ------------------------------------- */}
       {active && (
-        <div className="fixed inset-0 z-50 bg-stone-900/40 flex items-end justify-center" onClick={() => setActive(null)}>
-          <div className="w-full max-w-md bg-white rounded-t-3xl p-5" onClick={(e) => e.stopPropagation()} style={{ animation: "fb-up .25s ease-out" }}>
+        <div className="fixed inset-0 z-50 bg-stone-900/40 flex items-end justify-center" onClick={() => setActive(null)}
+          style={{ paddingBottom: kb }}>
+          <div className="w-full max-w-md bg-white rounded-t-3xl p-5 short:p-4 pb-safe-6 max-h-sheet overflow-y-auto" onClick={(e) => e.stopPropagation()} style={{ animation: "fb-up .25s ease-out" }}>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2 min-w-0">
                 <span className="font-extrabold text-xl text-stone-800 truncate">{active.item.pt}</span>
                 <button onClick={() => speak(active.item.pt)} aria-label="Écouter"
-                  className="w-8 h-8 grid place-items-center rounded-lg bg-sky-50 text-sky-600 shrink-0"><Volume2 className="w-4 h-4" /></button>
+                  className="w-10 h-10 grid place-items-center rounded-xl bg-sky-50 text-sky-600 shrink-0"><Volume2 className="w-5 h-5" /></button>
               </div>
-              <button onClick={() => setActive(null)} className="w-8 h-8 grid place-items-center rounded-xl text-stone-400 shrink-0"><X className="w-5 h-5" /></button>
+              <button onClick={() => setActive(null)} aria-label="Fermer" className="w-10 h-10 -mr-2 grid place-items-center rounded-xl text-stone-400 shrink-0"><X className="w-5 h-5" /></button>
             </div>
 
-            <p className="text-sm text-stone-500 mb-2">Qu'est-ce que ça veut dire, en français ?</p>
+            <p className="text-sm text-stone-500 mb-2">Qu'est-ce que ça veut dire, en français ?</p>
             <input ref={inputRef} value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && submit()}
-              className={`w-full rounded-2xl border-2 px-4 py-3 font-semibold text-stone-700 ${wrong ? "border-red-300 bg-red-50" : "border-stone-200"}`}
+              enterKeyHint="go" autoCapitalize="off" autoCorrect="off" spellCheck="false"
+              className={`w-full rounded-2xl border-2 px-4 py-3 text-base font-semibold text-stone-700 ${wrong ? "border-red-300 bg-red-50" : "border-stone-200"}`}
               placeholder="Écris la traduction…" />
 
             {wrong > 0 && <p className="text-red-500 text-sm mt-2">Pas tout à fait — réessaie.</p>}
@@ -408,7 +415,8 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
                 <button onClick={() => buyHint(2)}
                   className={`flex-1 rounded-xl border-2 py-2 text-xs font-bold flex items-center justify-center gap-1
                     ${gems >= HINT_PRICE * 2 ? "border-stone-200 text-stone-500" : "border-stone-200 text-stone-300"}`}>
-                  Donner la réponse · {HINT_PRICE * 2} <Gem className="w-3 h-3" />
+                  <span className="min-[360px]:hidden">Réponse</span><span className="hidden min-[360px]:inline">Donner la réponse</span>
+                  <span className="whitespace-nowrap">· {HINT_PRICE * 2} <Gem className="w-3 h-3 inline -mt-0.5" /></span>
                 </button>
               </div>
             )}

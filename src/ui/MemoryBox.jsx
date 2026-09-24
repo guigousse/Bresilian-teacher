@@ -20,13 +20,13 @@ function SouvenirSheet({ s, onClose }) {
   const tier = TIERS[s.rarity];
   return (
     <div className="fixed inset-0 z-50 bg-stone-950/70 flex items-end sm:items-center justify-center" onClick={onClose}>
-      <div className="w-full max-w-md bg-[#fbf6ea] rounded-t-3xl sm:rounded-3xl p-5 pb-7" onClick={(e) => e.stopPropagation()}
+      <div className="w-full max-w-md bg-[#fbf6ea] rounded-t-3xl sm:rounded-3xl p-5 pb-safe-6 max-h-sheet overflow-y-auto overscroll-contain" onClick={(e) => e.stopPropagation()}
         style={{ animation: "fb-up .28s ease-out" }}>
         <div className="flex justify-between items-start">
           <span className={`rounded-full px-2.5 py-1 text-[11px] font-extrabold ${tier.chip}`}>{tier.label}</span>
-          <button onClick={onClose} aria-label="Fermer" className="w-8 h-8 grid place-items-center rounded-xl text-stone-400"><X className="w-5 h-5" /></button>
+          <button onClick={onClose} aria-label="Fermer" className="w-10 h-10 -mr-2 -mt-1 grid place-items-center rounded-xl text-stone-400"><X className="w-5 h-5" /></button>
         </div>
-        <div className="mx-auto w-36 h-36 fb-pop" style={{ animation: "fb-pop .45s ease-out" }}><SouvenirArt kind={s.kind} /></div>
+        <div className="mx-auto w-36 h-36 short:w-24 short:h-24 fb-pop" style={{ animation: "fb-pop .45s ease-out" }}><SouvenirArt kind={s.kind} /></div>
         <h3 className="text-center text-xl font-extrabold text-stone-800 fb-serif mt-1">{s.name}</h3>
         <p className="text-center text-xs text-stone-500 mt-1">{s.caption}</p>
 
@@ -49,11 +49,11 @@ function PaperSheet({ p, progress, onClose }) {
   const m = masteryOf(s.box);
   return (
     <div className="fixed inset-0 z-50 bg-stone-950/70 flex items-end sm:items-center justify-center" onClick={onClose}>
-      <div className="w-full max-w-md p-5 pb-8" onClick={(e) => e.stopPropagation()}>
+      <div className="w-full max-w-md p-5 pb-safe-6 max-h-sheet overflow-y-auto overscroll-contain" onClick={(e) => e.stopPropagation()}>
         <div className="fb-unfold relative rounded-sm bg-[#fbf4e2] px-5 pt-6 pb-5 shadow-2xl"
           style={{ backgroundImage: "repeating-linear-gradient(0deg, rgba(120,80,30,.07) 0 1px, transparent 1px 12px)" }}>
           <span className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full shadow" style={{ background: tier.glow }} />
-          <button onClick={onClose} aria-label="Fermer" className="absolute top-2 right-2 w-8 h-8 grid place-items-center rounded-xl text-stone-400"><X className="w-5 h-5" /></button>
+          <button onClick={onClose} aria-label="Fermer" className="absolute top-1 right-1 w-10 h-10 grid place-items-center rounded-xl text-stone-400"><X className="w-5 h-5" /></button>
           <span className={`rounded-full px-2 py-0.5 text-[10px] font-extrabold ${tier.chip}`}>{tier.label}</span>
           <div className="flex items-center gap-2 mt-2">
             <span className="fb-serif italic font-bold text-2xl text-stone-800 leading-tight">{p.pt}</span>
@@ -79,9 +79,9 @@ export function MemoryBox({ progress, onBack }) {
   const ownedP = new Set(progress.papers || []);
 
   return (
-    <div className="pb-28 min-h-screen bg-stone-50">
-      <div className="px-4 py-3 flex items-center gap-3 bg-white border-b border-stone-100 sticky top-0 z-20">
-        <button onClick={onBack} aria-label="Retour" className="w-9 h-9 grid place-items-center rounded-xl text-slate-500"><ArrowLeft className="w-5 h-5" /></button>
+    <div className="pb-tabbar min-h-app bg-stone-50">
+      <div className="px-4 py-3 pt-[max(.75rem,env(safe-area-inset-top))] flex items-center gap-3 bg-white border-b border-stone-100 sticky top-0 z-20">
+        <button onClick={onBack} aria-label="Retour" className="w-10 h-10 -ml-1 grid place-items-center rounded-xl text-slate-500"><ArrowLeft className="w-5 h-5" /></button>
         <div className="flex-1 min-w-0">
           <h2 className="font-extrabold text-lg text-slate-800 leading-tight">Caixa de lembranças</h2>
           <p className="text-xs text-slate-400">Tout ce qu'on trouve dans les coffres, en plus des gemmes.</p>
