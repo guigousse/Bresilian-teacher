@@ -45,8 +45,14 @@ phrase en suspens, chaque livre sur une question sans réponse.
 
 ## Ce qui donne envie de revenir
 
-- Objectif quotidien réglable (de 20 à 120 XP), anneau de progression, coffre à
-  l'objectif atteint.
+- Objectif quotidien réglable (de 20 à 120 XP), anneau de progression.
+- **Des coffres** gagnés à l'objectif du jour, aux paliers de série et à chaque
+  livre terminé. Leur rareté (commun, rare, épique, légendaire) se voit avant de
+  les ouvrir ; une garantie assure un coffre rare au moins tous les 7 et épique
+  au moins tous les 15.
+- **Une boîte à souvenirs** qui se remplit avec les coffres : 14 objets de
+  l'histoire de Dalva (chacun n'apparaît qu'une fois sa page lue) et 26 petits
+  papiers portant une expression brésilienne, qui rejoignent les révisions.
 - Série de jours, primes aux paliers (3, 7, 14, 30…) et **gel de série** achetable
   pour ne pas tout perdre le jour où l'on ne peut pas jouer.
 - Trois quêtes par jour, tirées au sort mais stables sur la journée.
@@ -70,7 +76,9 @@ src/
   data/units.js    le contenu pédagogique : 20 chapitres, 360 items
   data/stories.js  les cinq livres, vingt pages en tout
   data/cards.js    les vingt cartes postales
+  data/souvenirs.js les souvenirs et les petits papiers de la boîte
   lib/progress.js  mémoire espacée, couronnes, quêtes, séries, trophées
+  lib/chests.js    coffres : rareté, garanties, contenu
   lib/exercises.js fabrique les sessions selon la couronne
   lib/speech.js    synthèse vocale portugaise (et contournements Android)
   lib/audio.js     sons et vibrations, synthétisés sans aucun fichier

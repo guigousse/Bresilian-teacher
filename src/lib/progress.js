@@ -11,6 +11,7 @@
 import { UNITS, ALL_ITEMS } from "../data/units.js";
 import { BOOKS } from "../data/stories.js";
 import { CARDS } from "../data/cards.js";
+import { PAPER_ITEMS } from "../data/souvenirs.js";
 import { levelInfo } from "./levels.js";
 import { todayKey, daysBetween } from "./utils.js";
 
@@ -60,11 +61,18 @@ export function recordAnswer(p, pt, correct) {
   p.learned[pt] = (p.learned[pt] || 0) + 1;
 }
 
+/* Ce qu'il y a à réviser : le vocabulaire des leçons, plus les petits
+   papiers trouvés dans les coffres. */
+export function studyItems(p) {
+  const owned = new Set(p.papers || []);
+  return owned.size ? [...ALL_ITEMS, ...PAPER_ITEMS.filter((i) => owned.has(i.paper))] : ALL_ITEMS;
+}
+
 /* Mots dont la révision est due, les plus en retard d'abord. */
 export function dueItems(p, limit = 999) {
   const today = todayKey();
   const out = [];
-  for (const it of ALL_ITEMS) {
+  for (const it of studyItems(p)) {
     const s = srsOf(p, it.pt);
     if (!s.due) continue;
     const late = daysBetween(s.due, today);
@@ -78,7 +86,7 @@ export function dueCount(p) { return dueItems(p).length; }
 
 /* Les mots qui résistent : peu solides et déjà ratés. */
 export function weakItems(p, limit = 12) {
-  return ALL_ITEMS
+  return studyItems(p)
     .map((it) => ({ item: it, s: srsOf(p, it.pt) }))
     .filter((x) => x.s.last && x.s.wrong > 0 && x.s.box <= 2)
     .sort((a, b) => (b.s.wrong - a.s.wrong) || (a.s.box - b.s.box))
@@ -88,14 +96,14 @@ export function weakItems(p, limit = 12) {
 
 /* Mots déjà rencontrés, pour les sessions de révision libre. */
 export function seenItems(p) {
-  return ALL_ITEMS.filter((it) => srsOf(p, it.pt).last);
+  return studyItems(p).filter((it) => srsOf(p, it.pt).last);
 }
 
 /* Combien de révisions tombent sur chacun des prochains jours. */
 export function reviewForecast(p, days = 7) {
   const today = todayKey();
   const buckets = Array.from({ length: days }, () => 0);
-  for (const it of ALL_ITEMS) {
+  for (const it of studyItems(p)) {
     const s = srsOf(p, it.pt);
     if (!s.due) continue;
     const inDays = daysBetween(today, s.due);
@@ -107,7 +115,7 @@ export function reviewForecast(p, days = 7) {
 
 export function masteryBreakdown(p) {
   const out = { neuf: 0, fragile: 0, solide: 0, acquis: 0, jamais: 0 };
-  for (const it of ALL_ITEMS) {
+  for (const it of studyItems(p)) {
     const s = srsOf(p, it.pt);
     if (!s.last) { out.jamais++; continue; }
     out[masteryOf(s.box).key]++;
@@ -331,6 +339,7 @@ export function defaultProgress() {
     lessons: {}, learned: {}, badges: [], cards: [], story: {},
     srs: {}, crowns: {}, days: {}, quests: null, questsDone: 0,
     freezes: 1, freezeUsed: null, goalChest: null,
+    chests: [], pity: { rare: 0, epic: 0 }, chestsOpened: 0, souvenirs: [], papers: [],
   };
 }
 
@@ -373,10 +382,4 @@ export function migrate(saved) {
 
 export const XP_PER_CORRECT = 10;
 
-export function chestReward(p) {
-  const roll = Math.random();
-  if (roll < 0.15 && (p.freezes || 0) < MAX_FREEZES) return { kind: "freeze", label: "1 gel de série", gems: 0 };
-  const gems = 15 + Math.floor(Math.random() * 4) * 5;
-  return { kind: "gems", label: `${gems} gemmes`, gems };
-}
 

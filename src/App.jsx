@@ -8,11 +8,12 @@ import { levelInfo, LEVEL_GEMS } from "./lib/levels.js";
 import {
   defaultProgress, defaultPrefs, migrate, storyProgress, storyWordsDone, bookDone, freshBadges,
   rollOverDay, markActivity, recordAnswer, dueItems, weakItems, seenItems,
-  crownOf, MAX_CROWN, bumpQuest, ensureQuests, goalOf, chestReward, MAX_FREEZES,
+  crownOf, MAX_CROWN, bumpQuest, ensureQuests, goalOf, MAX_FREEZES,
   XP_PER_CORRECT, STREAK_MILESTONES,
 } from "./lib/progress.js";
 import { storage, SAVE_KEY, PREFS_KEY } from "./lib/storage.js";
 import { makeSession } from "./lib/exercises.js";
+import { grantChest, openChestIn, migrateChests } from "./lib/chests.js";
 import { speak, refreshVoices, huntVoices, primeSpeech, watchSpeech, getSpeechStatus, setSpeechPrefs } from "./lib/speech.js";
 import { sndTap, sndLevel, sndCard, sndChest, setAudioPrefs } from "./lib/audio.js";
 
@@ -26,6 +27,7 @@ import { ResultScreen } from "./ui/ResultScreen.jsx";
 import { ProfileScreen } from "./ui/ProfileScreen.jsx";
 import { StatsScreen } from "./ui/StatsScreen.jsx";
 import { ChestModal } from "./ui/ChestModal.jsx";
+import { MemoryBox } from "./ui/MemoryBox.jsx";
 import { TabBar } from "./ui/TabBar.jsx";
 import { GlobalStyle } from "./ui/GlobalStyle.jsx";
 
@@ -42,7 +44,7 @@ export default function App() {
   const [openedCard, setOpenedCard] = useState(null);
   const [activeBook, setActiveBook] = useState(null);
   const [closedBook, setClosedBook] = useState(null);
-  const [chest, setChest] = useState(null);
+  const [chest, setChest] = useState(null);   /* le coffre affiché */
   const [speechState, setSpeechState] = useState(getSpeechStatus());
   const [soundWarnHidden, setSoundWarnHidden] = useState(false);
 
@@ -62,6 +64,7 @@ export default function App() {
       if (keys.includes(SAVE_KEY)) {
         const saved = await storage.read(SAVE_KEY);
         if (saved) p = migrate(saved);
+        migrateChests(p);
       }
       rollOverDay(p);
       if (keys.includes(PREFS_KEY)) {
@@ -91,8 +94,14 @@ export default function App() {
 
   const startLesson = useCallback((unitId) => {
     if (unitId === "review") {
+      /* Les mots dus d'abord — petits papiers compris —, complétés par
+         des mots déjà vus pour que la session ait de quoi tourner. */
       const due = dueItems(progress, 40);
-      const pool = due.length >= 6 ? due : (seenItems(progress).length >= 6 ? seenItems(progress) : ALL_ITEMS.slice(0, 12));
+      const pool = [...due];
+      for (const it of [...seenItems(progress), ...ALL_ITEMS]) {
+        if (pool.length >= 6) break;
+        if (!pool.some((x) => x.pt === it.pt)) pool.push(it);
+      }
       setSession({
         unit: { id: "review", title: "Révision", emoji: "🔁", items: pool, color: "from-sky-400 to-indigo-500" },
         exercises: makeSession({ items: pool, count: 12, crown: 2, weak: weakItems(progress) }),
@@ -149,6 +158,7 @@ export default function App() {
       if (p.streak !== streakBefore && STREAK_MILESTONES[p.streak]) {
         streakMilestone = p.streak;
         p.gems += STREAK_MILESTONES[p.streak];
+        grantChest(p, "streak");
       }
 
       /* La mémoire des mots se met à jour réponse par réponse. */
@@ -172,8 +182,10 @@ export default function App() {
       answers.forEach((a) => { if (a.kind === "listen" || a.kind === "listen_type") bumpQuest(p, "listen", 1); });
       answers.forEach((a) => { if (a.kind === "type" || a.kind === "listen_type") bumpQuest(p, "type", 1); });
 
+      /* Un seul coffre d'objectif par jour ; il attend sur l'accueil. */
       if (!goalBefore && p.xpToday >= goalOf(prefs) && !p.goalChest) {
-        p.goalChest = "ready";
+        p.goalChest = "given";
+        grantChest(p, "goal");
         goalReached = true;
       }
 
@@ -209,18 +221,18 @@ export default function App() {
     });
   }
 
-  function openChest() {
-    const reward = chestReward(progress);
-    sndChest();
-    setChest(reward);
-    setProgress((prev) => {
-      const p = JSON.parse(JSON.stringify(prev));
-      p.goalChest = "opened";
-      if (reward.kind === "freeze") p.freezes = Math.min(MAX_FREEZES, (p.freezes || 0) + 1);
-      else p.gems += reward.gems;
-      return p;
-    });
+  /* Ouvre un coffre : le tirage se fait une seule fois, ici, et le
+     résultat est rendu à l'écran d'ouverture. */
+  function openChestNow(chestId) {
+    const p = JSON.parse(JSON.stringify(progress));
+    const res = openChestIn(p, chestId);
+    if (!res) return null;
+    const fresh = freshBadges(p);
+    p.badges = [...p.badges, ...fresh.map((b) => b.id)];
+    setProgress(p);
+    return res;
   }
+
 
   function buyFreeze(price) {
     if (progress.gems < price || (progress.freezes || 0) >= MAX_FREEZES) return;
@@ -300,6 +312,7 @@ export default function App() {
       c.quiz = { score, total, passed: true };
       c.done = true;
       p.story[chapterId] = c;
+      if (bookCloses) grantChest(p, "book");
       const xp = PAGE_BONUS_XP + (bookCloses ? BOOK_BONUS_XP : 0);
       p.gems += PAGE_BONUS_GEMS + (bookCloses ? BOOK_BONUS_GEMS : 0);
       p.xp += xp; p.xpToday += xp;
@@ -345,12 +358,13 @@ export default function App() {
             onSettings={() => setShowSettings(true)} storageWarning={storageWarning}
             speechState={speechState} soundWarnHidden={soundWarnHidden}
             onHideSoundWarn={() => setSoundWarnHidden(true)}
-            onClaimQuest={claimQuest} onOpenChest={openChest} onStats={() => setView("stats")}
+            onClaimQuest={claimQuest} onOpenChest={() => setChest((progress.chests || [])[0] || null)} onStats={() => setView("stats")}
             onOpenBook={(id) => { setActiveBook(id); setView("story"); }} />
         )}
         {view === "stats" && <StatsScreen progress={progress} prefs={prefs} onBack={() => setView("path")} onStart={startLesson} />}
         {view === "library" && (
-          <LibraryScreen progress={progress} onOpenBook={(id) => { setActiveBook(id); setView("story"); }} />
+          <LibraryScreen progress={progress} onOpenBook={(id) => { setActiveBook(id); setView("story"); }}
+            onOpenMemories={() => setView("memories")} />
         )}
         {view === "story" && activeBook && (
           <BookReader book={BOOKS.find((b) => b.id === activeBook)}
@@ -363,6 +377,7 @@ export default function App() {
             onStartLesson={(chapterId) => { setActiveBook(null); startLesson(chapterId); }}
             onClose={() => { setActiveBook(null); setView("library"); }} />
         )}
+        {view === "memories" && <MemoryBox progress={progress} onBack={() => setView("library")} />}
         {view === "shop" && (
           <ShopScreen progress={progress} onBuy={buyCard} onBuyFreeze={buyFreeze}
             onOpenCard={(c, i) => setOpenedCard({ card: c, index: i })} />
@@ -395,7 +410,14 @@ export default function App() {
           <BookCompleteModal book={closedBook.book} shelvedBefore={closedBook.shelvedBefore} score={closedBook.score}
             onClose={() => { sndTap(); setClosedBook(null); setActiveBook(null); setView("library"); }} />
         )}
-        {chest && <ChestModal reward={chest} onClose={() => { sndTap(); setChest(null); }} />}
+        {chest && (
+          <ChestModal chest={chest}
+            remaining={(progress.chests || []).filter((c) => c.id !== chest.id).length}
+            onOpen={openChestNow}
+            onNext={() => setChest((progress.chests || []).find((c) => c.id !== chest.id) || null)}
+            onShowBox={() => { setChest(null); setView("memories"); }}
+            onClose={() => { sndTap(); setChest(null); }} />
+        )}
       </div>
     </div>
   );

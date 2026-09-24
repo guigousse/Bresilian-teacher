@@ -110,10 +110,30 @@ export function GlobalStyle() {
         }
         .fb-spine-in { animation: fb-spine-in .5s cubic-bezier(.2,.9,.3,1) backwards; transform-origin: bottom center; }
         @keyframes fb-spine-in { from { opacity: 0; transform: translateY(-18px) rotate(-10deg); } to { opacity: 1; transform: none; } }
+        /* Le grain du bois et sa teinte vont dans la même propriété : une
+           classe Tailwind de dégradé posée à côté serait écrasée. */
         .fb-wood {
           background-image: repeating-linear-gradient(90deg, rgba(0,0,0,.12) 0 2px, transparent 2px 9px),
-                            repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 1px, transparent 1px 17px);
+                            repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 1px, transparent 1px 17px),
+                            linear-gradient(180deg, #b45309, #78350f);
         }
+        .fb-wood-light {
+          background-image: repeating-linear-gradient(90deg, rgba(0,0,0,.12) 0 2px, transparent 2px 9px),
+                            repeating-linear-gradient(90deg, rgba(255,255,255,.1) 0 1px, transparent 1px 17px),
+                            linear-gradient(180deg, #f59e0b, #d97706 45%, #92400e);
+        }
+
+        /* --- Coffres et boîte à souvenirs --- */
+        .fb-halo { animation: fb-halo 1.8s ease-in-out infinite; transform-origin: 60px 66px; }
+        @keyframes fb-halo { 0%,100% { opacity: .65; transform: scale(.94); } 50% { opacity: 1; transform: scale(1.06); } }
+        .fb-rays { animation: fb-rays 9s linear infinite; }
+        @keyframes fb-rays { to { transform: rotate(360deg); } }
+        .fb-chest-hard { animation: fb-chest-hard .5s ease-in-out infinite; transform-origin: bottom center; }
+        @keyframes fb-chest-hard { 0%,100% { transform: rotate(0) scale(1); } 25% { transform: rotate(-7deg) scale(1.04); } 75% { transform: rotate(7deg) scale(1.04); } }
+        .fb-loot { animation: fb-loot .6s cubic-bezier(.2,1.3,.4,1) backwards; }
+        @keyframes fb-loot { from { opacity: 0; transform: translateY(60px) scale(.6); } to { opacity: 1; transform: none; } }
+        .fb-unfold { animation: fb-unfold .55s cubic-bezier(.3,1.2,.4,1) backwards; transform-origin: top center; }
+        @keyframes fb-unfold { 0% { transform: perspective(600px) rotateX(-88deg); opacity: .3; } 100% { transform: none; opacity: 1; } }
 
         /* --- Mascotte et retours visuels --- */
         .fb-bob { animation: fb-bob 2.6s ease-in-out infinite; }

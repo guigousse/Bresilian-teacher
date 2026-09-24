@@ -75,7 +75,7 @@ export function ResultScreen({ result, onHome }) {
         <div className="w-full max-w-xs mb-3 rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 text-white p-4 fb-burst">
           <div className="text-3xl fb-flame">🔥</div>
           <div className="font-extrabold">{streakMilestone} jours d'affilée !</div>
-          <div className="text-sm text-white/90">+{streakGems} gemmes — la régularité paie plus que les longues sessions.</div>
+          <div className="text-sm text-white/90">+{streakGems} gemmes et un coffre rare — la régularité paie plus que les longues sessions.</div>
         </div>
       )}
 

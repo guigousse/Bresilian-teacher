@@ -5,6 +5,8 @@ import { BOOKS } from "../data/stories.js";
 import { storyProgress, bookDone, bookPagesDone, bookScore } from "../lib/progress.js";
 import { sndTap, sndCard, sndWhoosh } from "../lib/audio.js";
 import { Confetti } from "./bits.jsx";
+import { SouvenirArt, PaperSlip } from "./SouvenirArt.jsx";
+import { SOUVENIRS, PAPERS } from "../data/souvenirs.js";
 
 /* ==================================================================
    LA BIBLIOTHÈQUE — une étagère en bois où l'histoire de Léa se range
@@ -82,12 +84,12 @@ function Shelf({ items, offset = 0, onOpenBook }) {
           );
         })}
       </div>
-      <div className="h-3.5 rounded-[2px] fb-wood bg-gradient-to-b from-amber-500 via-amber-600 to-amber-800 shadow-[0_3px_6px_rgba(0,0,0,.45)]" />
+      <div className="h-3.5 rounded-[2px] fb-wood-light shadow-[0_3px_6px_rgba(0,0,0,.45)]" />
     </div>
   );
 }
 
-export function LibraryScreen({ progress, onOpenBook }) {
+export function LibraryScreen({ progress, onOpenBook, onOpenMemories }) {
   const entries = BOOKS.map((book) => ({
     kind: "book", book,
     done: bookDone(progress, book),
@@ -155,6 +157,32 @@ export function LibraryScreen({ progress, onOpenBook }) {
           {shelved === 0 ? "Aucun livre rangé pour l'instant : il en faut les quatre pages."
             : "Touche une tranche pour rouvrir un livre — le signet rouge marque celui en cours."}
         </p>
+      </div>
+
+      {/* La boîte à souvenirs, posée à côté de l'étagère */}
+      <div className="px-4 pt-6">
+        <button onClick={() => { sndTap(); onOpenMemories(); }}
+          className="w-full text-left rounded-3xl p-2 shadow-lg fb-wood active:translate-y-0.5 transition-transform">
+          <div className="rounded-2xl bg-gradient-to-b from-[#4a1f2a] to-[#2e1219] p-3 flex items-center gap-3">
+            <div className="relative w-16 h-14 shrink-0">
+              <div className="absolute left-0 top-1 w-11 h-11 rotate-[-8deg]">
+                {(progress.souvenirs || []).length
+                  ? <SouvenirArt kind={(SOUVENIRS.find((x) => x.id === progress.souvenirs[progress.souvenirs.length - 1]) || {}).kind} />
+                  : <div className="w-full h-full rounded-lg border-2 border-dashed border-white/20" />}
+              </div>
+              <div className="absolute right-0 bottom-0 w-10 rotate-[7deg]">
+                <PaperSlip text={(PAPERS.find((x) => x.id === (progress.papers || [])[0]) || {}).pt} blank={!(progress.papers || []).length} />
+              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="font-extrabold text-amber-100 fb-serif">Caixa de lembranças</div>
+              <div className="text-xs text-amber-200/70 tabular-nums mt-0.5">
+                {(progress.souvenirs || []).length}/{SOUVENIRS.length} souvenirs · {(progress.papers || []).length}/{PAPERS.length} petits papiers
+              </div>
+              <div className="text-[11px] text-white/40 mt-0.5">Ce qu'on trouve dans les coffres.</div>
+            </div>
+          </div>
+        </button>
       </div>
 
       {/* Ce qui attend derrière */}
@@ -256,6 +284,10 @@ export function BookCompleteModal({ book, shelvedBefore = [], score, onClose }) 
               </div>
             </div>
           )}
+
+          <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-purple-500/25 border border-purple-300/40 text-purple-100 font-bold text-xs px-3 py-1.5">
+            + un coffre épique (ou mieux) t'attend sur l'accueil
+          </div>
 
           {score && score.perfect && stamped && (
             <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-amber-400 text-amber-950 font-extrabold text-xs px-3 py-1.5 fb-burst">

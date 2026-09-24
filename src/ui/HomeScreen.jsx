@@ -11,6 +11,8 @@ import {
 } from "../lib/progress.js";
 import { sndTap } from "../lib/audio.js";
 import { MascotSays } from "./Mascot.jsx";
+import { ChestArt } from "./SouvenirArt.jsx";
+import { TIERS } from "../data/souvenirs.js";
 
 /* Anneau de progression de l'objectif du jour. */
 function GoalRing({ pct, children, size = 66 }) {
@@ -105,10 +107,12 @@ export function HomeScreen({
   const weak = weakItems(progress).length;
   const quests = ensureQuests(progress);
   const mastery = masteryBreakdown(progress);
-  const chestReady = progress.goalChest === "ready";
+  const chests = progress.chests || [];
+  const chestReady = chests.length > 0;
+  const bestChest = chests.reduce((b, c) => (["commun", "rare", "epique", "legendaire"].indexOf(c.tier) > ["commun", "rare", "epique", "legendaire"].indexOf(b.tier) ? c : b), chests[0] || { tier: "commun" });
 
   const mood = chestReady ? "celebrate" : goalHit ? "sleep" : due > 0 ? "think" : "idle";
-  const hello = chestReady ? "Objectif atteint ! Ton coffre t'attend."
+  const hello = chestReady ? (chests.length > 1 ? `${chests.length} coffres t'attendent !` : `Un coffre ${TIERS[chests[0].tier].label.toLowerCase()} t'attend !`)
     : goalHit ? "Objectif du jour bouclé. Repose-toi, ou continue !"
       : due > 0 ? `${due} mot${due > 1 ? "s" : ""} à revoir avant de les oublier.`
         : progress.streak > 0 ? `Série de ${progress.streak} jour${progress.streak > 1 ? "s" : ""} — on continue ?`
@@ -175,11 +179,16 @@ export function HomeScreen({
               <div className="text-xs text-emerald-50">{progress.xpToday} / {goal} XP · {goalHit ? "atteint !" : `encore ${goal - progress.xpToday} XP`}</div>
             </div>
             {chestReady ? (
-              <button onClick={onOpenChest} className="rounded-2xl bg-amber-400 text-amber-950 font-extrabold px-3 py-2 text-sm border-b-4 border-amber-600 active:border-b-0 active:translate-y-1 fb-glow">
-                🎁 Coffre
+              <button onClick={() => { sndTap(); onOpenChest(); }} aria-label="Ouvrir un coffre" className="relative shrink-0 fb-chest">
+                <ChestArt tier={bestChest.tier} size={64} />
+                {chests.length > 1 && (
+                  <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-red-500 text-white text-[11px] font-extrabold grid place-items-center border-2 border-white">
+                    {chests.length}
+                  </span>
+                )}
               </button>
             ) : (
-              <div className="text-3xl opacity-40">🎁</div>
+              <div className="shrink-0 opacity-35 grayscale"><ChestArt tier="commun" size={54} /></div>
             )}
           </div>
         </div>

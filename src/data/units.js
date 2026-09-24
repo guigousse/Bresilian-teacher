@@ -1,3 +1,5 @@
+import { PAPER_ITEMS } from "./souvenirs.js";
+
 /* ==================================================================
    LE VOCABULAIRE — 5 sections thématiques, 4 chapitres chacune.
    À l'intérieur d'une section le vocabulaire se précise : on commande
@@ -500,7 +502,7 @@ export const UNITS = [
 ];
 
 export const ALL_ITEMS = UNITS.flatMap((u) => u.items);
-export const PH_OF = Object.fromEntries(ALL_ITEMS.map((i) => [i.pt, i.ph]));
+export const PH_OF = Object.fromEntries([...ALL_ITEMS, ...PAPER_ITEMS].map((i) => [i.pt, i.ph]));
 
 export const PRON_KEYS = [
   { k: "r / rr", v: "un h soufflé : rua → HOU-a" },
