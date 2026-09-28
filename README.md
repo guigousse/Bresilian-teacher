@@ -1,18 +1,19 @@
 # Fala! — portugais & espagnol
 
-Apprendre les bases du **portugais du Brésil** ou de l'**espagnol d'Espagne** depuis
+Apprendre les bases du **portugais du Brésil** ou de l'**espagnol d'Argentine** depuis
 le français : leçons courtes, phonétique française sous chaque mot, prononciation
 audio, mémoire espacée, histoire à débloquer et cartes postales à collectionner.
 
 Au premier lancement, un menu fait choisir la langue. Chaque langue a son propre
 univers et sa propre progression (niveau, série, gemmes, collection) :
 
-| | 🇧🇷 Fala, Brasil! | 🇪🇸 ¡Habla, España! |
+| | 🇧🇷 Fala, Brasil! | 🇦🇷 ¡Dale, Argentina! |
 |---|---|---|
-| Mascotte | Zé, l'ara vert et jaune | Paco, l'ara rouge au chapeau cordouan |
-| Histoire | Léa, un carnet oublié, de Rio à Salvador | Nina, une guitare oubliée, de Madrid à Grenade |
-| Cartes | 20 lieux du Brésil | 20 lieux d'Espagne |
-| Boîte à souvenirs | 14 souvenirs, 26 expressions brésiliennes | 14 souvenirs, 26 expressions espagnoles |
+| Langue | portugais du Brésil | espagnol rioplatense : « vos », « che », ll/y prononcés « ch » |
+| Mascotte | Zé, l'ara vert et jaune | Pampa, la conure de Patagonie en béret de gaucho |
+| Histoire | Léa, un carnet oublié, de Rio à Salvador | Camille, un bandonéon oublié, de Buenos Aires à la Patagonie |
+| Cartes | 20 lieux du Brésil | 20 lieux d'Argentine |
+| Boîte à souvenirs | 14 souvenirs, 26 expressions brésiliennes | 14 souvenirs, 26 expressions argentines (lunfardo) |
 
 On change de langue en touchant le drapeau en haut de l'accueil (ou depuis le profil).
 
@@ -88,7 +89,7 @@ src/
   App.jsx          assemblage : état, navigation, récompenses
   courses/         un fichier par langue : données, voix, textes, couleurs, mascotte
   data/            portugais : units, stories, cards, souvenirs
-  data/es/         espagnol : les mêmes fichiers
+  data/ar/         espagnol d'Argentine : les mêmes fichiers
   lib/progress.js  mémoire espacée, couronnes, quêtes, séries, trophées
   lib/chests.js    coffres : rareté, garanties, contenu
   lib/exercises.js fabrique les sessions selon la couronne
@@ -121,13 +122,14 @@ sortie `dist`). Rien à configurer.
 ## Voix
 
 L'app utilise la synthèse vocale du système (`speechSynthesis`) en `pt-BR` ou en
-`es-ES`. La qualité dépend des voix installées sur l'appareil ; les réglages
+`es-AR` ; sans voix argentine, elle préfère une voix d'Amérique latine (Mexique,
+États-Unis) à celle d'Espagne. La qualité dépend des voix installées sur l'appareil ; les réglages
 permettent de choisir la voix (retenue pour chaque langue), le débit et la hauteur.
 
 - iPhone : Réglages → Accessibilité → Contenu énoncé → Voix → Portugais (Brésil)
-  ou Espagnol (Espagne).
+  ou Espagnol (Argentine), voix Diego.
 - Android : Paramètres → Synthèse vocale → moteur Google → installer les données
-  pt-BR ou es-ES.
+  pt-BR, ou es-US / es-MX pour l'espagnol d'Amérique latine.
 
 Si la voix reste muette, **Profil → Diagnostic du son** teste séparément les bips
 et la voix, et donne le rapport à envoyer.

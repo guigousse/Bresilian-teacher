@@ -3,19 +3,32 @@ import { course } from "../courses/index.js";
 
 /* ==================================================================
    LA MASCOTTE — un perroquet dessiné une seule fois, habillé par le
-   cours : Zé, l'ara aux couleurs du Brésil ; Paco, l'ara rouge et or à
-   chapeau cordouan pour l'Espagne. Décliné en humeurs : il accompagne
+   cours : Zé, l'ara aux couleurs du Brésil ; Pampa, la conure de Patagonie
+   (loro barranquero) en béret de gaucho et foulard bleu ciel pour
+   l'Argentine. Décliné en humeurs : il accompagne
    l'élève, félicite, s'inquiète, dort quand l'objectif est atteint.
    ================================================================== */
 
-/* Le chapeau cordouan : bord plat, calotte plate, ruban. */
-function HatCordobes({ color = "#111827", band = "#b91c1c" }) {
+/* Le béret du gaucho, porté de travers. */
+function HatBoina({ color = "#1f2937" }) {
   return (
     <g>
-      <ellipse cx="64" cy="19" rx="28" ry="5" fill={color} />
-      <path d="M50 18 L52 5 Q64 1 76 5 L78 18 Z" fill={color} />
-      <path d="M51.2 15 L77 15 L77.6 18 L50.6 18 Z" fill={band} />
-      <ellipse cx="64" cy="18.2" rx="28" ry="1.2" fill="#fff" opacity=".12" />
+      <ellipse cx="64" cy="18" rx="23" ry="6.5" fill={color} transform="rotate(-10 64 18)" />
+      <path d="M44 20 Q62 4 84 12 Q70 12 44 20 Z" fill={color} />
+      <circle cx="66" cy="8.6" r="1.6" fill={color} />
+      <ellipse cx="60" cy="15" rx="12" ry="2" fill="#fff" opacity=".08" transform="rotate(-10 60 15)" />
+    </g>
+  );
+}
+
+/* Le foulard noué au cou, pointe sur le côté. */
+function Scarf({ color = "#74acdf", stripe = "#ffffff" }) {
+  return (
+    <g>
+      <path d="M44 57 Q66 68 88 56 L88 62 Q66 74 44 63 Z" fill={color} />
+      <path d="M46 60.5 Q66 70 86 59.6" stroke={stripe} strokeWidth="1.2" fill="none" />
+      <path d="M50 62 L42 76 L54 68 Z" fill={color} />
+      <path d="M48 64 L45 72" stroke={stripe} strokeWidth=".9" />
     </g>
   );
 }
@@ -39,6 +52,7 @@ export function Mascot({ mood = "idle", size = 96, className = "", look = null }
         {/* Corps */}
         <ellipse cx="62" cy="70" rx="30" ry="32" fill={c.body} />
         <ellipse cx="66" cy="76" rx="20" ry="23" fill={c.belly} opacity=".95" />
+        {c.patch && <ellipse cx="66" cy="90" rx="9" ry="6" fill={c.patch} opacity=".9" />}
 
         {/* Aile : elle bat quand Zé félicite */}
         <g className={cheering ? "fb-flap" : ""}>
@@ -57,7 +71,8 @@ export function Mascot({ mood = "idle", size = 96, className = "", look = null }
             <path d="M66 14 Q71 2 78 9" stroke={c.crest[1]} strokeWidth="5" strokeLinecap="round" fill="none" />
           </>
         )}
-        {hat === "cordobes" && <HatCordobes />}
+        {hat === "boina" && <Scarf />}
+        {hat === "boina" && <HatBoina />}
 
         {/* Bec */}
         <path d="M84 40 Q98 44 86 56 Q80 52 80 44 Z" fill={c.beak} />

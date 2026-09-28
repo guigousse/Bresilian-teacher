@@ -325,7 +325,7 @@ const BADGE_RULES = [
 ];
 
 /* Les trophées portent un nom dans la langue apprise : « Primeira aula »
-   au Brésil, « Primera clase » en Espagne. */
+   au Brésil, « Primera clase » en Argentine. */
 export function badges() {
   const c = course();
   return BADGE_RULES.map((b) => ({ ...b, label: (c.badges && c.badges[b.id]) || b.label, emoji: (c.badgeEmoji && c.badgeEmoji[b.id]) || b.emoji }));

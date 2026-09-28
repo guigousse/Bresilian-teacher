@@ -10,7 +10,7 @@ import { course } from "../courses/index.js";
 
 /* ==================================================================
    LA BOÎTE À SOUVENIRS — deux compartiments : les objets de l'histoire
-   du cours (Dalva, Nina), et les petits papiers épinglés, chacun portant une
+   du cours (Dalva, Camille), et les petits papiers épinglés, chacun portant une
    expression du pays. Ce qui manque reste en creux, pour qu'on
    sache ce qu'il reste à trouver.
    ================================================================== */

@@ -3,7 +3,7 @@ import { course } from "../courses/index.js";
 /* ================================================================== */
 
 /* Les titres de niveau viennent du cours : carioca au Brésil,
-   madrileño en Espagne. */
+   porteño en Argentine. */
 export function levelTitles() { return course().levelTitles; }
 export const LEVEL_GEMS = 60;
 

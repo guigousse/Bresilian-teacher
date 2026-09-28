@@ -243,130 +243,84 @@ const ART = {
     </Frame>
   ),
 
-  /* --- Espagne ------------------------------------------------------- */
-  tile: () => (
+  /* --- Argentine ----------------------------------------------------- */
+  pendant: () => (
     <Frame>
-      <g transform="rotate(-7 32 32)">
-        <path d="M11 11 H53 V53 H19 L11 45 Z" fill="#f8fafc" stroke="#94a3b8" />
-        <path d="M11 11 H53 V53 H19 L11 45 Z" fill="none" stroke="#1d4ed8" strokeWidth="2.5" transform="translate(32 32) scale(.84) translate(-32 -32)" />
-        <circle cx="32" cy="32" r="9" fill="none" stroke="#1d4ed8" strokeWidth="2" />
-        {[0, 90, 180, 270].map((a) => (
-          <path key={a} d="M32 23 q-4 -6 0 -9 q4 3 0 9" fill="#2563eb" transform={`rotate(${a} 32 32)`} />
-        ))}
-        <circle cx="32" cy="32" r="2.5" fill="#f59e0b" />
-        {[[18, 18], [46, 18], [46, 46]].map(([x, y]) => <circle key={x + "" + y} cx={x} cy={y} r="2.2" fill="#1d4ed8" />)}
-        <path d="M11 45 L19 53" stroke="#64748b" strokeWidth="1.2" />
-      </g>
+      <path d="M14 8 Q32 30 50 8" stroke="#a8a29e" strokeWidth="1.2" fill="none" strokeDasharray="1.6 1" />
+      <circle cx="32" cy="36" r="13" fill="#e5e7eb" stroke="#9ca3af" strokeWidth="1.5" />
+      <circle cx="32" cy="36" r="10" fill="none" stroke="#d1d5db" strokeWidth=".8" />
+      <circle cx="32" cy="21.5" r="2.2" fill="none" stroke="#9ca3af" strokeWidth="1.2" />
+      <text x="32" y="41.5" textAnchor="middle" fontSize="15" fontWeight="700" fill="#6b7280" fontFamily="Georgia, serif">S</text>
+      <path d="M24 29 q4 -4 9 -4" stroke="#fff" strokeWidth="1.6" fill="none" opacity=".8" />
     </Frame>
   ),
-  smallkey: () => (
+  mate: () => (
     <Frame>
-      <path d="M8 14 C16 6 26 12 22 20" stroke="#dc2626" strokeWidth="2" fill="none" />
-      <circle cx="24" cy="24" r="7" fill="none" stroke="#b7791f" strokeWidth="3.5" />
-      <circle cx="24" cy="24" r="7" fill="none" stroke="#f6d27a" strokeWidth="1" />
-      <path d="M29 29 L48 48" stroke="#b7791f" strokeWidth="3.5" strokeLinecap="round" />
-      <path d="M42 42 l4 -4 M46 46 l3 -3" stroke="#b7791f" strokeWidth="3" strokeLinecap="round" />
+      <path d="M20 26 Q16 50 32 56 Q48 50 44 26 Z" fill="#8a5a2b" />
+      <path d="M20 26 Q16 50 32 56 Q24 48 26 26 Z" fill="#6b4420" />
+      <ellipse cx="32" cy="26" rx="12" ry="3.4" fill="#c9a36b" />
+      <ellipse cx="32" cy="26" rx="9.6" ry="2.4" fill="#5a7a2a" />
+      <path d="M20 30 Q32 34 44 30" stroke="#d6d3d1" strokeWidth="2" fill="none" />
+      <path d="M36 25 L46 6" stroke="#d6d3d1" strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M46 6 l2.6 -1.4" stroke="#a8a29e" strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M26 40 q6 4 12 0" stroke="#c9a36b" strokeWidth=".8" fill="none" opacity=".7" />
     </Frame>
   ),
-  guitarphoto: () => (
-    <Frame>
-      <g transform="rotate(-5 32 32)">
-        <rect x="9" y="8" width="46" height="48" fill="#f8f4ea" stroke="#d6cdb8" />
-        <rect x="13" y="12" width="38" height="34" fill="#b08968" opacity=".55" />
-        <path d="M18 46 V34 H30 V46 M18 34 l2 -6 h8 l2 6" stroke="#6b4f35" strokeWidth="1.3" fill="none" />
-        <g transform="rotate(18 38 32)">
-          <path d="M38 14 V26" stroke="#3f2a1a" strokeWidth="2.4" />
-          <rect x="36" y="11" width="4" height="4" rx="1" fill="#3f2a1a" />
-          <path d="M38 25 c-6 0 -7 5 -4 8 c-4 3 -3 10 4 10 c7 0 8 -7 4 -10 c3 -3 2 -8 -4 -8 Z" fill="#c2833f" stroke="#7c4a1e" />
-          <circle cx="38" cy="34" r="1.8" fill="#3f2a1a" />
-        </g>
-        <path d="M16 51 H40" stroke={INK} strokeOpacity=".4" strokeWidth=".9" />
-      </g>
-    </Frame>
-  ),
-  coaster: () => (
-    <Frame>
-      <circle cx="32" cy="32" r="23" fill="#f1e4c8" stroke="#c9b27a" strokeWidth="1.5" />
-      <circle cx="32" cy="32" r="19" fill="none" stroke="#b91c1c" strokeWidth="1.2" strokeDasharray="3 2" />
-      <circle cx="37" cy="28" r="13" fill="none" stroke="#a16207" strokeOpacity=".25" strokeWidth="2" />
-      {[26, 31, 36].map((y, i) => (
-        <path key={y} d={`M${19 + i * 2} ${y} q7 -2 ${24 - i * 4} 0`} stroke="#1d4ed8" strokeOpacity=".75" strokeWidth="1.1" fill="none" />
-      ))}
-      <path d="M42 41 q2 -3 4 0" stroke="#1d4ed8" strokeOpacity=".75" fill="none" />
-    </Frame>
-  ),
-  bag: () => (
-    <Frame>
-      <path d="M14 18 H50 L52 58 H12 Z" fill="#c9a26b" stroke="#9c7640" />
-      <path d="M14 18 l3 -6 h30 l3 6" fill="#b88f58" stroke="#9c7640" />
-      <path d="M17 12 l2 6 M24 12 l1 6 M31 12 v6 M38 12 l-1 6 M45 12 l-2 6" stroke="#9c7640" strokeWidth=".7" />
-      <circle cx="46" cy="14" r="5" fill="#f97316" />
-      <path d="M46 9 q2 -3 5 -2" stroke="#4d7c0f" strokeWidth="1.5" fill="none" />
-      <path d="M19 32 q10 -2 26 0 M21 38 q8 -2 20 0" stroke="#1e3a8a" strokeWidth="1.3" fill="none" />
-    </Frame>
-  ),
-  aveticket: () => (
+  microticket: () => (
     <Frame>
       <g transform="rotate(-8 32 32)">
         <path d="M6 20 H58 V30 a3 3 0 0 0 0 6 V46 H6 V36 a3 3 0 0 0 0 -6 Z" fill="#f8fafc" stroke="#cbd5e1" />
-        <rect x="6" y="20" width="52" height="6" fill="#7c3aed" />
-        <text x="12" y="25" fontSize="4.5" fontWeight="800" fill="#fff">AVE</text>
+        <rect x="6" y="20" width="52" height="6" fill="#0284c7" />
+        <text x="11" y="25" fontSize="4.2" fontWeight="800" fill="#fff">MICRO</text>
         <path d="M44 26 V46" stroke="#94a3b8" strokeDasharray="2 2" />
         <path d="M11 31 H38 M11 35.5 H32 M11 40 H28" stroke={INK} strokeOpacity=".55" strokeWidth="1.1" />
-        <text x="51" y="38" textAnchor="middle" fontSize="6" fontWeight="700" fill="#b91c1c">08:00</text>
+        <text x="51" y="38" textAnchor="middle" fontSize="6" fontWeight="700" fill="#0369a1">21:00</text>
       </g>
     </Frame>
   ),
-  cassette: () => (
+  vinyl: () => (
     <Frame>
-      <rect x="6" y="15" width="52" height="34" rx="3" fill="#292524" />
-      <rect x="11" y="19" width="42" height="14" rx="1.5" fill="#fef3c7" />
-      <path d="M14 24 q8 -2 16 0 M14 28 H26" stroke="#1d4ed8" strokeWidth="1" fill="none" />
-      <rect x="20" y="35" width="24" height="9" rx="4.5" fill="#57534e" />
-      {[26, 38].map((x) => (
-        <g key={x}>
-          <circle cx={x} cy="39.5" r="3.2" fill="#e7e5e4" />
-          <circle cx={x} cy="39.5" r="1.2" fill="#292524" />
-        </g>
-      ))}
-      <path d="M16 49 l3 -4 h26 l3 4" fill="#44403c" />
+      <rect x="6" y="10" width="40" height="44" fill="#e7d9b8" stroke="#c9b27a" />
+      <path d="M10 18 H40 M10 23 H32" stroke="#7f1d1d" strokeWidth="1.6" />
+      <circle cx="40" cy="34" r="19" fill="#111827" />
+      {[15, 12, 9].map((r) => <circle key={r} cx="40" cy="34" r={r} fill="none" stroke="#374151" strokeWidth=".5" />)}
+      <circle cx="40" cy="34" r="5.5" fill="#b91c1c" />
+      <circle cx="40" cy="34" r=".9" fill="#f8fafc" />
+      <path d="M28 22 q6 -5 12 -4" stroke="#fff" strokeWidth="1" fill="none" opacity=".3" />
     </Frame>
   ),
-  carnation: () => (
+  wine: () => (
     <Frame>
-      <rect x="10" y="8" width="44" height="50" rx="2" fill={PAPER} stroke={PAPER_D} />
-      <path d="M32 52 C33 44 31 36 32 28" stroke="#6b7c3a" strokeWidth="1.5" fill="none" />
-      <path d="M32 44 q7 -2 10 -8 q-8 1 -10 8" fill="#7d8f45" />
-      {[-40, -20, 0, 20, 40].map((a) => (
-        <path key={a} d="M32 28 l-4 -12 l2 2 l2 -3 l2 3 l2 -2 Z" fill="#b91c1c" opacity=".92" transform={`rotate(${a} 32 28)`} />
-      ))}
-      <path d="M28 28 q4 3 8 0 l-1 3 h-6 Z" fill="#6b7c3a" />
+      <rect x="12" y="8" width="40" height="48" rx="2" fill="#fbf6ea" stroke="#c9b27a" />
+      <rect x="15" y="11" width="34" height="42" fill="none" stroke="#7c2d4a" strokeWidth=".8" />
+      <text x="32" y="20" textAnchor="middle" fontSize="5" fontWeight="700" fill="#7c2d4a" fontFamily="Georgia, serif">MALBEC</text>
+      <circle cx="32" cy="31" r="1.6" fill="#1c1917" />
+      <path d="M32 32.6 L31 38 L28 41 M31 38 L34 41 M31.6 34 L36 31 M31.6 34 L27 33" stroke="#1c1917" strokeWidth="1" fill="none" strokeLinecap="round" />
+      <path d="M31 35 L29 40 H34 Z" fill="#7c2d4a" />
+      <text x="32" y="49" textAnchor="middle" fontSize="4.4" fill="#57534e">1963</text>
     </Frame>
   ),
-  pick: () => (
+  napkin: () => (
     <Frame>
-      <path d="M32 54 C20 44 12 32 14 20 C16 10 48 10 50 20 C52 32 44 44 32 54 Z" fill="#e0e7ef" stroke="#94a3b8" />
-      <path d="M32 54 C20 44 12 32 14 20 C16 10 48 10 50 20 C52 32 44 44 32 54 Z" fill="url(#nacre)" opacity=".8" />
-      <defs>
-        <linearGradient id="nacre" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#fdf2f8" /><stop offset=".5" stopColor="#bfdbfe" /><stop offset="1" stopColor="#fef9c3" />
-        </linearGradient>
-      </defs>
-      <text x="32" y="32" textAnchor="middle" fontSize="9" fontWeight="700" fill="#64748b" fontFamily="Georgia, serif">J.S.</text>
-      <path d="M40 16 q6 3 7 10" stroke="#fff" strokeWidth="2" fill="none" opacity=".8" />
+      <g transform="rotate(-6 32 32)">
+        <rect x="9" y="11" width="46" height="42" fill="#fdfcf8" stroke="#e5e0d4" />
+        <path d="M9 17 H55 M9 47 H55" stroke="#e5e0d4" strokeDasharray="1 1.4" />
+        <rect x="18" y="24" width="7" height="10" fill="none" stroke="#1d4ed8" strokeWidth="1" />
+        <rect x="31" y="24" width="7" height="10" fill="none" stroke="#1d4ed8" strokeWidth="1" />
+        <path d="M25 26 h6 M25 29 h6 M25 32 h6" stroke="#1d4ed8" strokeWidth=".7" />
+        <path d="M42 38 q3 -1 5 1 l-5 1 Z M44 30 q3 -1 5 1 l-5 1 Z" fill="#1d4ed8" />
+        <path d="M18 42 q6 -2 14 0" stroke="#1d4ed8" strokeWidth=".8" fill="none" />
+      </g>
     </Frame>
   ),
-  fan: () => (
+  backpack: () => (
     <Frame>
-      <path d="M32 52 L6 30 A30 30 0 0 1 58 30 Z" fill="#fef3c7" stroke="#b45309" />
-      {Array.from({ length: 9 }, (_, i) => -64 + i * 16).map((a) => (
-        <path key={a} d="M32 52 V24" stroke="#b45309" strokeOpacity=".45" strokeWidth=".8" transform={`rotate(${a} 32 52)`} />
-      ))}
-      <circle cx="22" cy="30" r="4" fill="#15803d" /><circle cx="22" cy="30" r="1.3" fill="#f97316" />
-      <circle cx="42" cy="28" r="4" fill="#15803d" /><circle cx="43" cy="27" r="1.3" fill="#f97316" />
-      <path d="M28 34 h8 v6 h-8 Z" fill="#fff" stroke="#e5e7eb" />
-      <path d="M32 52 L18 36" stroke="#78350f" strokeWidth="1.3" strokeDasharray="2 1.5" />
-      <circle cx="32" cy="52" r="2.3" fill="#78350f" />
+      <path d="M18 18 Q18 10 32 10 Q46 10 46 18 V54 Q46 58 42 58 H22 Q18 58 18 54 Z" fill="#b45309" />
+      <path d="M22 36 H42 V52 H22 Z" fill="#92400e" />
+      <path d="M26 10 Q32 4 38 10" stroke="#78350f" strokeWidth="2" fill="none" />
+      <path d="M22 36 H42" stroke="#78350f" strokeWidth="1.2" />
+      <ellipse cx="30" cy="44" rx="3" ry="2.2" fill="#1c1917" />
+      {[[22, 20, 6], [36, 26, 5], [26, 50, 7], [40, 48, 4]].map(([x, y, r], i) => <ellipse key={i} cx={x} cy={y} rx={r} ry={r * 0.5} fill="#57534e" opacity=".55" />)}
     </Frame>
   ),
   score: () => (

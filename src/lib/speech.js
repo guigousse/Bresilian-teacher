@@ -31,6 +31,8 @@ export function voiceScore(v) {
   let s = 0;
   const sp = course().speech;
   if (lang.startsWith(sp.region)) s += 100; else if (lang.startsWith(sp.prefix)) s += 55;
+  /* Variante voisine (es-MX pour l'Argentine) plutôt que la plus lointaine */
+  if (sp.near && sp.near.some((r) => lang.startsWith(r))) s += 30;
   if (sp.nice.some((n) => name.includes(n))) s += 30;
   if (/natural|neural|enhanced|premium|siri/.test(name)) s += 25;
   if (POOR_NAMES.test(name)) s -= 60;

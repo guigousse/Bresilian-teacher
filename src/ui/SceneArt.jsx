@@ -1,6 +1,6 @@
 import React from "react";
 import { Sun, Cloud, Birds, Palm, Person, TreeLine, Foam, Haze } from "./sceneKit.jsx";
-import { ES_SCENES } from "./scenes/es.jsx";
+import { AR_SCENES } from "./scenes/ar.jsx";
 
 /* ==================================================================
    LES VINGT PAYSAGES DES CARTES POSTALES
@@ -1362,7 +1362,7 @@ const SCENES = {
 };
 
 export function SceneArt({ scene, className = "" }) {
-  const content = SCENES[scene] || ES_SCENES[scene] || SCENES.beach;
+  const content = SCENES[scene] || AR_SCENES[scene] || SCENES.beach;
   return (
     <svg viewBox={`0 0 ${VB.w} ${VB.h}`} preserveAspectRatio="xMidYMid slice" className={className}>
       {content}
