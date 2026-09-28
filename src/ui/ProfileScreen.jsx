@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { AlertTriangle, Award, BookOpen, Check, Copy, Flame, Gem, Trophy, Volume2 } from "lucide-react";
-import { ALL_ITEMS, PH_OF } from "../data/units.js";
 import { levelInfo, LEVEL_GEMS } from "../lib/levels.js";
-import { BADGES, doneCount } from "../lib/progress.js";
+import { badges, doneCount } from "../lib/progress.js";
 import { storage, encodeSave, decodeSave } from "../lib/storage.js";
-import { speak, ptVoices, watchSpeech, getSpeechStatus, primeSpeech, speechDebug, getVoicesList } from "../lib/speech.js";
+import { speak, langVoices, watchSpeech, getSpeechStatus, primeSpeech, speechDebug, getVoicesList } from "../lib/speech.js";
 import { sndGood, getAudioCtx } from "../lib/audio.js";
 import { Phonetic } from "./bits.jsx";
+import { course } from "../courses/index.js";
 
 /*  ÉCRAN : PROFIL                                                     */
 /* ================================================================== */
@@ -25,7 +25,7 @@ export function SoundDiagnostic() {
   }, []);
 
   const hasSynth = typeof window !== "undefined" && !!window.speechSynthesis;
-  const pts = ptVoices();
+  const pts = langVoices();
   const report = [
     `Build       : ${BUILD_ID}`,
     `Navigateur  : ${typeof navigator !== "undefined" ? navigator.userAgent : "?"}`,
@@ -42,20 +42,20 @@ export function SoundDiagnostic() {
   return (
     <div className="mt-8">
       <h3 className="font-extrabold text-slate-800 mb-1">Diagnostic du son</h3>
-      <p className="text-xs text-slate-400 mb-3">Si le portugais reste muet, lance les deux tests puis envoie ce rapport.</p>
+      <p className="text-xs text-slate-400 mb-3">Si le {course().langFr} reste muet, lance les deux tests puis envoie ce rapport.</p>
 
       <div className="grid grid-cols-2 gap-2">
         <button onClick={() => { sndGood(); refresh(); }}
           className="rounded-2xl border-2 border-slate-200 font-bold py-3 text-slate-700 text-sm">
           1. Tester un bip
         </button>
-        <button onClick={() => { primeSpeech(); speak("Bom dia, tudo bem?"); refresh(); }}
+        <button onClick={() => { primeSpeech(); speak(course().speech.test); refresh(); }}
           className="rounded-2xl bg-sky-500 text-white font-bold py-3 text-sm border-b-4 border-sky-700 active:border-b-0 active:translate-y-1">
           2. Tester la voix
         </button>
       </div>
       <p className="text-[11px] text-slate-400 mt-2">
-        Le bip marche mais pas la voix → il manque la voix portugaise sur le téléphone. Rien ne marche → c'est le volume média ou le mode silencieux.
+        Le bip marche mais pas la voix → il manque la voix {course().langAdjFr} sur le téléphone. Rien ne marche → c'est le volume média ou le mode silencieux.
       </p>
 
       <pre className="mt-3 rounded-2xl bg-slate-900 text-slate-100 text-[10px] leading-relaxed p-3 overflow-x-auto whitespace-pre-wrap break-all">{report}</pre>
@@ -137,7 +137,7 @@ export function ProfileScreen({ progress, onReset, onImport, prefs, storageWarni
 
         <h3 className="font-extrabold text-slate-800 mt-7 mb-3 flex items-center gap-2"><Award className="w-5 h-5 text-amber-500" /> Trophées</h3>
         <div className="grid grid-cols-4 gap-3">
-          {BADGES.map((b) => {
+          {badges().map((b) => {
             const has = progress.badges.includes(b.id);
             return (
               <div key={b.id} title={b.desc} className={`rounded-2xl p-2 text-center border-2 ${has ? "bg-amber-50 border-amber-200" : "bg-slate-50 border-slate-100 opacity-50"}`}>
@@ -193,13 +193,13 @@ export function ProfileScreen({ progress, onReset, onImport, prefs, storageWarni
             <h3 className="font-extrabold text-slate-800 mt-7 mb-3">Mon carnet de mots</h3>
             <div className="rounded-2xl border-2 border-slate-100 divide-y divide-slate-100 overflow-hidden">
               {words.map((pt) => {
-                const it = ALL_ITEMS.find((x) => x.pt === pt);
+                const it = course().allItems.find((x) => x.pt === pt) || course().paperItems.find((x) => x.pt === pt);
                 return (
                   <div key={pt} className="flex items-center gap-3 px-3 py-2">
                     <button onClick={() => speak(pt)} aria-label="Écouter" className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 grid place-items-center shrink-0"><Volume2 className="w-4 h-4" /></button>
                     <div className="min-w-0 flex-1">
                       <div className="font-bold text-slate-800 truncate">{pt}</div>
-                      {prefs.showPhonetics && <div className="text-xs truncate"><Phonetic text={PH_OF[pt]} /></div>}
+                      {prefs.showPhonetics && <div className="text-xs truncate"><Phonetic text={course().phOf[pt]} /></div>}
                       <div className="text-xs text-slate-500 truncate">{it ? it.fr : ""}</div>
                     </div>
                     <div className="flex gap-0.5 shrink-0">

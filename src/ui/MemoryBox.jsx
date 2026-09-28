@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { ArrowLeft, Lock, Volume2, X } from "lucide-react";
-import { TIERS, PAPERS, SOUVENIRS } from "../data/souvenirs.js";
+import { TIERS } from "../data/common.js";
 import { souvenirReachable } from "../lib/chests.js";
 import { srsOf, masteryOf } from "../lib/progress.js";
 import { speak } from "../lib/speech.js";
 import { sndTap } from "../lib/audio.js";
 import { SouvenirArt, PaperSlip } from "./SouvenirArt.jsx";
+import { course } from "../courses/index.js";
 
 /* ==================================================================
    LA BOÎTE À SOUVENIRS — deux compartiments : les objets de l'histoire
@@ -73,6 +74,7 @@ function PaperSheet({ p, progress, onClose }) {
 }
 
 export function MemoryBox({ progress, onBack }) {
+  const { souvenirs: SOUVENIRS, papers: PAPERS, t } = course();
   const [openS, setOpenS] = useState(null);
   const [openP, setOpenP] = useState(null);
   const ownedS = new Set(progress.souvenirs || []);
@@ -83,7 +85,7 @@ export function MemoryBox({ progress, onBack }) {
       <div className="px-4 py-3 pt-[max(.75rem,env(safe-area-inset-top))] flex items-center gap-3 bg-white border-b border-stone-100 sticky top-0 z-20">
         <button onClick={onBack} aria-label="Retour" className="w-10 h-10 -ml-1 grid place-items-center rounded-xl text-slate-500"><ArrowLeft className="w-5 h-5" /></button>
         <div className="flex-1 min-w-0">
-          <h2 className="font-extrabold text-lg text-slate-800 leading-tight">Caixa de lembranças</h2>
+          <h2 className="font-extrabold text-lg text-slate-800 leading-tight">{t.memories}</h2>
           <p className="text-xs text-slate-400">Tout ce qu'on trouve dans les coffres, en plus des gemmes.</p>
         </div>
       </div>
@@ -94,7 +96,7 @@ export function MemoryBox({ progress, onBack }) {
           <div className="rounded-2xl bg-gradient-to-b from-[#4a1f2a] to-[#2e1219] p-3 shadow-inner">
 
             <div className="flex items-baseline justify-between px-1">
-              <h3 className="font-extrabold text-amber-100 fb-serif">Lembranças</h3>
+              <h3 className="font-extrabold text-amber-100 fb-serif">{t.souvenirs}</h3>
               <span className="text-xs font-bold text-amber-200/70 tabular-nums">{ownedS.size}/{SOUVENIRS.length}</span>
             </div>
             <div className="grid grid-cols-3 gap-2.5 mt-2">
@@ -134,7 +136,7 @@ export function MemoryBox({ progress, onBack }) {
             <div className="h-px bg-white/10 my-4" />
 
             <div className="flex items-baseline justify-between px-1">
-              <h3 className="font-extrabold text-amber-100 fb-serif">Papeizinhos</h3>
+              <h3 className="font-extrabold text-amber-100 fb-serif">{t.papers}</h3>
               <span className="text-xs font-bold text-amber-200/70 tabular-nums">{ownedP.size}/{PAPERS.length}</span>
             </div>
             <div className="grid grid-cols-3 gap-x-2.5 gap-y-4 mt-3">

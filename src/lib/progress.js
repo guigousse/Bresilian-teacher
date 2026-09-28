@@ -8,10 +8,7 @@
    rappeler l'élève chaque jour : ses mots arrivent à échéance.
    ================================================================== */
 
-import { UNITS, ALL_ITEMS } from "../data/units.js";
-import { BOOKS } from "../data/stories.js";
-import { CARDS } from "../data/cards.js";
-import { PAPER_ITEMS } from "../data/souvenirs.js";
+import { course } from "../courses/index.js";
 import { levelInfo } from "./levels.js";
 import { todayKey, daysBetween } from "./utils.js";
 
@@ -65,7 +62,8 @@ export function recordAnswer(p, pt, correct) {
    papiers trouvés dans les coffres. */
 export function studyItems(p) {
   const owned = new Set(p.papers || []);
-  return owned.size ? [...ALL_ITEMS, ...PAPER_ITEMS.filter((i) => owned.has(i.paper))] : ALL_ITEMS;
+  const c = course();
+  return owned.size ? [...c.allItems, ...c.paperItems.filter((i) => owned.has(i.paper))] : c.allItems;
 }
 
 /* Mots dont la révision est due, les plus en retard d'abord. */
@@ -135,7 +133,7 @@ export const MAX_CROWN = 5;
 export const CROWN_LABELS = ["Découverte", "Reconnaissance", "Écoute", "Écriture", "Production", "Maîtrise"];
 
 export function crownOf(p, unitId) { return (p.crowns && p.crowns[unitId]) || 0; }
-export function totalCrowns(p) { return UNITS.reduce((n, u) => n + crownOf(p, u.id), 0); }
+export function totalCrowns(p) { return course().units.reduce((n, u) => n + crownOf(p, u.id), 0); }
 
 /* --- Objectif quotidien ------------------------------------------- */
 
@@ -158,7 +156,7 @@ export const QUEST_POOL = [
   { id: "perfect", label: "Une leçon sans faute", metric: "perfect", goals: [1], gems: 25 },
   { id: "listen", label: "Écouter {goal} mots", metric: "listen", goals: [8, 12], gems: 10 },
   { id: "story", label: "Retrouver {goal} mots dans un livre", metric: "story", goals: [4, 6], gems: 20 },
-  { id: "type", label: "Écrire {goal} mots en portugais", metric: "type", goals: [5, 8], gems: 20 },
+  { id: "type", label: "Écrire {goal} mots en {lang}", metric: "type", goals: [5, 8], gems: 20 },
 ];
 
 /* Un tirage stable pour la journée : même jour, mêmes quêtes. */
@@ -175,7 +173,7 @@ export function rollQuests(day) {
   for (let i = 0; i < 3 && pool.length; i++) {
     const q = pool.splice((seed * (i + 3)) % pool.length, 1)[0];
     const goal = q.goals[(seed + i) % q.goals.length];
-    out.push({ id: q.id, metric: q.metric, goal, gems: q.gems, label: q.label.replace("{goal}", goal) });
+    out.push({ id: q.id, metric: q.metric, goal, gems: q.gems, label: q.label.replace("{goal}", goal).replace("{lang}", course().langFr) });
   }
   return out;
 }
@@ -263,7 +261,7 @@ export function doneCount(p) { return Object.values(p.lessons).filter((l) => l.d
    quand ses quatre pages le sont. C'est ce qui ouvre la section
    suivante — il faut toute la thématique pour avoir toute l'histoire. */
 export function pagesDone(p) { return Object.values(p.story || {}).filter((s) => s.done).length; }
-export function booksDone(p) { return BOOKS.filter((b) => bookDone(p, b)).length; }
+export function booksDone(p) { return course().books.filter((b) => bookDone(p, b)).length; }
 export function bookDone(p, book) { return book.chapters.every((c) => storyProgress(p, c).done); }
 export function bookPagesDone(p, book) { return book.chapters.filter((c) => storyProgress(p, c).done).length; }
 
@@ -304,7 +302,7 @@ export function bookScore(p, book) {
   };
 }
 
-export const BADGES = [
+const BADGE_RULES = [
   { id: "first", label: "Primeira aula", desc: "Terminer une leçon", emoji: "🌱", test: (p) => doneCount(p) >= 1 },
   { id: "three", label: "Em ritmo", desc: "3 leçons terminées", emoji: "🚀", test: (p) => doneCount(p) >= 3 },
   { id: "perfect", label: "Sem erro", desc: "Une leçon sans faute", emoji: "💎", test: (p) => Object.values(p.lessons).some((l) => l.stars === 3) },
@@ -315,19 +313,26 @@ export const BADGES = [
   { id: "streak3", label: "3 jours", desc: "3 jours d'affilée", emoji: "🗓️", test: (p) => p.streak >= 3 },
   { id: "streak7", label: "Uma semana", desc: "7 jours d'affilée", emoji: "🔥", test: (p) => p.streak >= 7 },
   { id: "streak30", label: "Um mês", desc: "30 jours d'affilée", emoji: "🌟", test: (p) => (p.best || p.streak) >= 30 },
-  { id: "crown5", label: "Primeira coroa", desc: "Une unité maîtrisée", emoji: "👑", test: (p) => UNITS.some((u) => crownOf(p, u.id) >= MAX_CROWN) },
-  { id: "crownAll", label: "Rei do português", desc: "Toutes les unités maîtrisées", emoji: "🏅", test: (p) => UNITS.every((u) => crownOf(p, u.id) >= MAX_CROWN) },
+  { id: "crown5", label: "Primeira coroa", desc: "Une unité maîtrisée", emoji: "👑", test: (p) => course().units.some((u) => crownOf(p, u.id) >= MAX_CROWN) },
+  { id: "crownAll", label: "Rei do português", desc: "Toutes les unités maîtrisées", emoji: "🏅", test: (p) => course().units.every((u) => crownOf(p, u.id) >= MAX_CROWN) },
   { id: "quest10", label: "Missões", desc: "10 quêtes terminées", emoji: "🎯", test: (p) => (p.questsDone || 0) >= 10 },
   { id: "card1", label: "Primeiro cartão", desc: "Acheter une carte", emoji: "💌", test: (p) => (p.cards || []).length >= 1 },
   { id: "card10", label: "Colecionador", desc: "10 cartes postales", emoji: "🗂️", test: (p) => (p.cards || []).length >= 10 },
-  { id: "cardAll", label: "Álbum completo", desc: "Les 20 cartes", emoji: "🏆", test: (p) => (p.cards || []).length >= CARDS.length },
-  { id: "allLessons", label: "Brasileiro", desc: "Toutes les leçons", emoji: "🇧🇷", test: (p) => doneCount(p) >= UNITS.length },
+  { id: "cardAll", label: "Álbum completo", desc: "Les 20 cartes", emoji: "🏆", test: (p) => (p.cards || []).length >= course().cards.length },
+  { id: "allLessons", label: "Brasileiro", desc: "Toutes les leçons", emoji: "🇧🇷", test: (p) => doneCount(p) >= course().units.length },
   { id: "book1", label: "Primeiro livro", desc: "Terminer un livre", emoji: "📖", test: (p) => booksDone(p) >= 1 },
-  { id: "allBooks", label: "Bibliotecário", desc: "Tous les livres terminés", emoji: "🎓", test: (p) => booksDone(p) >= BOOKS.length },
+  { id: "allBooks", label: "Bibliotecário", desc: "Tous les livres terminés", emoji: "🎓", test: (p) => booksDone(p) >= course().books.length },
 ];
 
+/* Les trophées portent un nom dans la langue apprise : « Primeira aula »
+   au Brésil, « Primera clase » en Espagne. */
+export function badges() {
+  const c = course();
+  return BADGE_RULES.map((b) => ({ ...b, label: (c.badges && c.badges[b.id]) || b.label, emoji: (c.badgeEmoji && c.badgeEmoji[b.id]) || b.emoji }));
+}
+
 export function freshBadges(p) {
-  return BADGES.filter((b) => !p.badges.includes(b.id) && b.test(p));
+  return badges().filter((b) => !p.badges.includes(b.id) && b.test(p));
 }
 
 /* --- État par défaut et migration ---------------------------------- */
@@ -340,11 +345,12 @@ export function defaultProgress() {
     srs: {}, crowns: {}, days: {}, quests: null, questsDone: 0,
     freezes: 1, freezeUsed: null, goalChest: null,
     chests: [], pity: { rare: 0, epic: 0 }, chestsOpened: 0, souvenirs: [], papers: [],
+    course: course().id,
   };
 }
 
 export function defaultPrefs() {
-  return { voiceURI: null, rate: 0.88, pitch: 1.05, showPhonetics: true, dailyGoal: 50, haptics: true };
+  return { voiceURI: null, voices: {}, rate: 0.88, pitch: 1.05, showPhonetics: true, dailyGoal: 50, haptics: true, course: null };
 }
 
 /* Les anciennes sauvegardes n'ont ni mémoire des mots ni couronnes :

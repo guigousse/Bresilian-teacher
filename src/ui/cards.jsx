@@ -1,6 +1,6 @@
 import React from "react";
 import { Lock } from "lucide-react";
-import { RARITY } from "../data/cards.js";
+import { RARITY } from "../data/common.js";
 import { SceneArt } from "./SceneArt.jsx";
 
 export function Postcard({ card, owned = true, small = false, big = false }) {

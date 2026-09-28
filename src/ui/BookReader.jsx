@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ArrowLeft, ChevronLeft, ChevronRight, Gem, Languages, Lightbulb, Lock, Sparkles, Volume2, X } from "lucide-react";
-import { HINT_PRICE } from "../data/stories.js";
-import { UNITS, PH_OF } from "../data/units.js";
+import { HINT_PRICE } from "../lib/books.js";
 import { storyProgress, storyWordsDone } from "../lib/progress.js";
 import { checkAnswer, canonicalAnswer } from "../lib/answers.js";
 import { speak } from "../lib/speech.js";
@@ -9,6 +8,7 @@ import { sndTap, sndSelect, sndGood, sndBad, sndQuest, sndWhoosh } from "../lib/
 import { shuffle } from "../lib/utils.js";
 import { Mascot } from "./Mascot.jsx";
 import { useShortScreen, useKeyboardInset } from "./bits.jsx";
+import { course } from "../courses/index.js";
 
 /* ==================================================================
    LE LIVRE — un livre par thématique, une page par chapitre. On ouvre
@@ -18,7 +18,7 @@ import { useShortScreen, useKeyboardInset } from "./bits.jsx";
    range dans la bibliothèque qu'une fois ses quatre pages faites.
    ================================================================== */
 
-const unitOf = (id) => UNITS.find((u) => u.id === id);
+const unitOf = (id) => course().units.find((u) => u.id === id);
 
 function Ribbon({ pct }) {
   return (
@@ -156,7 +156,7 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
         <div className="flex-1 min-w-0">
           <div className="font-extrabold text-slate-800 truncate">{book.title}</div>
           <div className="text-xs text-slate-400 truncate">
-            Página {idx + 1}/{book.pages.length} · {page.title}
+            {course().t.page} {idx + 1}/{book.pages.length} · {page.title}
             {unlocked && !pageDone && ` · ${found.length}/${total} mots`}
           </div>
         </div>
@@ -196,7 +196,7 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
         /* --- Page encore fermée ------------------------------------ */
         <div className="flex-1 min-h-0 overflow-y-auto px-6 py-10 short:py-5 flex flex-col items-center justify-center text-center">
           <div className="w-16 h-16 rounded-2xl bg-stone-200 grid place-items-center mb-4"><Lock className="w-7 h-7 text-stone-400" /></div>
-          <h3 className="font-extrabold text-stone-700 text-lg">Página {idx + 1} encore fermée</h3>
+          <h3 className="font-extrabold text-stone-700 text-lg">{course().t.page} {idx + 1} encore fermée</h3>
           <p className="text-sm text-stone-500 mt-2 max-w-xs">
             Elle s'ouvre quand tu termines la leçon <span className="font-bold">{unit.emoji} {unit.title}</span>.
           </p>
@@ -314,7 +314,7 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
                   {/* La page finie laisse une phrase en suspens. */}
                   {pageDone && (
                     <div className="mt-6 rounded-2xl bg-stone-800 p-4 fb-slide-in">
-                      <div className="text-[10px] font-bold uppercase tracking-widest text-amber-300 mb-1">A seguir</div>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-amber-300 mb-1">{course().t.next}</div>
                       <p className="text-sm text-white leading-snug">{page.hook}</p>
                       {nextPage && !isUnlocked(nextPage.unit) && (
                         <button onClick={() => { sndTap(); onStartLesson(nextPage.unit); }}
@@ -393,7 +393,7 @@ export function BookReader({ book, progress, isUnlocked, gems, onWordFound, onPa
             {hint === 1 && (
               <p className="text-sm text-amber-700 mt-2 fb-slide-in">
                 Ça commence par <span className="font-extrabold">« {answer.slice(0, 1).toUpperCase()} »</span> · {answer.split(" ").length} mot{answer.split(" ").length > 1 ? "s" : ""}
-                {PH_OF[active.item.pt] && <span className="text-stone-400"> · se dit [{PH_OF[active.item.pt]}]</span>}
+                {course().phOf[active.item.pt] && <span className="text-stone-400"> · se dit [{course().phOf[active.item.pt]}]</span>}
               </p>
             )}
             {hint === 2 && (

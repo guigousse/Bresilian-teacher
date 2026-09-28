@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { BookOpen, Lock, Sparkles } from "lucide-react";
-import { UNITS } from "../data/units.js";
-import { BOOKS } from "../data/stories.js";
 import { storyProgress, bookDone, bookPagesDone, bookScore } from "../lib/progress.js";
 import { sndTap, sndCard, sndWhoosh } from "../lib/audio.js";
 import { Confetti } from "./bits.jsx";
 import { SouvenirArt, PaperSlip } from "./SouvenirArt.jsx";
-import { SOUVENIRS, PAPERS } from "../data/souvenirs.js";
+import { course } from "../courses/index.js";
 
 /* ==================================================================
    LA BIBLIOTHÈQUE — une étagère en bois où l'histoire de Léa se range
@@ -90,6 +88,7 @@ function Shelf({ items, offset = 0, onOpenBook }) {
 }
 
 export function LibraryScreen({ progress, onOpenBook, onOpenMemories }) {
+  const { books: BOOKS, souvenirs: SOUVENIRS, papers: PAPERS, units: UNITS, t } = course();
   const entries = BOOKS.map((book) => ({
     kind: "book", book,
     done: bookDone(progress, book),
@@ -107,7 +106,7 @@ export function LibraryScreen({ progress, onOpenBook, onOpenMemories }) {
     <div className="pb-tabbar">
       <div className="px-4 py-4 border-b border-slate-100 sticky top-0 bg-white z-20 pt-[max(1rem,env(safe-area-inset-top))]">
         <div className="flex items-center justify-between">
-          <h2 className="font-extrabold text-lg text-slate-800">Biblioteca</h2>
+          <h2 className="font-extrabold text-lg text-slate-800">{t.library}</h2>
           <span className="text-sm font-bold text-slate-400 tabular-nums">{shelved}/{BOOKS.length}</span>
         </div>
         <p className="text-xs text-slate-400 mt-0.5">Une seule histoire, cinq livres. Chaque chapitre terminé ouvre une page de son livre.</p>
@@ -175,7 +174,7 @@ export function LibraryScreen({ progress, onOpenBook, onOpenMemories }) {
               </div>
             </div>
             <div className="flex-1 min-w-0">
-              <div className="font-extrabold text-amber-100 fb-serif">Caixa de lembranças</div>
+              <div className="font-extrabold text-amber-100 fb-serif">{t.memories}</div>
               <div className="text-xs text-amber-200/70 tabular-nums mt-0.5">
                 {(progress.souvenirs || []).length}/{SOUVENIRS.length} souvenirs · {(progress.papers || []).length}/{PAPERS.length} petits papiers
               </div>
@@ -194,7 +193,7 @@ export function LibraryScreen({ progress, onOpenBook, onOpenMemories }) {
               <div key={e.book.id} className="rounded-2xl border-2 border-slate-100 p-3 flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-slate-100 grid place-items-center shrink-0"><Lock className="w-4 h-4 text-slate-400" /></div>
                 <div className="min-w-0 flex-1">
-                  <div className="font-bold text-sm text-slate-700 truncate">Livro {e.book.number} · {e.book.title}</div>
+                  <div className="font-bold text-sm text-slate-700 truncate">{t.book} {e.book.number} · {e.book.title}</div>
                   <div className="text-xs text-slate-400">S'ouvre avec la leçon « {(UNITS.find((u) => u.id === e.book.chapters[0]) || {}).title} »</div>
                 </div>
               </div>
@@ -208,7 +207,7 @@ export function LibraryScreen({ progress, onOpenBook, onOpenMemories }) {
           <div className="rounded-2xl bg-emerald-50 border-2 border-emerald-100 p-4 text-center">
             <div className="text-3xl">🎉</div>
             <p className="text-sm font-bold text-emerald-800 mt-1">Toute l'histoire est lue et rangée !</p>
-            <p className="text-xs text-emerald-700 mt-1">« Je ne suis pas partie seule. Cherche à Manaus. » — la suite s'écrit encore.</p>
+            <p className="text-xs text-emerald-700 mt-1">{t.storyEnd}</p>
           </div>
         </div>
       )}
@@ -260,12 +259,12 @@ export function BookCompleteModal({ book, shelvedBefore = [], score, onClose }) 
         </div>
 
         <div className="fb-shelve-text text-center w-full">
-          <h3 className="text-white text-2xl font-extrabold leading-tight">Livro terminado !</h3>
+          <h3 className="text-white text-2xl font-extrabold leading-tight">{course().t.bookDone}</h3>
           <p className="text-white/90 text-sm mt-2">{book.title} — rangé dans ta bibliothèque.</p>
 
           {/* Ce qui donne envie d'ouvrir le suivant. */}
           <div className="mt-4 rounded-2xl border-2 border-amber-400/50 bg-amber-400/10 p-3 text-left">
-            <div className="text-[10px] font-bold uppercase tracking-widest text-amber-300 mb-1">A seguir</div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-amber-300 mb-1">{course().t.next}</div>
             <p className="text-sm text-white leading-snug">{book.ending}</p>
           </div>
 

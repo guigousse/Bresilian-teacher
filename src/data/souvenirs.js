@@ -9,13 +9,7 @@
    reste du vocabulaire.
    ================================================================== */
 
-export const TIERS = {
-  commun:     { label: "Commun",     glow: "#d6b98c", ring: "border-stone-300",   chip: "bg-stone-100 text-stone-600",   text: "text-stone-600" },
-  rare:       { label: "Rare",       glow: "#38bdf8", ring: "border-sky-400",     chip: "bg-sky-100 text-sky-700",       text: "text-sky-600" },
-  epique:     { label: "Épique",     glow: "#a855f7", ring: "border-purple-400",  chip: "bg-purple-100 text-purple-700", text: "text-purple-600" },
-  legendaire: { label: "Légendaire", glow: "#f59e0b", ring: "border-amber-400",   chip: "bg-amber-100 text-amber-800",   text: "text-amber-600" },
-};
-export const TIER_ORDER = ["commun", "rare", "epique", "legendaire"];
+export { TIERS, TIER_ORDER } from "./common.js";
 
 /* --- Les petits papiers : des expressions qu'aucune leçon n'enseigne */
 

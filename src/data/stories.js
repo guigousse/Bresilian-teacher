@@ -1,4 +1,5 @@
 import { ALL_ITEMS } from "./units.js";
+import { prepareBooks } from "../lib/books.js";
 
 /* ==================================================================
    O CADERNO — une seule histoire en cinq livres de quatre pages.
@@ -10,24 +11,6 @@ import { ALL_ITEMS } from "./units.js";
    Syntaxe : {{texte affiché|clé pt exacte}} marque un mot testable ;
    la clé doit appartenir au chapitre de la page.
    ================================================================== */
-
-const STORY_TOKEN_RE = /\{\{([^}|]+)(?:\|([^}]+))?\}\}/g;
-
-export function parseStoryParagraph(text) {
-  const tokens = [];
-  let last = 0, m;
-  STORY_TOKEN_RE.lastIndex = 0;
-  while ((m = STORY_TOKEN_RE.exec(text))) {
-    if (m.index > last) tokens.push({ type: "text", value: text.slice(last, m.index) });
-    const display = m[1];
-    const key = (m[2] || m[1]).toLowerCase();
-    const item = ALL_ITEMS.find((it) => it.pt.toLowerCase() === key);
-    tokens.push({ type: "word", display, key, item });
-    last = m.index + m[0].length;
-  }
-  if (last < text.length) tokens.push({ type: "text", value: text.slice(last) });
-  return tokens;
-}
 
 export const BOOKS = [
   {
@@ -555,44 +538,11 @@ export const BOOKS = [
   },
 ];
 
-/* --- Mise en forme : chaque page connaît ses mots et son texte nu --- */
+/* --- Mise en forme commune (lib/books.js) ------------------------- */
 
-const strip = (s) => s.replace(/\{\{([^}|]+)(\|[^}]+)?\}\}/g, "$1");
-
-BOOKS.forEach((book, bi) => {
-  book.number = bi + 1;
-  book.chapters = book.pages.map((p) => p.unit);
-  book.pages.forEach((page, pi) => {
-    page.id = `${book.id}.${page.unit}`;
-    page.book = book.id;
-    page.number = pi + 1;
-    page.tokens = page.paragraphs.map(parseStoryParagraph);
-    page.frTokens = (page.fr || []).map(parseStoryParagraph);
-    page.targetKeys = [];
-    page.tokens.forEach((tokens) => tokens.forEach((t) => {
-      if (t.type === "word" && t.item && !page.targetKeys.includes(t.key)) page.targetKeys.push(t.key);
-    }));
-    /* Le texte nu, pour la lecture à voix haute. */
-    page.text = page.paragraphs.map((p) => strip(p).replace(/^—\s*/, "")).join(" ");
-  });
-  book.targetTotal = book.pages.reduce((n, p) => n + p.targetKeys.length, 0);
-});
-
-/* Les sections du parcours sont les livres vus depuis le chemin. */
-export const SECTIONS = BOOKS.map((b) => ({
-  id: b.id, title: b.title, subtitle: b.subtitle, emoji: b.emoji, color: b.color,
-  chapters: b.chapters, book: b,
-}));
-
-export const ALL_CHAPTERS = SECTIONS.flatMap((s) => s.chapters);
-export const BOOK_OF = Object.fromEntries(BOOKS.flatMap((b) => b.chapters.map((c) => [c, b])));
-export const PAGE_OF = Object.fromEntries(BOOKS.flatMap((b) => b.pages.map((p) => [p.unit, p])));
-
-export function bookOf(unitId) { return BOOK_OF[unitId]; }
-export function pageOf(unitId) { return PAGE_OF[unitId]; }
-
-export const PAGE_BONUS_XP = 25;
-export const PAGE_BONUS_GEMS = 15;
-export const BOOK_BONUS_XP = 60;
-export const BOOK_BONUS_GEMS = 50;
-export const HINT_PRICE = 10;
+export const PT_BOOKS = prepareBooks(BOOKS, ALL_ITEMS);
+export const SECTIONS = PT_BOOKS.sections;
+export const ALL_CHAPTERS = PT_BOOKS.allChapters;
+export const bookOf = PT_BOOKS.bookOf;
+export const pageOf = PT_BOOKS.pageOf;
+export { PAGE_BONUS_XP, PAGE_BONUS_GEMS, BOOK_BONUS_XP, BOOK_BONUS_GEMS, HINT_PRICE } from "../lib/books.js";

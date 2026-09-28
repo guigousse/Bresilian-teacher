@@ -3,6 +3,7 @@ import { Gem, Sparkles, Star, Target, Zap } from "lucide-react";
 import { sndTap } from "../lib/audio.js";
 import { Confetti, useShortScreen } from "./bits.jsx";
 import { Mascot } from "./Mascot.jsx";
+import { course } from "../courses/index.js";
 
 /* Un compteur qui grimpe : la récompense se regarde arriver. */
 function Rolling({ value, className = "" }) {
@@ -37,7 +38,7 @@ export function ResultScreen({ result, onHome }) {
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col px-6 pt-safe">
       <div className="my-auto py-8 short:py-4 flex flex-col items-center text-center">
       <Mascot mood="celebrate" size={short ? 90 : 130} />
-      <h2 className="text-3xl font-extrabold text-emerald-700 mt-1">Muito bem!</h2>
+      <h2 className={`text-3xl font-extrabold mt-1 ${course().theme.title}`}>{course().t.bravo}</h2>
       <p className="text-slate-500 mt-1 mb-5">
         {mistakes === 0 ? "Aucune erreur, chapeau." : `${mistakes} erreur${mistakes > 1 ? "s" : ""} — ces mots reviendront en révision.`}
       </p>

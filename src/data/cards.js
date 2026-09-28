@@ -2,11 +2,7 @@
 /*  CARTES POSTALES — 20 à collectionner                               */
 /* ================================================================== */
 
-export const RARITY = {
-  comum: { label: "Commune", weight: 62, ring: "border-slate-200", chip: "bg-slate-100 text-slate-600" },
-  rara: { label: "Rare", weight: 30, ring: "border-sky-300", chip: "bg-sky-100 text-sky-700" },
-  lendaria: { label: "Légendaire", weight: 8, ring: "border-amber-400", chip: "bg-amber-100 text-amber-700" },
-};
+export { RARITY } from "./common.js";
 
 export const CARDS = [
   {

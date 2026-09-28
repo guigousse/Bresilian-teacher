@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Check, Eye, EyeOff, Volume2, X } from "lucide-react";
-import { PRON_KEYS } from "../data/units.js";
-import { speak, ptVoices, refreshVoices, huntVoices, voiceScore, watchSpeech, getSpeechStatus } from "../lib/speech.js";
+import { speak, langVoices, refreshVoices, huntVoices, voiceScore, watchSpeech, getSpeechStatus, voicePref, withVoicePref } from "../lib/speech.js";
 import { GOAL_OPTIONS, goalOf } from "../lib/progress.js";
+import { course } from "../courses/index.js";
 
 /*  RÉGLAGES DE VOIX                                                   */
 /* ================================================================== */
 
 export function VoiceSettings({ prefs, setPrefs, onClose }) {
-  const [voices, setVoices] = useState(ptVoices());
+  const [voices, setVoices] = useState(langVoices());
   const [status, setStatus] = useState(getSpeechStatus());
   const isAndroid = typeof navigator !== "undefined" && /android/i.test(navigator.userAgent || "");
   useEffect(() => {
-    huntVoices(); setVoices(ptVoices());
-    const h = () => { refreshVoices(); setVoices(ptVoices()); };
+    huntVoices(); setVoices(langVoices());
+    const h = () => { refreshVoices(); setVoices(langVoices()); };
     try { window.speechSynthesis.addEventListener("voiceschanged", h); } catch (e) { /* ok */ }
     const unwatch = watchSpeech(setStatus);
-    const poll = setInterval(() => setVoices(ptVoices()), 600);
+    const poll = setInterval(() => setVoices(langVoices()), 600);
     setTimeout(() => clearInterval(poll), 5000);
     return () => {
       unwatch(); clearInterval(poll);
@@ -38,35 +38,35 @@ export function VoiceSettings({ prefs, setPrefs, onClose }) {
           {status === "ok" ? <Check className="w-4 h-4 shrink-0" /> : <Volume2 className="w-4 h-4 shrink-0" />}
           <span>
             {status === "ok" && `Le son fonctionne${voices[0] ? ` · ${voices[0].name}` : ""}`}
-            {status === "unknown" && `${voices.length} voix portugaise${voices.length > 1 ? "s" : ""} détectée${voices.length > 1 ? "s" : ""} — teste le son ci-dessous`}
-            {status === "novoice" && "Aucune voix portugaise installée sur cet appareil"}
+            {status === "unknown" && `${voices.length} voix ${course().langAdjFr}${voices.length > 1 ? "s" : ""} détectée${voices.length > 1 ? "s" : ""} — teste le son ci-dessous`}
+            {status === "novoice" && `Aucune voix ${course().langAdjFr} installée sur cet appareil`}
             {status === "blocked" && "Le son n'est pas parti : vérifie le volume média, puis retente"}
             {status === "unsupported" && "Ce navigateur ne gère pas la synthèse vocale"}
           </span>
         </div>
 
-        <label className="block text-sm font-bold text-slate-600 mb-1">Voix portugaise</label>
+        <label className="block text-sm font-bold text-slate-600 mb-1">Voix {course().langAdjFr}</label>
         {voices.length === 0 ? (
           <div className="text-sm text-slate-600 bg-amber-50 border-2 border-amber-200 rounded-2xl p-3 space-y-2">
-            <p className="font-bold text-amber-900">Comment installer la voix portugaise</p>
+            <p className="font-bold text-amber-900">Comment installer la voix {course().langAdjFr}</p>
             {isAndroid ? (
               <ol className="list-decimal ml-4 space-y-1">
                 <li>Paramètres → Gestion générale (ou Accessibilité) → Synthèse vocale.</li>
                 <li>Moteur préféré : Synthèse vocale de Google → icône ⚙.</li>
-                <li>Installer les données vocales → Português (Brasil) → télécharger.</li>
+                <li>Installer les données vocales → {course().speech.androidPack} → télécharger.</li>
                 <li>Reviens dans l'app et rouvre cette fenêtre.</li>
               </ol>
             ) : (
               <p>
-                Android : Paramètres → Synthèse vocale → moteur Google → installer « português (Brasil) ».
-                iPhone : Réglages → Accessibilité → Contenu énoncé → Voix → Portugais (Brésil), version Améliorée ou Premium.
+                Android : Paramètres → Synthèse vocale → moteur Google → installer « {course().speech.androidPack} ».
+                iPhone : Réglages → Accessibilité → Contenu énoncé → Voix → {course().speech.iosVoice}, version Améliorée ou Premium.
               </p>
             )}
             <p className="text-xs">En attendant, la phonétique française sous chaque mot te permet de continuer sans le son.</p>
           </div>
         ) : (
-          <select value={prefs.voiceURI || (voices[0] && voices[0].voiceURI) || ""}
-            onChange={(e) => setPrefs({ ...prefs, voiceURI: e.target.value })}
+          <select value={voicePref(prefs) || (voices[0] && voices[0].voiceURI) || ""}
+            onChange={(e) => setPrefs(withVoicePref(prefs, e.target.value))}
             className="w-full rounded-2xl border-2 border-slate-200 px-3 py-3 font-semibold text-slate-700 bg-white">
             {voices.map((v) => (<option key={v.voiceURI} value={v.voiceURI}>{v.name} — {v.lang}{voiceScore(v) >= 120 ? " ⭐" : ""}</option>))}
           </select>
@@ -83,7 +83,7 @@ export function VoiceSettings({ prefs, setPrefs, onClose }) {
             onChange={(e) => setPrefs({ ...prefs, pitch: Number(e.target.value) })} className="w-full accent-emerald-500" />
         </div>
 
-        <button onClick={() => speak("Bom dia! Eu queria um café, por favor.")}
+        <button onClick={() => speak(course().speech.sample)}
           className="w-full mt-5 rounded-2xl bg-sky-500 text-white font-extrabold py-3 border-b-4 border-sky-700 active:border-b-0 active:translate-y-1">
           Écouter un exemple
         </button>
@@ -118,9 +118,9 @@ export function VoiceSettings({ prefs, setPrefs, onClose }) {
           Phonétique {prefs.showPhonetics ? "affichée" : "masquée"}
         </button>
 
-        <h4 className="font-extrabold text-slate-800 mt-6 mb-2">Lire le portugais brésilien</h4>
+        <h4 className="font-extrabold text-slate-800 mt-6 mb-2">{course().speech.guideTitle}</h4>
         <div className="rounded-2xl border-2 border-slate-100 divide-y divide-slate-100">
-          {PRON_KEYS.map((r) => (
+          {course().pronKeys.map((r) => (
             <div key={r.k} className="flex gap-3 px-3 py-2">
               <div className="font-mono font-bold text-sky-600 text-sm w-24 shrink-0">{r.k}</div>
               <div className="text-sm text-slate-600">{r.v}</div>

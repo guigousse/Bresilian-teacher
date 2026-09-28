@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Check, Flame, Gem, Heart, Mic, Volume2, X } from "lucide-react";
-import { PH_OF } from "../data/units.js";
 import { speak } from "../lib/speech.js";
 import { sndTap, sndSelect, sndGood, sndBad, sndWin, sndCombo, sndHeart } from "../lib/audio.js";
 import { isCloseEnough, normalizeAnswer } from "../lib/answers.js";
 import { Phonetic, SpeakButton, useShortScreen, useKeyboardInset } from "./bits.jsx";
 import { Mascot } from "./Mascot.jsx";
+import { course } from "../courses/index.js";
 
-const PRAISE = ["Isso aí !", "Perfeito !", "Muito bem !", "Boa !", "Mandou bem !", "Show !"];
 
 /* ---- Reconnaissance vocale (Chrome / Android), facultative ---------- */
 function listenOnce(onResult, onEnd) {
@@ -15,7 +14,7 @@ function listenOnce(onResult, onEnd) {
   if (!SR) { onEnd("unsupported"); return null; }
   try {
     const rec = new SR();
-    rec.lang = "pt-BR";
+    rec.lang = course().speech.lang;
     rec.interimResults = false;
     rec.maxAlternatives = 3;
     rec.onresult = (e) => {
@@ -188,8 +187,8 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
   const prompt = {
     listen: "Qu'est-ce que tu entends ?",
     listen_type: "Écris ce que tu entends",
-    bank: "Construis la phrase en portugais",
-    type: "Écris-le en portugais",
+    bank: `Construis la phrase en ${course().langFr}`,
+    type: `Écris-le en ${course().langFr}`,
     article: "o ou a ?",
     pairs: "Associe chaque mot à sa traduction",
     speak: "Prononce ce mot",
@@ -265,7 +264,7 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
             <input ref={inputRef} value={typed} disabled={state !== "answering"}
               onChange={(e) => setTyped(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter" && ready && state === "answering") check(); }}
-              placeholder="Écris en portugais…" autoCapitalize="off" autoCorrect="off" spellCheck="false" enterKeyHint="done"
+              placeholder={`Écris en ${course().langFr}…`} autoCapitalize="off" autoCorrect="off" spellCheck="false" enterKeyHint="done"
               className={`w-full rounded-2xl border-2 px-4 py-4 short:py-3 text-lg font-bold text-slate-800 ${shake ? "fb-shake border-red-300" : "border-slate-200"}`} />
             <p className="text-xs text-slate-400 mt-2">Les accents et les petites fautes de frappe sont tolérés.</p>
           </div>
@@ -336,7 +335,7 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
               if (state === "answering" && selected) cls = "bg-sky-50 border-sky-400 text-sky-800";
               if (state !== "answering" && isAnswer) cls = "bg-emerald-50 border-emerald-400 text-emerald-800";
               if (state === "wrong" && selected && !isAnswer) cls = "bg-red-50 border-red-400 text-red-700";
-              const ph = ex.dir === "fr_pt" ? PH_OF[opt] : null;
+              const ph = ex.dir === "fr_pt" ? course().phOf[opt] : null;
               return (
                 <button key={opt} disabled={state !== "answering"}
                   onClick={() => { sndSelect(); setChoice(opt); if (ex.dir === "fr_pt") speak(opt); }}
@@ -362,7 +361,7 @@ export function LessonScreen({ unit, exercises, onQuit, onFinish, gems, onRevive
             </div>
             <div className="leading-tight min-w-0">
               <div className={`font-extrabold ${state === "right" ? "text-emerald-700" : "text-red-700"}`}>
-                {state === "right" ? PRAISE[idx % PRAISE.length] : "Réponse attendue"}
+                {state === "right" ? course().t.praise[idx % course().t.praise.length] : "Réponse attendue"}
               </div>
               <div className={`text-sm font-semibold tiny:hidden ${state === "right" ? "text-emerald-700" : "text-red-700"}`}>{ex.item.pt}</div>
               <div className="text-sm"><Phonetic text={ex.item.ph} /> <span className="text-slate-500">· {ex.item.fr}</span></div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { TIERS } from "../data/souvenirs.js";
+import { TIERS } from "../data/common.js";
 
 /* ==================================================================
    DESSINS — le coffre, les souvenirs et les petits papiers.

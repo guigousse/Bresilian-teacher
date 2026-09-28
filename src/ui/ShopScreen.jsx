@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { ExternalLink, Gem, Package, RotateCcw, Snowflake, Sparkles, Volume2 } from "lucide-react";
-import { CARDS, CARD_PRICE, RARITY } from "../data/cards.js";
+import { RARITY } from "../data/common.js";
 import { LEVEL_GEMS } from "../lib/levels.js";
 import { FREEZE_PRICE, MAX_FREEZES } from "../lib/progress.js";
 import { speak } from "../lib/speech.js";
 import { sndTap } from "../lib/audio.js";
 import { Confetti, StatPill } from "./bits.jsx";
 import { Postcard } from "./cards.jsx";
+import { course } from "../courses/index.js";
 
 /*  ÉCRAN : BOUTIQUE                                                   */
 /* ================================================================== */
 
 export function ShopScreen({ progress, onBuy, onBuyFreeze, onOpenCard }) {
+  const { cards: CARDS, cardPrice: CARD_PRICE, t } = course();
   const owned = progress.cards || [];
   const remaining = CARDS.length - owned.length;
   const canBuy = progress.gems >= CARD_PRICE && remaining > 0;
@@ -19,7 +21,7 @@ export function ShopScreen({ progress, onBuy, onBuyFreeze, onOpenCard }) {
   return (
     <div className="pb-tabbar">
       <div className="px-4 py-4 flex items-center justify-between border-b border-slate-100 sticky top-0 bg-white z-20 pt-[max(1rem,env(safe-area-inset-top))]">
-        <h2 className="font-extrabold text-lg text-slate-800">Loja · Boutique</h2>
+        <h2 className="font-extrabold text-lg text-slate-800">{t.shop} · Boutique</h2>
         <StatPill icon={<Gem className="w-4 h-4 text-sky-500" />} value={progress.gems} tone="bg-sky-50 text-sky-700" />
       </div>
 
@@ -31,7 +33,7 @@ export function ShopScreen({ progress, onBuy, onBuyFreeze, onOpenCard }) {
           </div>
           <h3 className="text-2xl font-extrabold mt-3 leading-tight">Une carte postale<br />tirée au hasard</h3>
           <p className="text-sm text-white/90 mt-2">
-            20 lieux du Brésil à collectionner, chacun avec une phrase à glisser dans une conversation.
+            {t.shopBlurb}
             {remaining > 0 ? ` Il t'en manque ${remaining}.` : " Album complet !"}
           </p>
           <button disabled={!canBuy} onClick={() => onBuy()}
@@ -89,6 +91,7 @@ export function ShopScreen({ progress, onBuy, onBuyFreeze, onOpenCard }) {
 }
 
 export function CardBack({ card, index, onFlipBack }) {
+  const CARDS = course().cards;
   const rar = RARITY[card.r];
   return (
     <div className={`rounded-2xl overflow-hidden border-2 ${rar.ring} bg-white h-full flex flex-col shadow-lg`}>
@@ -104,7 +107,7 @@ export function CardBack({ card, index, onFlipBack }) {
           </div>
         </div>
         <div className="mt-1.5 font-extrabold text-lg text-slate-800 leading-tight">{card.name}</div>
-        <div className="text-xs text-slate-500">{card.place}, Brasil</div>
+        <div className="text-xs text-slate-500">{card.place}, {course().country}</div>
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-3" onClick={(e) => e.stopPropagation()}>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-import { UNITS, ALL_ITEMS } from "./data/units.js";
-import { BOOKS, bookOf, pageOf, PAGE_BONUS_XP, PAGE_BONUS_GEMS, BOOK_BONUS_XP, BOOK_BONUS_GEMS } from "./data/stories.js";
-import { CARDS, CARD_PRICE, RARITY } from "./data/cards.js";
+import { course } from "./courses/index.js";
+import { PAGE_BONUS_XP, PAGE_BONUS_GEMS, BOOK_BONUS_XP, BOOK_BONUS_GEMS } from "./lib/books.js";
+import { RARITY } from "./data/common.js";
 
 import { levelInfo, LEVEL_GEMS } from "./lib/levels.js";
 import {
@@ -11,7 +11,7 @@ import {
   crownOf, MAX_CROWN, bumpQuest, ensureQuests, goalOf, MAX_FREEZES,
   XP_PER_CORRECT, STREAK_MILESTONES,
 } from "./lib/progress.js";
-import { storage, SAVE_KEY, PREFS_KEY } from "./lib/storage.js";
+import { storage, saveKey, PREFS_KEY } from "./lib/storage.js";
 import { makeSession } from "./lib/exercises.js";
 import { grantChest, openChestIn, migrateChests } from "./lib/chests.js";
 import { speak, refreshVoices, huntVoices, primeSpeech, watchSpeech, getSpeechStatus, setSpeechPrefs } from "./lib/speech.js";
@@ -61,8 +61,8 @@ export default function App() {
       if (!alive) return;
       setStorageWarning(storage.mode === "memoire");
       let p = defaultProgress();
-      if (keys.includes(SAVE_KEY)) {
-        const saved = await storage.read(SAVE_KEY);
+      if (keys.includes(saveKey())) {
+        const saved = await storage.read(saveKey());
         if (saved) p = migrate(saved);
         migrateChests(p);
       }
@@ -87,7 +87,7 @@ export default function App() {
   }, [setPrefs]);
 
   useEffect(() => watchSpeech(setSpeechState), []);
-  useEffect(() => { if (ready && storage.ok) storage.write(SAVE_KEY, progress); }, [progress, ready]);
+  useEffect(() => { if (ready && storage.ok) storage.write(saveKey(), progress); }, [progress, ready]);
   useEffect(() => { if (ready && storage.ok) storage.write(PREFS_KEY, prefs); }, [prefs, ready]);
 
   /* --- Démarrage d'une session ------------------------------------ */
@@ -98,7 +98,7 @@ export default function App() {
          des mots déjà vus pour que la session ait de quoi tourner. */
       const due = dueItems(progress, 40);
       const pool = [...due];
-      for (const it of [...seenItems(progress), ...ALL_ITEMS]) {
+      for (const it of [...seenItems(progress), ...course().allItems]) {
         if (pool.length >= 6) break;
         if (!pool.some((x) => x.pt === it.pt)) pool.push(it);
       }
@@ -116,7 +116,7 @@ export default function App() {
         mode: "weak",
       });
     } else {
-      const u = UNITS.find((x) => x.id === unitId);
+      const u = course().units.find((x) => x.id === unitId);
       const crown = crownOf(progress, unitId);
       setSession({
         unit: u,
@@ -242,8 +242,9 @@ export default function App() {
 
   function buyCard() {
     const owned = progress.cards || [];
-    const available = CARDS.filter((c) => !owned.includes(c.id));
-    if (progress.gems < CARD_PRICE || available.length === 0) return;
+    const { cards, cardPrice } = course();
+    const available = cards.filter((c) => !owned.includes(c.id));
+    if (progress.gems < cardPrice || available.length === 0) return;
 
     const total = available.reduce((s, c) => s + RARITY[c.r].weight, 0);
     let roll = Math.random() * total, chosen = available[available.length - 1];
@@ -252,7 +253,7 @@ export default function App() {
     sndCard();
     setProgress((prev) => {
       const p = JSON.parse(JSON.stringify(prev));
-      p.gems -= CARD_PRICE;
+      p.gems -= cardPrice;
       p.cards = [...(p.cards || []), chosen.id];
       const fresh = freshBadges(p);
       p.badges = [...p.badges, ...fresh.map((b) => b.id)];
@@ -268,7 +269,7 @@ export default function App() {
      pour autant — il faut encore répondre aux questions. */
 
   function markWordFound(chapterId, key, { firstTry = false, hints = 0 } = {}) {
-    const page = pageOf(chapterId);
+    const page = course().pageOf(chapterId);
     if (!page) return;
     if (storyProgress(progress, chapterId).found.includes(key)) return;
 
@@ -296,8 +297,8 @@ export default function App() {
   /* Les questions justes ferment la page. Si c'était la dernière du
      livre, le livre se referme et va se ranger sur l'étagère. */
   function finishPageQuiz(chapterId, score, total) {
-    const page = pageOf(chapterId);
-    const book = bookOf(chapterId);
+    const page = course().pageOf(chapterId);
+    const book = course().bookOf(chapterId);
     if (!page || !book) return;
     if (storyProgress(progress, chapterId).done) return;
     if (!storyWordsDone(progress, page)) return;
@@ -324,7 +325,7 @@ export default function App() {
 
     if (!bookCloses) { sndCard(); return; }
     sndLevel();
-    const shelvedBefore = BOOKS.filter((b) => b.id !== book.id && bookDone(progress, b));
+    const shelvedBefore = course().books.filter((b) => b.id !== book.id && bookDone(progress, b));
     const parts = book.pages.map((pg) => storyProgress(progress, pg.unit));
     const st = storyProgress(progress, chapterId);
     const firstTry = parts.reduce((n, s) => n + s.firstTry.length, 0) + st.firstTry.length;
@@ -338,10 +339,10 @@ export default function App() {
 
   if (!ready) {
     return (
-      <div className="min-h-app grid place-items-center bg-emerald-50">
+      <div className={`min-h-app grid place-items-center ${course().theme.soft}`}>
         <div className="text-center">
           <div className="text-5xl mb-2" style={{ animation: "fb-pop .6s ease-out" }}>🦜</div>
-          <div className="font-extrabold text-emerald-700">Fala, Brasil!</div>
+          <div className={`font-extrabold ${course().theme.title}`}>{course().t.appName}</div>
         </div>
       </div>
     );
@@ -370,7 +371,7 @@ export default function App() {
             onOpenMemories={() => setView("memories")} />
         )}
         {view === "story" && activeBook && (
-          <BookReader book={BOOKS.find((b) => b.id === activeBook)}
+          <BookReader book={course().books.find((b) => b.id === activeBook)}
             progress={progress}
             isUnlocked={(chapterId) => !!(progress.lessons[chapterId] || {}).done}
             gems={progress.gems}
@@ -402,7 +403,7 @@ export default function App() {
         {!fullScreen && <TabBar view={view} setView={setView} cardCount={(progress.cards || []).length} />}
         {showSettings && <VoiceSettings prefs={prefs} setPrefs={setPrefs} onClose={() => setShowSettings(false)} />}
         {revealed && (
-          <CardModal card={revealed} index={CARDS.findIndex((c) => c.id === revealed.id)} revealMode
+          <CardModal card={revealed} index={course().cards.findIndex((c) => c.id === revealed.id)} revealMode
             onClose={() => { sndTap(); setRevealed(null); }} />
         )}
         {openedCard && (

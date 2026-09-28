@@ -1,6 +1,7 @@
 import React from "react";
 import { BookOpen, Map, ShoppingBag, User } from "lucide-react";
 import { sndTap } from "../lib/audio.js";
+import { course } from "../courses/index.js";
 
 /*  NAVIGATION                                                         */
 /* ================================================================== */
@@ -8,7 +9,7 @@ import { sndTap } from "../lib/audio.js";
 export function TabBar({ view, setView, cardCount }) {
   const tabs = [
     { id: "path", label: "Parcours", icon: Map },
-    { id: "library", label: "Biblioteca", icon: BookOpen },
+    { id: "library", label: course().t.library, icon: BookOpen },
     { id: "shop", label: "Boutique", icon: ShoppingBag, badge: cardCount },
     { id: "profile", label: "Profil", icon: User },
   ];
@@ -19,10 +20,10 @@ export function TabBar({ view, setView, cardCount }) {
           const Icon = t.icon, active = view === t.id;
           return (
             <button key={t.id} onClick={() => { sndTap(); setView(t.id); }} aria-label={t.label} aria-current={active ? "page" : undefined}
-              className={`flex-1 min-h-[56px] py-2.5 tiny:py-1.5 tiny:min-h-[44px] flex flex-col items-center justify-center gap-0.5 relative ${active ? "text-emerald-600" : "text-slate-400"}`}>
+              className={`flex-1 min-h-[56px] py-2.5 tiny:py-1.5 tiny:min-h-[44px] flex flex-col items-center justify-center gap-0.5 relative ${active ? course().theme.tab : "text-slate-400"}`}>
               <Icon className="w-6 h-6 tiny:w-5 tiny:h-5" />
               <span className="text-[10px] font-bold tiny:hidden">{t.label}</span>
-              {active && <span className="absolute top-0 left-6 right-6 h-1 rounded-full bg-emerald-500" />}
+              {active && <span className={`absolute top-0 left-6 right-6 h-1 rounded-full ${course().theme.tabLine}`} />}
             </button>
           );
         })}

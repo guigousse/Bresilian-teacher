@@ -2,8 +2,6 @@ import React from "react";
 import {
   AlertTriangle, BarChart3, BookOpen, Check, Flame, Gem, Lock, RotateCcw, Settings, Sparkles, Volume2, X,
 } from "lucide-react";
-import { UNITS } from "../data/units.js";
-import { BOOKS, SECTIONS } from "../data/stories.js";
 import { levelInfo } from "../lib/levels.js";
 import {
   booksDone, storyProgress, bookPagesDone, crownOf, MAX_CROWN, CROWN_LABELS, goalOf,
@@ -12,7 +10,8 @@ import {
 import { sndTap } from "../lib/audio.js";
 import { MascotSays } from "./Mascot.jsx";
 import { ChestArt } from "./SouvenirArt.jsx";
-import { TIERS } from "../data/souvenirs.js";
+import { TIERS } from "../data/common.js";
+import { course } from "../courses/index.js";
 
 /* Anneau de progression de l'objectif du jour. */
 function GoalRing({ pct, children, size = 66 }) {
@@ -38,11 +37,11 @@ function SoundWarning({ status, onSettings, onHide }) {
       <div className="flex gap-2">
         <Volume2 className="w-5 h-5 text-sky-500 shrink-0" />
         <div className="text-xs text-sky-900 flex-1">
-          {status === "unsupported" && "Ce navigateur ne sait pas lire le portugais à voix haute. Essaie avec Chrome ou Safari à jour."}
+          {status === "unsupported" && `Ce navigateur ne sait pas lire le ${course().langFr} à voix haute. Essaie avec Chrome ou Safari à jour.`}
           {status === "blocked" && "Le son n'est pas parti. Vérifie le volume média du téléphone, puis retouche le bouton haut-parleur."}
           {status === "novoice" && (isAndroid
-            ? "Aucune voix portugaise installée. Paramètres → Synthèse vocale → moteur Google → installer Português (Brasil)."
-            : "Aucune voix portugaise n'est installée sur cet appareil. Ajoute le portugais (Brésil) dans les réglages de synthèse vocale.")}
+            ? `Aucune voix ${course().langAdjFr} installée. Paramètres → Synthèse vocale → moteur Google → installer ${course().speech.androidPack}.`
+            : `Aucune voix ${course().langAdjFr} n'est installée sur cet appareil. Ajoute « ${course().speech.iosVoice} » dans les réglages de synthèse vocale.`)}
         </div>
         <button onClick={onHide} aria-label="Masquer" className="w-6 h-6 grid place-items-center rounded-lg text-sky-400 shrink-0 self-start">
           <X className="w-4 h-4" />
@@ -116,17 +115,17 @@ export function HomeScreen({
     : goalHit ? "Objectif du jour bouclé. Repose-toi, ou continue !"
       : due > 0 ? `${due} mot${due > 1 ? "s" : ""} à revoir avant de les oublier.`
         : progress.streak > 0 ? `Série de ${progress.streak} jour${progress.streak > 1 ? "s" : ""} — on continue ?`
-          : "Bom dia ! On commence par dix minutes ?";
+          : course().t.hello;
 
   return (
     <div className="pb-tabbar">
       <header className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-100 pt-safe">
         <div className="flex items-center justify-between px-4 py-2.5">
           <button onClick={onStats} className="flex items-center gap-2 min-w-0">
-            <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-emerald-400 to-yellow-400 grid place-items-center text-lg shrink-0">🦜</div>
+            <div className={`w-9 h-9 rounded-2xl bg-gradient-to-br ${course().theme.avatar} grid place-items-center text-lg shrink-0`}>🦜</div>
             <div className="leading-tight text-left min-w-0">
-              <div className="text-[13px] font-extrabold text-emerald-900 truncate"><span className="min-[360px]:hidden">Niv.</span><span className="hidden min-[360px]:inline">Niveau</span> {li.level} · {li.title}</div>
-              <div className="text-[11px] text-emerald-700 tabular-nums truncate">{progress.xp} XP · {mastery.acquis} acquis</div>
+              <div className={`text-[13px] font-extrabold truncate ${course().theme.ink}`}><span className="min-[360px]:hidden">Niv.</span><span className="hidden min-[360px]:inline">Niveau</span> {li.level} · {li.title}</div>
+              <div className={`text-[11px] tabular-nums truncate ${course().theme.inkSoft}`}>{progress.xp} XP · {mastery.acquis} acquis</div>
             </div>
           </button>
           <div className="flex items-center gap-1.5 shrink-0">
@@ -141,12 +140,12 @@ export function HomeScreen({
           </div>
         </div>
         <div className="px-4 pb-2.5">
-          <div className="flex items-center justify-between text-[11px] font-semibold text-emerald-800 mb-1">
+          <div className={`flex items-center justify-between text-[11px] font-semibold mb-1 ${course().theme.inkMid}`}>
             <span>Niveau {li.level + 1} dans {li.toNext} XP</span>
             <span className="tabular-nums">{progress.xpToday}/{goal} XP aujourd'hui</span>
           </div>
-          <div className="h-2.5 rounded-full bg-emerald-100 overflow-hidden">
-            <div className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-yellow-400 transition-all duration-700" style={{ width: `${li.pct}%` }} />
+          <div className={`h-2.5 rounded-full overflow-hidden ${course().theme.track}`}>
+            <div className={`h-full rounded-full bg-gradient-to-r ${course().theme.bar} transition-all duration-700`} style={{ width: `${li.pct}%` }} />
           </div>
         </div>
       </header>
@@ -164,7 +163,7 @@ export function HomeScreen({
 
       {/* Zé et l'objectif du jour */}
       <div className="px-4 pt-4">
-        <div className="rounded-3xl bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-700 p-4 shadow-lg">
+        <div className={`rounded-3xl bg-gradient-to-br ${course().theme.hero} p-4 shadow-lg`}>
           <div className="rounded-2xl bg-white/95 p-3">
             <MascotSays mood={mood} text={hello} size={78} />
           </div>
@@ -176,7 +175,7 @@ export function HomeScreen({
             </GoalRing>
             <div className="flex-1 min-w-0 text-white">
               <div className="font-extrabold leading-tight">Objectif du jour</div>
-              <div className="text-xs text-emerald-50">{progress.xpToday} / {goal} XP · {goalHit ? "atteint !" : `encore ${goal - progress.xpToday} XP`}</div>
+              <div className={`text-xs ${course().theme.heroSoft}`}>{progress.xpToday} / {goal} XP · {goalHit ? "atteint !" : `encore ${goal - progress.xpToday} XP`}</div>
             </div>
             {chestReady ? (
               <button onClick={() => { sndTap(); onOpenChest(); }} aria-label="Ouvrir un coffre" className="relative shrink-0 fb-chest">
@@ -213,7 +212,7 @@ export function HomeScreen({
       {/* Quêtes du jour */}
       <div className="px-4 pt-5">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="font-extrabold text-slate-800 flex items-center gap-2"><Sparkles className="w-4 h-4 text-amber-500" /> Missões do dia</h3>
+          <h3 className="font-extrabold text-slate-800 flex items-center gap-2"><Sparkles className="w-4 h-4 text-amber-500" /> {course().t.missions}</h3>
           <button onClick={onStats} className="text-xs font-bold text-slate-400 flex items-center gap-1">
             <BarChart3 className="w-3.5 h-3.5" /> Mes stats
           </button>
@@ -252,13 +251,13 @@ export function HomeScreen({
         <h3 className="font-extrabold text-slate-800 mb-1">Mon parcours</h3>
         <p className="text-xs text-slate-400 mb-4">Cinq thématiques, quatre chapitres chacune. Chaque chapitre terminé ouvre une page de son livre.</p>
 
-        {SECTIONS.map((section, si) => {
+        {course().sections.map((section, si) => {
           const opened = bookPagesDone(progress, section.book);
           /* Une thématique s'ouvre quand la précédente est finie — ou si
              l'élève y a déjà travaillé, pour ne rien retirer à une
              ancienne sauvegarde. */
           const sectionOpen = si === 0
-            || SECTIONS[si - 1].chapters.every((c) => storyProgress(progress, c).done)
+            || course().sections[si - 1].chapters.every((c) => storyProgress(progress, c).done)
             || section.chapters.some((c) => (progress.lessons[c] || {}).done);
           return (
             <div key={section.id} className="mb-7">
@@ -270,7 +269,7 @@ export function HomeScreen({
                     : "bg-slate-50 border-slate-100 text-slate-400"}`}>
                 <span className="text-2xl shrink-0">{sectionOpen ? section.emoji : "🔒"}</span>
                 <span className="flex-1 min-w-0">
-                  <span className="block text-[10px] font-bold uppercase tracking-widest opacity-80">Livro {si + 1}</span>
+                  <span className="block text-[10px] font-bold uppercase tracking-widest opacity-80">{course().t.book} {si + 1}</span>
                   <span className="block font-extrabold leading-tight truncate">{section.title}</span>
                 </span>
                 {sectionOpen ? (
@@ -296,8 +295,8 @@ export function HomeScreen({
               ) : (
               <div className="flex flex-col gap-5">
                 {section.chapters.map((cid, ci) => {
-                  const u = UNITS.find((x) => x.id === cid);
-                  const all = SECTIONS.flatMap((x) => x.chapters);
+                  const u = course().units.find((x) => x.id === cid);
+                  const all = course().allChapters;
                   const gi = all.indexOf(cid);
                   const prev = gi === 0 ? null : all[gi - 1];
                   const prevLessonDone = !prev || (progress.lessons[prev] || {}).done;
@@ -320,8 +319,8 @@ export function HomeScreen({
         })}
 
         <div className="mt-6 rounded-2xl border-2 border-dashed border-emerald-200 bg-emerald-50 p-3 text-center">
-          <div className="text-sm font-bold text-emerald-800">{booksDone(progress)}/{BOOKS.length} livres rangés</div>
-          <div className="text-xs text-emerald-700 mt-0.5">L'histoire de Léa continue dans l'onglet Biblioteca.</div>
+          <div className="text-sm font-bold text-emerald-800">{booksDone(progress)}/{course().books.length} livres rangés</div>
+          <div className="text-xs text-emerald-700 mt-0.5">{course().t.storyHint}</div>
         </div>
       </div>
     </div>

@@ -1,10 +1,13 @@
 import { defaultProgress, migrate } from "./progress.js";
+import { course } from "../courses/index.js";
 
 /* ==================================================================
    SAUVEGARDE — localStorage, plus un code de secours transférable.
    ================================================================== */
 
-export const SAVE_KEY = "fala_brasil_save_v2";
+/* Une sauvegarde par langue : chaque cours a son parcours, sa série,
+   ses gemmes et sa collection. Les réglages, eux, sont communs. */
+export function saveKey() { return course().saveKey; }
 export const PREFS_KEY = "fala_brasil_prefs_v2";
 
 /* --- La sauvegarde : localStorage du navigateur.
@@ -51,12 +54,14 @@ export const storage = {
 
 /* Code de sauvegarde à copier-coller, pour ne rien perdre entre deux versions */
 export function encodeSave(p) {
-  try { return btoa(unescape(encodeURIComponent(JSON.stringify(p)))); } catch (e) { return ""; }
+  try { return btoa(unescape(encodeURIComponent(JSON.stringify({ ...p, course: course().id })))); } catch (e) { return ""; }
 }
 export function decodeSave(code) {
   try {
     const obj = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
     if (typeof obj !== "object" || obj === null || typeof obj.xp !== "number") return null;
+    /* Un code d'une autre langue ne s'importe pas ici. */
+    if ((obj.course || "pt") !== course().id) return null;
     return migrate({ ...defaultProgress(), ...obj });
   } catch (e) { return null; }
 }

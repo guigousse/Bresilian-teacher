@@ -1,8 +1,10 @@
+import { course } from "../courses/index.js";
 /*  NIVEAUX                                                            */
 /* ================================================================== */
 
-export const LEVEL_TITLES = ["Iniciante", "Turista", "Viajante", "Mochileiro", "Praieiro", "Sambista",
-  "Carioca", "Baiano", "Sertanejo", "Malandro", "Poeta", "Brasileiro de coração"];
+/* Les titres de niveau viennent du cours : carioca au Brésil,
+   madrileño en Espagne. */
+export function levelTitles() { return course().levelTitles; }
 export const LEVEL_GEMS = 60;
 
 /* XP cumulés requis : 0, 100, 250, 450, 700, 1000, 1350… */
@@ -20,7 +22,7 @@ export function levelInfo(xp) {
   const span = Math.max(1, ceil - floor);
   return {
     level: lvl,
-    title: LEVEL_TITLES[Math.min(lvl - 1, LEVEL_TITLES.length - 1)],
+    title: levelTitles()[Math.min(lvl - 1, levelTitles().length - 1)],
     into: xp - floor,
     span,
     toNext: Math.max(0, ceil - xp),

@@ -12,7 +12,8 @@
    au moins rare tous les 7, au moins épique tous les 15.
    ================================================================== */
 
-import { PAPERS, SOUVENIRS, TIER_ORDER } from "../data/souvenirs.js";
+import { TIER_ORDER } from "../data/common.js";
+import { course } from "../courses/index.js";
 import { storyProgress, MAX_FREEZES } from "./progress.js";
 import { todayKey } from "./utils.js";
 
@@ -65,7 +66,7 @@ export function grantChest(p, source) {
 
 function freePapers(p, rarities) {
   const owned = new Set(p.papers || []);
-  return PAPERS.filter((x) => !owned.has(x.id) && rarities.includes(x.rarity));
+  return course().papers.filter((x) => !owned.has(x.id) && rarities.includes(x.rarity));
 }
 
 export function souvenirReachable(p, s) {
@@ -74,7 +75,7 @@ export function souvenirReachable(p, s) {
 
 function freeSouvenirs(p, rarities) {
   const owned = new Set(p.souvenirs || []);
-  return SOUVENIRS.filter((x) => !owned.has(x.id) && rarities.includes(x.rarity) && souvenirReachable(p, x));
+  return course().souvenirs.filter((x) => !owned.has(x.id) && rarities.includes(x.rarity) && souvenirReachable(p, x));
 }
 
 /* Le premier groupe non vide l'emporte : on préfère la rareté du
@@ -128,7 +129,7 @@ export function openChestIn(p, chestId) {
     if (it.kind === "paper") {
       p.papers = [...(p.papers || []), it.id];
       /* Le papier entre dans la révision dès aujourd'hui. */
-      const item = PAPERS.find((x) => x.id === it.id);
+      const item = course().papers.find((x) => x.id === it.id);
       p.srs = p.srs || {};
       if (item && !p.srs[item.pt]) p.srs[item.pt] = { box: 0, due: today, right: 0, wrong: 0, last: today };
     }

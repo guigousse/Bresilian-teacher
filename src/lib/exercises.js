@@ -8,7 +8,7 @@
    produire de mémoire.
    ================================================================== */
 
-import { ALL_ITEMS } from "../data/units.js";
+import { course } from "../courses/index.js";
 import { shuffle, pick } from "./utils.js";
 
 /* Les types disponibles à chaque niveau de couronne (0 = découverte). */
@@ -25,10 +25,14 @@ export function kindsForCrown(crown) {
   return LADDER[Math.min(crown, LADDER.length - 1)];
 }
 
-/* Le mot commence-t-il par un article défini ? (o/a, indispensable en
-   portugais et jamais deviné par un francophone.) */
+/* Le mot commence-t-il par un article défini ? (o/a en portugais,
+   el/la en espagnol : indispensable, et jamais deviné par un
+   francophone.) */
+function articleRe() {
+  return new RegExp(`^(${course().articles.join("|")})\\s+`, "i");
+}
 function articleOf(pt) {
-  const m = /^(o|a)\s+/i.exec(pt);
+  const m = articleRe().exec(pt);
   return m ? m[1].toLowerCase() : null;
 }
 
@@ -43,7 +47,7 @@ function mcq(item, pool, dir) {
     .filter((x, idx, self) => self.findIndex((y) => y[field] === x[field]) === idx);
   const near = pick(uniq(pool), 3);
   const far = near.length < 3
-    ? pick(uniq(ALL_ITEMS).filter((x) => !near.some((n) => n[field] === x[field])), 3 - near.length)
+    ? pick(uniq(course().allItems).filter((x) => !near.some((n) => n[field] === x[field])), 3 - near.length)
     : [];
   const others = [...near, ...far].map((x) => x[field]);
   return {
@@ -69,7 +73,7 @@ function type(item) {
 function bank(item) {
   const words = item.pt.split(" ");
   const noise = pick(
-    ALL_ITEMS.flatMap((x) => x.pt.split(" ")).filter((w) => !words.includes(w)),
+    course().allItems.flatMap((x) => x.pt.split(" ")).filter((w) => !words.includes(w)),
     Math.min(3, Math.max(2, 5 - words.length))
   );
   return {
@@ -79,7 +83,7 @@ function bank(item) {
 }
 
 function article(item) {
-  return { kind: "article", item, question: item.pt.replace(/^(o|a)\s+/i, ""), answer: articleOf(item.pt), options: ["o", "a"] };
+  return { kind: "article", item, question: item.pt.replace(articleRe(), ""), answer: articleOf(item.pt), options: [...course().articles] };
 }
 
 function speak(item) {

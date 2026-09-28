@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Gem, Snowflake, Volume2 } from "lucide-react";
-import { TIERS, PAPERS, SOUVENIRS } from "../data/souvenirs.js";
+import { TIERS } from "../data/common.js";
 import { SOURCE_LABEL } from "../lib/chests.js";
 import { speak } from "../lib/speech.js";
 import { sndTap, sndChest, sndLevel, sndCard } from "../lib/audio.js";
 import { Confetti, useShortScreen } from "./bits.jsx";
 import { ChestArt, SouvenirArt, PaperSlip } from "./SouvenirArt.jsx";
+import { course } from "../courses/index.js";
 
 /* ==================================================================
    L'OUVERTURE D'UN COFFRE — il brille déjà de sa rareté, il tremble
@@ -36,7 +37,7 @@ function Loot({ it, index }) {
     );
   }
   if (it.kind === "paper") {
-    const p = PAPERS.find((x) => x.id === it.id);
+    const p = course().papers.find((x) => x.id === it.id);
     const tier = TIERS[p.rarity];
     return (
       <div className="fb-loot" style={delay}>
@@ -57,7 +58,7 @@ function Loot({ it, index }) {
       </div>
     );
   }
-  const s = SOUVENIRS.find((x) => x.id === it.id);
+  const s = course().souvenirs.find((x) => x.id === it.id);
   const tier = TIERS[s.rarity];
   return (
     <div className="fb-loot" style={delay}>

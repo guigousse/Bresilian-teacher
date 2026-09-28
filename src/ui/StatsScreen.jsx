@@ -1,6 +1,5 @@
 import React from "react";
 import { ArrowLeft, Flame, Gem, Target, Volume2, Zap } from "lucide-react";
-import { UNITS } from "../data/units.js";
 import { levelInfo } from "../lib/levels.js";
 import {
   masteryBreakdown, accuracyOf, reviewForecast, activeDays, weakItems,
@@ -9,7 +8,7 @@ import {
 import { speak } from "../lib/speech.js";
 import { sndTap } from "../lib/audio.js";
 import { Phonetic } from "./bits.jsx";
-import { PH_OF } from "../data/units.js";
+import { course } from "../courses/index.js";
 
 /* Une seule teinte, du clair au foncé : la couleur ne dit que « combien ».
    Le gris n'est pas une valeur, c'est l'absence d'activité. */
@@ -61,7 +60,7 @@ export function StatsScreen({ progress, prefs, onBack, onStart }) {
         <StatTile icon={<Zap className="w-3.5 h-3.5" />} label="XP total" value={progress.xp} tone="text-amber-600" />
         <StatTile icon={<Target className="w-3.5 h-3.5" />} label="Réussite" value={`${acc.pct}%`} tone="text-emerald-600" />
         <StatTile icon={<Flame className="w-3.5 h-3.5" />} label="Meilleure série" value={`${progress.best || progress.streak} j`} tone="text-orange-600" />
-        <StatTile icon={<span className="text-xs">👑</span>} label="Couronnes" value={`${totalCrowns(progress)}/${UNITS.length * MAX_CROWN}`} tone="text-sky-600" />
+        <StatTile icon={<span className="text-xs">👑</span>} label="Couronnes" value={`${totalCrowns(progress)}/${course().units.length * MAX_CROWN}`} tone="text-sky-600" />
       </div>
 
       {/* Où en est la mémoire */}
@@ -147,7 +146,7 @@ export function StatsScreen({ progress, prefs, onBack, onStart }) {
                   <button onClick={() => speak(it.pt)} aria-label="Écouter" className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 grid place-items-center shrink-0"><Volume2 className="w-4 h-4" /></button>
                   <div className="min-w-0 flex-1">
                     <div className="font-bold text-slate-800 truncate">{it.pt}</div>
-                    <div className="text-xs text-slate-500 truncate">{it.fr} · <Phonetic text={PH_OF[it.pt]} /></div>
+                    <div className="text-xs text-slate-500 truncate">{it.fr} · <Phonetic text={course().phOf[it.pt]} /></div>
                   </div>
                   <span className={`text-[10px] font-bold rounded-full px-2 py-0.5 shrink-0 ${m.tone}`}>{m.label}</span>
                 </div>
@@ -161,7 +160,7 @@ export function StatsScreen({ progress, prefs, onBack, onStart }) {
       <div className="px-4 pt-7">
         <h3 className="font-extrabold text-slate-800 mb-2">Maîtrise par palier</h3>
         <div className="space-y-1.5">
-          {UNITS.map((u) => {
+          {course().units.map((u) => {
             const c = crownOf(progress, u.id);
             return (
               <div key={u.id} className="flex items-center gap-2">
