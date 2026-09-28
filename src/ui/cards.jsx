@@ -2,6 +2,7 @@ import React from "react";
 import { Lock } from "lucide-react";
 import { RARITY } from "../data/common.js";
 import { SceneArt } from "./SceneArt.jsx";
+import { course } from "../courses/index.js";
 
 export function Postcard({ card, owned = true, small = false, big = false }) {
   if (!owned) {
@@ -14,7 +15,7 @@ export function Postcard({ card, owned = true, small = false, big = false }) {
   const rar = RARITY[card.r];
   return (
     <div className={`rounded-2xl overflow-hidden border-2 ${rar.ring} bg-gradient-to-br ${card.grad} text-white relative flex flex-col ${small ? "" : "shadow-lg"} ${big ? "h-full" : ""}`}>
-      <div className="absolute top-1.5 right-1.5 bg-white/85 rounded-md px-1 py-0.5 text-[8px] font-bold text-slate-700 border border-white z-10">BRASIL</div>
+      <div className="absolute top-1.5 right-1.5 bg-white/85 rounded-md px-1 py-0.5 text-[8px] font-bold text-slate-700 border border-white z-10">{course().country.toUpperCase()}</div>
       {/* L'illustration porte son propre ciel : le dégradé de la carte ne
           sert plus qu'au bandeau de texte. */}
       {/* Le cadre garde les proportions du dessin : rien n'est rogné. */}

@@ -6,6 +6,7 @@ import { storage, encodeSave, decodeSave } from "../lib/storage.js";
 import { speak, langVoices, watchSpeech, getSpeechStatus, primeSpeech, speechDebug, getVoicesList } from "../lib/speech.js";
 import { sndGood, getAudioCtx } from "../lib/audio.js";
 import { Phonetic } from "./bits.jsx";
+import { Mascot } from "./Mascot.jsx";
 import { course } from "../courses/index.js";
 
 /*  ÉCRAN : PROFIL                                                     */
@@ -68,7 +69,7 @@ export function SoundDiagnostic() {
   );
 }
 
-export function ProfileScreen({ progress, onReset, onImport, prefs, storageWarning, onStats }) {
+export function ProfileScreen({ progress, onReset, onImport, prefs, storageWarning, onStats, onSwitchCourse }) {
   const [confirm, setConfirm] = useState(false);
   const [showCode, setShowCode] = useState(false);
   const [importCode, setImportCode] = useState("");
@@ -97,10 +98,10 @@ export function ProfileScreen({ progress, onReset, onImport, prefs, storageWarni
       </div>
 
       <div className="px-4 pt-5">
-        <div className="rounded-3xl bg-gradient-to-br from-yellow-400 via-amber-400 to-emerald-500 p-5 text-white shadow-lg">
+        <div className={`rounded-3xl bg-gradient-to-br ${course().theme.menuCard} p-5 text-white shadow-lg`}>
           <div className="flex items-center gap-3">
-            <div className="w-16 h-16 rounded-3xl bg-white/25 grid place-items-center text-3xl">🦜</div>
-            <div>
+            <div className="w-16 h-16 rounded-3xl bg-white/25 grid place-items-center shrink-0"><Mascot size={60} /></div>
+            <div className="min-w-0 flex-1">
               <div className="text-xs font-bold opacity-90">Niveau {li.level}</div>
               <div className="text-2xl font-extrabold">{li.title}</div>
               <div className="text-xs opacity-90 tabular-nums">{progress.xp} XP au total</div>
@@ -111,6 +112,18 @@ export function ProfileScreen({ progress, onReset, onImport, prefs, storageWarni
           </div>
           <div className="text-[11px] mt-1 opacity-90">{li.toNext} XP avant le niveau {li.level + 1} — et {LEVEL_GEMS} gemmes à la clé</div>
         </div>
+
+        {onSwitchCourse && (
+          <button onClick={onSwitchCourse}
+            className="mt-3 w-full flex items-center gap-3 rounded-2xl border-2 border-slate-100 bg-slate-50 px-4 py-3 text-left active:scale-[.99] transition">
+            <span className="text-2xl" aria-hidden="true">{course().flag}</span>
+            <span className="flex-1 min-w-0">
+              <span className="block text-sm font-extrabold text-slate-800">Tu apprends {course().langTheFr}</span>
+              <span className="block text-[11px] text-slate-500">Changer de langue — chaque langue garde sa progression</span>
+            </span>
+            <span className="text-slate-400 font-bold" aria-hidden="true">⇄</span>
+          </button>
+        )}
 
         <div className="grid grid-cols-4 gap-2 mt-4">
           <div className="rounded-2xl bg-orange-50 border-2 border-orange-100 p-3 text-center">

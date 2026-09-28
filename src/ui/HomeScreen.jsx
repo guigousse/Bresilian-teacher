@@ -96,7 +96,7 @@ function PathNode({ unit, index, crown, unlocked, reason, pageDone, lessonDone, 
 
 export function HomeScreen({
   progress, prefs, onStart, onSettings, storageWarning, speechState,
-  soundWarnHidden, onHideSoundWarn, onClaimQuest, onOpenChest, onStats, onOpenBook,
+  soundWarnHidden, onHideSoundWarn, onClaimQuest, onOpenChest, onStats, onOpenBook, onSwitchCourse,
 }) {
   const li = levelInfo(progress.xp);
   const goal = goalOf(prefs);
@@ -121,13 +121,19 @@ export function HomeScreen({
     <div className="pb-tabbar">
       <header className="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-100 pt-safe">
         <div className="flex items-center justify-between px-4 py-2.5">
-          <button onClick={onStats} className="flex items-center gap-2 min-w-0">
-            <div className={`w-9 h-9 rounded-2xl bg-gradient-to-br ${course().theme.avatar} grid place-items-center text-lg shrink-0`}>🦜</div>
+          <div className="flex items-center gap-2 min-w-0">
+          <button onClick={onSwitchCourse} aria-label="Changer de langue" title="Changer de langue"
+            className={`relative w-9 h-9 rounded-2xl bg-gradient-to-br ${course().theme.avatar} grid place-items-center text-lg shrink-0 active:scale-95 transition`}>
+            <span aria-hidden="true">{course().flag}</span>
+            <span aria-hidden="true" className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-white shadow grid place-items-center text-[9px] text-slate-500">⇄</span>
+          </button>
+          <button onClick={onStats} className="flex items-center min-w-0">
             <div className="leading-tight text-left min-w-0">
               <div className={`text-[13px] font-extrabold truncate ${course().theme.ink}`}><span className="min-[360px]:hidden">Niv.</span><span className="hidden min-[360px]:inline">Niveau</span> {li.level} · {li.title}</div>
               <div className={`text-[11px] tabular-nums truncate ${course().theme.inkSoft}`}>{progress.xp} XP · {mastery.acquis} acquis</div>
             </div>
           </button>
+          </div>
           <div className="flex items-center gap-1.5 shrink-0">
             <div className={`flex items-center gap-1 rounded-full px-2 py-1 bg-orange-50 text-orange-700 ${progress.streak > 0 ? "" : "opacity-60"}`}>
               <Flame className={`w-4 h-4 text-orange-500 ${progress.streak > 0 ? "fb-flame" : ""}`} />
@@ -318,9 +324,9 @@ export function HomeScreen({
           );
         })}
 
-        <div className="mt-6 rounded-2xl border-2 border-dashed border-emerald-200 bg-emerald-50 p-3 text-center">
-          <div className="text-sm font-bold text-emerald-800">{booksDone(progress)}/{course().books.length} livres rangés</div>
-          <div className="text-xs text-emerald-700 mt-0.5">{course().t.storyHint}</div>
+        <div className={`mt-6 rounded-2xl border-2 border-dashed ${course().theme.panel} p-3 text-center`}>
+          <div className={`text-sm font-bold ${course().theme.inkMid}`}>{booksDone(progress)}/{course().books.length} livres rangés</div>
+          <div className={`text-xs mt-0.5 ${course().theme.inkSoft}`}>{course().t.storyHint}</div>
         </div>
       </div>
     </div>

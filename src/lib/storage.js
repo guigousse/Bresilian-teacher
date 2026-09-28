@@ -29,8 +29,10 @@ export const storage = {
       this.ok = true; this.mode = "navigateur";
       return { keys };
     } catch (e) { /* navigation privée ou stockage refusé */ }
-    this.ok = true; this.mode = "memoire"; this.mem = {};
-    return { keys: [] };
+    /* Mémoire temporaire : on la garde d'un appel à l'autre, pour qu'un
+       changement de langue ne vide pas la partie en cours. */
+    this.ok = true; this.mode = "memoire";
+    return { keys: Object.keys(this.mem) };
   },
   read(key) {
     try {

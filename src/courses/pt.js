@@ -20,10 +20,12 @@ export const PT = {
   flag: "🇧🇷",
   country: "Brasil",
   langFr: "portugais",
+  langTheFr: "le portugais",
   langAdjFr: "portugaise",
   regionFr: "du Brésil",
   tagline: "Rio, Salvador, un carnet oublié",
   saveKey: "fala_brasil_save_v2",
+  themeColor: "#059669",
 
   speech: {
     lang: "pt-BR", prefix: "pt", region: "pt-br",
@@ -80,7 +82,7 @@ export const PT = {
     track: "bg-emerald-100", bar: "from-emerald-400 to-yellow-400",
     hero: "from-emerald-500 via-emerald-600 to-teal-700", heroSoft: "text-emerald-50",
     tab: "text-emerald-600", tabLine: "bg-emerald-500",
-    title: "text-emerald-700", soft: "bg-emerald-50",
+    title: "text-emerald-700", soft: "bg-emerald-50", panel: "border-emerald-200 bg-emerald-50",
     menuCard: "from-emerald-500 via-emerald-600 to-teal-700",
   },
 

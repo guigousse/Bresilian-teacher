@@ -12,9 +12,9 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["icon-192.png", "icon-512.png"],
       manifest: {
-        name: "Fala, Brasil!",
-        short_name: "Fala Brasil",
-        description: "Apprendre le portugais du Brésil depuis le français",
+        name: "Fala! — portugais & espagnol",
+        short_name: "Fala!",
+        description: "Apprendre le portugais du Brésil ou l'espagnol d'Espagne depuis le français",
         lang: "fr",
         start_url: "/",
         display: "standalone",

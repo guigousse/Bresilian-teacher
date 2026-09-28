@@ -20,11 +20,11 @@ function HatCordobes({ color = "#111827", band = "#b91c1c" }) {
   );
 }
 
-export function Mascot({ mood = "idle", size = 96, className = "" }) {
+export function Mascot({ mood = "idle", size = 96, className = "", look = null }) {
   const cheering = mood === "celebrate";
   const asleep = mood === "sleep";
   const sad = mood === "sad";
-  const { palette: c, hat } = course().mascot;
+  const { palette: c, hat } = look || course().mascot;
 
   return (
     <svg viewBox="0 0 120 120" width={size} height={size} className={className} aria-hidden="true">

@@ -7,7 +7,7 @@ import { SouvenirArt, PaperSlip } from "./SouvenirArt.jsx";
 import { course } from "../courses/index.js";
 
 /* ==================================================================
-   LA BIBLIOTHÈQUE — une étagère en bois où l'histoire de Léa se range
+   LA BIBLIOTHÈQUE — une étagère en bois où l'histoire du cours se range
    livre après livre. Un livre par thématique, quatre pages chacun : il
    faut les quatre pour le refermer et le voir sur la tranche.
    ================================================================== */
@@ -204,10 +204,10 @@ export function LibraryScreen({ progress, onOpenBook, onOpenMemories }) {
 
       {shelved === BOOKS.length && (
         <div className="px-4 pt-6">
-          <div className="rounded-2xl bg-emerald-50 border-2 border-emerald-100 p-4 text-center">
+          <div className={`rounded-2xl border-2 ${course().theme.panel} p-4 text-center`}>
             <div className="text-3xl">🎉</div>
-            <p className="text-sm font-bold text-emerald-800 mt-1">Toute l'histoire est lue et rangée !</p>
-            <p className="text-xs text-emerald-700 mt-1">{t.storyEnd}</p>
+            <p className={`text-sm font-bold mt-1 ${course().theme.inkMid}`}>Toute l'histoire est lue et rangée !</p>
+            <p className={`text-xs mt-1 ${course().theme.inkSoft}`}>{t.storyEnd}</p>
           </div>
         </div>
       )}

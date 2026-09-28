@@ -242,6 +242,161 @@ const ART = {
       </g>
     </Frame>
   ),
+
+  /* --- Espagne ------------------------------------------------------- */
+  tile: () => (
+    <Frame>
+      <g transform="rotate(-7 32 32)">
+        <path d="M11 11 H53 V53 H19 L11 45 Z" fill="#f8fafc" stroke="#94a3b8" />
+        <path d="M11 11 H53 V53 H19 L11 45 Z" fill="none" stroke="#1d4ed8" strokeWidth="2.5" transform="translate(32 32) scale(.84) translate(-32 -32)" />
+        <circle cx="32" cy="32" r="9" fill="none" stroke="#1d4ed8" strokeWidth="2" />
+        {[0, 90, 180, 270].map((a) => (
+          <path key={a} d="M32 23 q-4 -6 0 -9 q4 3 0 9" fill="#2563eb" transform={`rotate(${a} 32 32)`} />
+        ))}
+        <circle cx="32" cy="32" r="2.5" fill="#f59e0b" />
+        {[[18, 18], [46, 18], [46, 46]].map(([x, y]) => <circle key={x + "" + y} cx={x} cy={y} r="2.2" fill="#1d4ed8" />)}
+        <path d="M11 45 L19 53" stroke="#64748b" strokeWidth="1.2" />
+      </g>
+    </Frame>
+  ),
+  smallkey: () => (
+    <Frame>
+      <path d="M8 14 C16 6 26 12 22 20" stroke="#dc2626" strokeWidth="2" fill="none" />
+      <circle cx="24" cy="24" r="7" fill="none" stroke="#b7791f" strokeWidth="3.5" />
+      <circle cx="24" cy="24" r="7" fill="none" stroke="#f6d27a" strokeWidth="1" />
+      <path d="M29 29 L48 48" stroke="#b7791f" strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M42 42 l4 -4 M46 46 l3 -3" stroke="#b7791f" strokeWidth="3" strokeLinecap="round" />
+    </Frame>
+  ),
+  guitarphoto: () => (
+    <Frame>
+      <g transform="rotate(-5 32 32)">
+        <rect x="9" y="8" width="46" height="48" fill="#f8f4ea" stroke="#d6cdb8" />
+        <rect x="13" y="12" width="38" height="34" fill="#b08968" opacity=".55" />
+        <path d="M18 46 V34 H30 V46 M18 34 l2 -6 h8 l2 6" stroke="#6b4f35" strokeWidth="1.3" fill="none" />
+        <g transform="rotate(18 38 32)">
+          <path d="M38 14 V26" stroke="#3f2a1a" strokeWidth="2.4" />
+          <rect x="36" y="11" width="4" height="4" rx="1" fill="#3f2a1a" />
+          <path d="M38 25 c-6 0 -7 5 -4 8 c-4 3 -3 10 4 10 c7 0 8 -7 4 -10 c3 -3 2 -8 -4 -8 Z" fill="#c2833f" stroke="#7c4a1e" />
+          <circle cx="38" cy="34" r="1.8" fill="#3f2a1a" />
+        </g>
+        <path d="M16 51 H40" stroke={INK} strokeOpacity=".4" strokeWidth=".9" />
+      </g>
+    </Frame>
+  ),
+  coaster: () => (
+    <Frame>
+      <circle cx="32" cy="32" r="23" fill="#f1e4c8" stroke="#c9b27a" strokeWidth="1.5" />
+      <circle cx="32" cy="32" r="19" fill="none" stroke="#b91c1c" strokeWidth="1.2" strokeDasharray="3 2" />
+      <circle cx="37" cy="28" r="13" fill="none" stroke="#a16207" strokeOpacity=".25" strokeWidth="2" />
+      {[26, 31, 36].map((y, i) => (
+        <path key={y} d={`M${19 + i * 2} ${y} q7 -2 ${24 - i * 4} 0`} stroke="#1d4ed8" strokeOpacity=".75" strokeWidth="1.1" fill="none" />
+      ))}
+      <path d="M42 41 q2 -3 4 0" stroke="#1d4ed8" strokeOpacity=".75" fill="none" />
+    </Frame>
+  ),
+  bag: () => (
+    <Frame>
+      <path d="M14 18 H50 L52 58 H12 Z" fill="#c9a26b" stroke="#9c7640" />
+      <path d="M14 18 l3 -6 h30 l3 6" fill="#b88f58" stroke="#9c7640" />
+      <path d="M17 12 l2 6 M24 12 l1 6 M31 12 v6 M38 12 l-1 6 M45 12 l-2 6" stroke="#9c7640" strokeWidth=".7" />
+      <circle cx="46" cy="14" r="5" fill="#f97316" />
+      <path d="M46 9 q2 -3 5 -2" stroke="#4d7c0f" strokeWidth="1.5" fill="none" />
+      <path d="M19 32 q10 -2 26 0 M21 38 q8 -2 20 0" stroke="#1e3a8a" strokeWidth="1.3" fill="none" />
+    </Frame>
+  ),
+  aveticket: () => (
+    <Frame>
+      <g transform="rotate(-8 32 32)">
+        <path d="M6 20 H58 V30 a3 3 0 0 0 0 6 V46 H6 V36 a3 3 0 0 0 0 -6 Z" fill="#f8fafc" stroke="#cbd5e1" />
+        <rect x="6" y="20" width="52" height="6" fill="#7c3aed" />
+        <text x="12" y="25" fontSize="4.5" fontWeight="800" fill="#fff">AVE</text>
+        <path d="M44 26 V46" stroke="#94a3b8" strokeDasharray="2 2" />
+        <path d="M11 31 H38 M11 35.5 H32 M11 40 H28" stroke={INK} strokeOpacity=".55" strokeWidth="1.1" />
+        <text x="51" y="38" textAnchor="middle" fontSize="6" fontWeight="700" fill="#b91c1c">08:00</text>
+      </g>
+    </Frame>
+  ),
+  cassette: () => (
+    <Frame>
+      <rect x="6" y="15" width="52" height="34" rx="3" fill="#292524" />
+      <rect x="11" y="19" width="42" height="14" rx="1.5" fill="#fef3c7" />
+      <path d="M14 24 q8 -2 16 0 M14 28 H26" stroke="#1d4ed8" strokeWidth="1" fill="none" />
+      <rect x="20" y="35" width="24" height="9" rx="4.5" fill="#57534e" />
+      {[26, 38].map((x) => (
+        <g key={x}>
+          <circle cx={x} cy="39.5" r="3.2" fill="#e7e5e4" />
+          <circle cx={x} cy="39.5" r="1.2" fill="#292524" />
+        </g>
+      ))}
+      <path d="M16 49 l3 -4 h26 l3 4" fill="#44403c" />
+    </Frame>
+  ),
+  carnation: () => (
+    <Frame>
+      <rect x="10" y="8" width="44" height="50" rx="2" fill={PAPER} stroke={PAPER_D} />
+      <path d="M32 52 C33 44 31 36 32 28" stroke="#6b7c3a" strokeWidth="1.5" fill="none" />
+      <path d="M32 44 q7 -2 10 -8 q-8 1 -10 8" fill="#7d8f45" />
+      {[-40, -20, 0, 20, 40].map((a) => (
+        <path key={a} d="M32 28 l-4 -12 l2 2 l2 -3 l2 3 l2 -2 Z" fill="#b91c1c" opacity=".92" transform={`rotate(${a} 32 28)`} />
+      ))}
+      <path d="M28 28 q4 3 8 0 l-1 3 h-6 Z" fill="#6b7c3a" />
+    </Frame>
+  ),
+  pick: () => (
+    <Frame>
+      <path d="M32 54 C20 44 12 32 14 20 C16 10 48 10 50 20 C52 32 44 44 32 54 Z" fill="#e0e7ef" stroke="#94a3b8" />
+      <path d="M32 54 C20 44 12 32 14 20 C16 10 48 10 50 20 C52 32 44 44 32 54 Z" fill="url(#nacre)" opacity=".8" />
+      <defs>
+        <linearGradient id="nacre" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#fdf2f8" /><stop offset=".5" stopColor="#bfdbfe" /><stop offset="1" stopColor="#fef9c3" />
+        </linearGradient>
+      </defs>
+      <text x="32" y="32" textAnchor="middle" fontSize="9" fontWeight="700" fill="#64748b" fontFamily="Georgia, serif">J.S.</text>
+      <path d="M40 16 q6 3 7 10" stroke="#fff" strokeWidth="2" fill="none" opacity=".8" />
+    </Frame>
+  ),
+  fan: () => (
+    <Frame>
+      <path d="M32 52 L6 30 A30 30 0 0 1 58 30 Z" fill="#fef3c7" stroke="#b45309" />
+      {Array.from({ length: 9 }, (_, i) => -64 + i * 16).map((a) => (
+        <path key={a} d="M32 52 V24" stroke="#b45309" strokeOpacity=".45" strokeWidth=".8" transform={`rotate(${a} 32 52)`} />
+      ))}
+      <circle cx="22" cy="30" r="4" fill="#15803d" /><circle cx="22" cy="30" r="1.3" fill="#f97316" />
+      <circle cx="42" cy="28" r="4" fill="#15803d" /><circle cx="43" cy="27" r="1.3" fill="#f97316" />
+      <path d="M28 34 h8 v6 h-8 Z" fill="#fff" stroke="#e5e7eb" />
+      <path d="M32 52 L18 36" stroke="#78350f" strokeWidth="1.3" strokeDasharray="2 1.5" />
+      <circle cx="32" cy="52" r="2.3" fill="#78350f" />
+    </Frame>
+  ),
+  score: () => (
+    <Frame>
+      <rect x="10" y="7" width="44" height="52" fill="#fdfbf4" stroke="#d6cdb8" />
+      {[17, 31, 45].map((y) => (
+        <g key={y}>
+          {[0, 2, 4, 6, 8].map((d) => <path key={d} d={`M14 ${y + d} H50`} stroke={INK} strokeOpacity=".35" strokeWidth=".6" />)}
+        </g>
+      ))}
+      {[[18, 21], [24, 19], [30, 23], [36, 21], [20, 35], [27, 33], [34, 37]].map(([x, y]) => (
+        <g key={x + "-" + y}>
+          <ellipse cx={x} cy={y} rx="1.8" ry="1.3" fill={INK} opacity=".7" transform={`rotate(-20 ${x} ${y})`} />
+          <path d={`M${x + 1.6} ${y} v-6`} stroke={INK} strokeOpacity=".7" strokeWidth=".7" />
+        </g>
+      ))}
+      <path d="M40 35 l3 -1" stroke={INK} strokeOpacity=".4" />
+    </Frame>
+  ),
+  postcard: () => (
+    <Frame>
+      <g transform="rotate(4 32 32)">
+        <rect x="6" y="14" width="52" height="36" rx="1.5" fill="#fffbeb" stroke="#e7cf96" />
+        <path d="M34 18 V46" stroke="#e7cf96" />
+        <rect x="46" y="18" width="8" height="10" fill="none" stroke="#a8a29e" strokeDasharray="1.5 1.5" />
+        <path d="M10 22 q8 -2 20 0 M10 27 q8 -1 18 0 M10 32 q7 -1 16 0 M10 38 q5 -1 10 0" stroke="#1d4ed8" strokeOpacity=".7" strokeWidth="1" fill="none" />
+        <path d="M38 36 H54 M38 41 H52" stroke={INK} strokeOpacity=".4" strokeWidth=".9" />
+      </g>
+    </Frame>
+  ),
 };
 
 export function SouvenirArt({ kind }) {

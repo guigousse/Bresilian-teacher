@@ -1,8 +1,20 @@
-# Fala, Brasil!
+# Fala! — portugais & espagnol
 
-Apprendre les bases du portugais du Brésil depuis le français : leçons courtes,
-phonétique française sous chaque mot, prononciation audio, mémoire espacée,
-histoire à débloquer et cartes postales à collectionner.
+Apprendre les bases du **portugais du Brésil** ou de l'**espagnol d'Espagne** depuis
+le français : leçons courtes, phonétique française sous chaque mot, prononciation
+audio, mémoire espacée, histoire à débloquer et cartes postales à collectionner.
+
+Au premier lancement, un menu fait choisir la langue. Chaque langue a son propre
+univers et sa propre progression (niveau, série, gemmes, collection) :
+
+| | 🇧🇷 Fala, Brasil! | 🇪🇸 ¡Habla, España! |
+|---|---|---|
+| Mascotte | Zé, l'ara vert et jaune | Paco, l'ara rouge au chapeau cordouan |
+| Histoire | Léa, un carnet oublié, de Rio à Salvador | Nina, une guitare oubliée, de Madrid à Grenade |
+| Cartes | 20 lieux du Brésil | 20 lieux d'Espagne |
+| Boîte à souvenirs | 14 souvenirs, 26 expressions brésiliennes | 14 souvenirs, 26 expressions espagnoles |
+
+On change de langue en touchant le drapeau en haut de l'accueil (ou depuis le profil).
 
 Progression enregistrée dans le **localStorage** du navigateur : rien à installer,
 pas de compte, pas de serveur. Application installable et utilisable hors ligne (PWA).
@@ -72,22 +84,24 @@ et couronnes par palier.
 
 ```
 src/
+  Root.jsx         menu de choix de la langue, monte l'app sur le cours choisi
   App.jsx          assemblage : état, navigation, récompenses
-  data/units.js    le contenu pédagogique : 20 chapitres, 360 items
-  data/stories.js  les cinq livres, vingt pages en tout
-  data/cards.js    les vingt cartes postales
-  data/souvenirs.js les souvenirs et les petits papiers de la boîte
+  courses/         un fichier par langue : données, voix, textes, couleurs, mascotte
+  data/            portugais : units, stories, cards, souvenirs
+  data/es/         espagnol : les mêmes fichiers
   lib/progress.js  mémoire espacée, couronnes, quêtes, séries, trophées
   lib/chests.js    coffres : rareté, garanties, contenu
   lib/exercises.js fabrique les sessions selon la couronne
-  lib/speech.js    synthèse vocale portugaise (et contournements Android)
+  lib/speech.js    synthèse vocale dans la langue du cours (et contournements Android)
   lib/audio.js     sons et vibrations, synthétisés sans aucun fichier
   lib/storage.js   sauvegarde et code de secours
   ui/              un fichier par écran, plus la mascotte et les styles
 ```
 
-Ajouter du vocabulaire se fait dans `data/units.js`, une carte dans `data/cards.js`,
-un chapitre dans `data/stories.js` : rien d'autre à toucher.
+Ajouter du vocabulaire se fait dans `units.js`, une carte dans `cards.js`, un chapitre
+dans `stories.js` de la langue concernée. Ajouter une langue : un dossier `data/xx/`,
+un fichier `courses/xx.js` sur le modèle des deux autres, et une ligne dans
+`courses/index.js`.
 
 ## Déployer sur Vercel
 
@@ -96,7 +110,8 @@ sortie `dist`). Rien à configurer.
 
 ## Sauvegarde
 
-- Enregistrement automatique après chaque leçon, dans le navigateur.
+- Enregistrement automatique après chaque leçon, dans le navigateur — une sauvegarde
+  par langue ; les réglages (voix, débit, objectif) sont communs.
 - Effacer les données du site ou passer en navigation privée efface la progression.
 - Le profil contient un **code de secours** à copier pour transférer la progression
   vers un autre appareil. Les sauvegardes d'avant la refonte sont migrées
@@ -105,12 +120,14 @@ sortie `dist`). Rien à configurer.
 
 ## Voix
 
-L'app utilise la synthèse vocale du système (`speechSynthesis`) en `pt-BR`.
-La qualité dépend des voix installées sur l'appareil ; les réglages permettent de
-choisir la voix, le débit et la hauteur.
+L'app utilise la synthèse vocale du système (`speechSynthesis`) en `pt-BR` ou en
+`es-ES`. La qualité dépend des voix installées sur l'appareil ; les réglages
+permettent de choisir la voix (retenue pour chaque langue), le débit et la hauteur.
 
-- iPhone : Réglages → Accessibilité → Contenu énoncé → Voix → Portugais (Brésil).
-- Android : Paramètres → Synthèse vocale → moteur Google → installer les données pt-BR.
+- iPhone : Réglages → Accessibilité → Contenu énoncé → Voix → Portugais (Brésil)
+  ou Espagnol (Espagne).
+- Android : Paramètres → Synthèse vocale → moteur Google → installer les données
+  pt-BR ou es-ES.
 
-Si le portugais reste muet, **Profil → Diagnostic du son** teste séparément les bips
+Si la voix reste muette, **Profil → Diagnostic du son** teste séparément les bips
 et la voix, et donne le rapport à envoyer.

@@ -1,21 +1,10 @@
-/* ==================================================================
-   COURS DISPONIBLES — et celui qui est actif.
-
-   Changer de langue remonte toute l'app (clé React) : le cours actif
-   est donc lu au moment du rendu ou de l'appel, jamais figé au
-   chargement d'un module.
-   ================================================================== */
-
 import { PT } from "./pt.js";
+import { ES } from "./es.js";
 
-export const COURSES = { pt: PT };
-export const COURSE_ORDER = ["pt"];
+/* Les cours disponibles, dans l'ordre du menu principal. */
+export const COURSES = { pt: PT, es: ES };
+export const COURSE_ORDER = ["pt", "es"];
 
 let current = PT;
-
-export function setCourse(id) {
-  current = COURSES[id] || PT;
-  return current;
-}
-
+export function setCourse(id) { current = COURSES[id] || PT; return current; }
 export function course() { return current; }

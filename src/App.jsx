@@ -31,7 +31,7 @@ import { MemoryBox } from "./ui/MemoryBox.jsx";
 import { TabBar } from "./ui/TabBar.jsx";
 import { GlobalStyle } from "./ui/GlobalStyle.jsx";
 
-export default function App() {
+export default function App({ onSwitchCourse }) {
   const [ready, setReady] = useState(false);
   const [storageWarning, setStorageWarning] = useState(false);
   const [progress, setProgress] = useState(defaultProgress());
@@ -363,7 +363,7 @@ export default function App() {
             speechState={speechState} soundWarnHidden={soundWarnHidden}
             onHideSoundWarn={() => setSoundWarnHidden(true)}
             onClaimQuest={claimQuest} onOpenChest={() => setChest((progress.chests || [])[0] || null)} onStats={() => setView("stats")}
-            onOpenBook={(id) => { setActiveBook(id); setView("story"); }} />
+            onOpenBook={(id) => { setActiveBook(id); setView("story"); }} onSwitchCourse={onSwitchCourse} />
         )}
         {view === "stats" && <StatsScreen progress={progress} prefs={prefs} onBack={() => setView("path")} onStart={startLesson} />}
         {view === "library" && (
@@ -389,7 +389,7 @@ export default function App() {
         {view === "profile" && (
           <ProfileScreen progress={progress} prefs={prefs} storageWarning={storageWarning}
             onReset={() => { setProgress(defaultProgress()); setView("path"); }}
-            onImport={(p) => setProgress(p)} onStats={() => setView("stats")} />
+            onImport={(p) => setProgress(p)} onStats={() => setView("stats")} onSwitchCourse={onSwitchCourse} />
         )}
         {view === "lesson" && session && (
           <LessonScreen unit={session.unit} exercises={session.exercises} prefs={prefs} gems={progress.gems}
