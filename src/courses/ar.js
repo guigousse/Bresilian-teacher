@@ -9,6 +9,7 @@ import { UNITS, ALL_ITEMS, PH_OF, PRON_KEYS } from "../data/ar/units.js";
 import { BOOKS, AR_BOOKS } from "../data/ar/stories.js";
 import { CARDS, CARD_PRICE } from "../data/ar/cards.js";
 import { PAPERS, SOUVENIRS, PAPER_ITEMS } from "../data/ar/souvenirs.js";
+import { SONGS } from "../data/ar/songs.js";
 
 export const AR = {
   id: "ar",
@@ -42,6 +43,7 @@ export const AR = {
   books: BOOKS, ...AR_BOOKS,
   cards: CARDS, cardPrice: CARD_PRICE,
   papers: PAPERS, souvenirs: SOUVENIRS, paperItems: PAPER_ITEMS,
+  songs: SONGS,
 
   levelTitles: ["Recién llegado", "Turista", "Mochilero", "Viajero", "Matero", "Parrillero",
     "Porteño", "Milonguero", "Gaucho", "Patagónico", "Poeta", "Argentino de corazón"],

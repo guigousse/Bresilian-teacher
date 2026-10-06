@@ -29,6 +29,7 @@ import { StatsScreen } from "./ui/StatsScreen.jsx";
 import { ChestModal } from "./ui/ChestModal.jsx";
 import { MemoryBox } from "./ui/MemoryBox.jsx";
 import { TabBar } from "./ui/TabBar.jsx";
+import { MusicScreen, SongPlayer } from "./ui/MusicScreen.jsx";
 import { GlobalStyle } from "./ui/GlobalStyle.jsx";
 
 export default function App({ onSwitchCourse }) {
@@ -44,6 +45,7 @@ export default function App({ onSwitchCourse }) {
   const [openedCard, setOpenedCard] = useState(null);
   const [activeBook, setActiveBook] = useState(null);
   const [closedBook, setClosedBook] = useState(null);
+  const [activeSong, setActiveSong] = useState(null);
   const [chest, setChest] = useState(null);   /* le coffre affiché */
   const [speechState, setSpeechState] = useState(getSpeechStatus());
   const [soundWarnHidden, setSoundWarnHidden] = useState(false);
@@ -348,7 +350,7 @@ export default function App({ onSwitchCourse }) {
     );
   }
 
-  const fullScreen = view === "lesson" || view === "result" || view === "story";
+  const fullScreen = view === "lesson" || view === "result" || view === "story" || view === "song";
 
   return (
     <div className="min-h-app bg-slate-50 text-slate-900 antialiased">
@@ -380,6 +382,11 @@ export default function App({ onSwitchCourse }) {
             onSpendGems={spendGems}
             onStartLesson={(chapterId) => { setActiveBook(null); startLesson(chapterId); }}
             onClose={() => { setActiveBook(null); setView("library"); }} />
+        )}
+        {view === "music" && <MusicScreen onOpenSong={(id) => { setActiveSong(id); setView("song"); }} />}
+        {view === "song" && activeSong && (
+          <SongPlayer song={(course().songs || []).find((s) => s.id === activeSong)}
+            onClose={() => { setActiveSong(null); setView("music"); }} />
         )}
         {view === "memories" && <MemoryBox progress={progress} onBack={() => setView("library")} />}
         {view === "shop" && (

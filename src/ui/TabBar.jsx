@@ -1,5 +1,5 @@
 import React from "react";
-import { BookOpen, Map, ShoppingBag, User } from "lucide-react";
+import { BookOpen, Map, Music, ShoppingBag, User } from "lucide-react";
 import { sndTap } from "../lib/audio.js";
 import { course } from "../courses/index.js";
 
@@ -10,6 +10,7 @@ export function TabBar({ view, setView, cardCount }) {
   const tabs = [
     { id: "path", label: "Parcours", icon: Map },
     { id: "library", label: course().t.library, icon: BookOpen },
+    { id: "music", label: "Música", icon: Music },
     { id: "shop", label: "Boutique", icon: ShoppingBag, badge: cardCount },
     { id: "profile", label: "Profil", icon: User },
   ];

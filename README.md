@@ -27,6 +27,21 @@ npm install
 npm run dev
 ```
 
+## Música
+
+L'onglet **Música** joue une chanson avec ses paroles qui défilent et la traduction
+française sous chaque ligne (première chanson : *Gracias a la vida*, Mercedes Sosa).
+
+- **Écouter dans l'app** : on colle le lien d'une vidéo YouTube de la chanson ; les
+  paroles suivent la vidéo à la seconde près.
+- **Écouter sur Apple Music / Spotify** : on lance la chanson là-bas et ▶ dans l'app au
+  même moment ; toucher la ligne chantée recale les paroles.
+
+Les paroles synchronisées viennent de [LRCLIB](https://lrclib.net) et la traduction de
+[MyMemory](https://mymemory.translated.net), au moment de l'écoute : rien n'est stocké
+dans le dépôt, tout est gardé ensuite dans le navigateur. Ajouter une chanson = une
+fiche dans `src/data/<langue>/songs.js`.
+
 ## Comment l'app fait apprendre
 
 **La mémoire espacée d'abord.** Chaque mot vit dans une boîte de Leitner. Une

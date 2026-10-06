@@ -43,6 +43,7 @@ export const PT = {
   books: BOOKS, ...PT_BOOKS,
   cards: CARDS, cardPrice: CARD_PRICE,
   papers: PAPERS, souvenirs: SOUVENIRS, paperItems: PAPER_ITEMS,
+  songs: [],
 
   levelTitles: ["Iniciante", "Turista", "Viajante", "Mochileiro", "Praieiro", "Sambista",
     "Carioca", "Baiano", "Sertanejo", "Malandro", "Poeta", "Brasileiro de coração"],
